@@ -1,0 +1,20 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\test.cs">
+    <Files>
+      <File FileName="Assets\_scripts\lsSpiderClass.cs" Line="36" Column="1" />
+      <File FileName="Assets\_scripts\lsGiftClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\ctrlDailyBonusClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\Resources\Localization.txt" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\staticClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\gBerryClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\iClickClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\initClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\test.cs" Line="7" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
