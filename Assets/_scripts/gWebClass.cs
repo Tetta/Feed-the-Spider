@@ -108,7 +108,7 @@ public class gWebClass : MonoBehaviour {
 		}
 
 		if (webState == "noCollisions" || webState == "destroyingWeb" || webState == "collisionBlock") {
-			gBerryClass.berryState = "";
+			if (gBerryClass.berryState != "start finish") gBerryClass.berryState = "";
 			for (int j = 0; j < 2; j++) {
 				if (chainCount > 0) {
 					Destroy(chain[globalCounter], 0);

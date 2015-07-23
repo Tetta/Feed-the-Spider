@@ -149,7 +149,7 @@ public class gBerryClass : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//acceleration start
-		/* for tests
+		/* off for tests
 		if (Time.time - t > 0.02F) {
 			t = Time.time;
 			dir.y = Input.acceleration.y;
@@ -206,8 +206,8 @@ public class gBerryClass : MonoBehaviour {
 
 			//collisionObject.transform.GetChild(0).GetComponent<Animator>().StopPlayback();
 			collisionObject.transform.GetChild(0).GetComponent<Animator>().Play("spider open month");
-			GetComponent<Animation>().Play();
-			transform.position = collisionObject.gameObject.transform.position;
+			//GetComponent<Animation>().Play();
+			//transform.position = collisionObject.gameObject.transform.position;
 			if (initClass.progress.Count == 0) initClass.getProgress();
 			GetComponent<Rigidbody2D>().isKinematic = true;
 			GetComponent<Collider2D>().enabled = false;
@@ -228,18 +228,22 @@ public class gBerryClass : MonoBehaviour {
 	}
 	public IEnumerator coroutineEat(Collision2D collisionObject){
 		collisionObject.rigidbody.isKinematic = false;
+		for (float i = 0; i < 5; i+=0.5F) {
+			transform.GetChild(0).GetComponent<AnimatedAlpha>().alpha = 0.8F - i * 0.2F;
+			transform.localScale = new Vector2(1 - i * 0.05F, 1 - i * 0.05F);
+			transform.position = transform.position + (collisionObject.transform.position - transform.position) * 0.2F;
+			yield return new WaitForSeconds(0.001F);
+		}
+		collisionObject.transform.GetChild (0).GetComponent<Animator> ().CrossFade ("spider eat", 0.3F);
 
-		yield return new WaitForSeconds(0.2F);
-		transform.GetChild(0).GetComponent<UISprite>().enabled = false;
-		collisionObject.transform.GetChild(0).GetComponent<Animator>().Play("spider eat");
 		StartCoroutine(Coroutine(collisionObject));
 
 	}
 
 	public IEnumerator Coroutine(Collision2D collisionObject){
 		// остановка выполнения функции на costEnergy секунд
-		yield return new WaitForSeconds(2F);
-		//collisionObject.transform.GetChild(0).GetComponent<Animator>().Play("idle");
+		yield return new WaitForSeconds(1.5F);
+		collisionObject.transform.GetChild(0).GetComponent<Animator>().Play("spider idle", 1);
 		completeMenu.SetActive(true);
 		completeMenu.GetComponent<lsLevelMenuClass> ().completeMenuEnable (400, 200, true, 3);
 

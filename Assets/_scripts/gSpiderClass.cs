@@ -35,7 +35,7 @@ public class gSpiderClass : MonoBehaviour {
 
 	void FixedUpdate () {
 
-
+		/* было что-то... сейчас баг
 		if ((berry.transform.position - transform.position).magnitude < 0.5F) {
 
 			if (gBerryClass.berryState == "" && !rigid2D.isKinematic) {
@@ -47,12 +47,12 @@ public class gSpiderClass : MonoBehaviour {
 			}
 
 		}
-
+		*/
 		if (fixedUpdateCount % 50 == 0 && gBerryClass.berryState != "start finish") {
 			if ((berry.transform.position - transform.position).magnitude >= 0.5F) {
-				if (currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider open month")) {
-					currentSkinAnimator.Play("spider idle", 0);
-					currentSkinAnimator.Play("spider breath", 0);
+				if (currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider open month")) {
+					currentSkinAnimator.Play("spider idle", 1);
+					//currentSkinAnimator.Play("spider breath", 0);
 					//Debug.Log(currentSkinAnimator.Play("spider idle");
 				}
 				//if (currentSkinAnimator.GetCurrentAnimatorStateInfo(-1))
@@ -65,10 +65,10 @@ public class gSpiderClass : MonoBehaviour {
 					currentSkinAnimator.Play("spider jump");
 					StartCoroutine(coroutineJump());
 				} else {
-					if (!currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath") && !currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider open month")) {
+					if (!currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath") && !currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider open month")) {
 						if (currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider fly")) {
-							currentSkinAnimator.transform.FindChild("leg left 2").GetComponent<UISprite>().depth = 2;
-							currentSkinAnimator.transform.FindChild("leg right 2").GetComponent<UISprite>().depth = 2;
+							//currentSkinAnimator.transform.FindChild("leg left 2").GetComponent<UISprite>().depth = 2;
+							//currentSkinAnimator.transform.FindChild("leg right 2").GetComponent<UISprite>().depth = 2;
 							currentSkinAnimator.Play("spider jump");
 							StartCoroutine(coroutineJump());	
 						} else
@@ -81,7 +81,9 @@ public class gSpiderClass : MonoBehaviour {
 					currentSkinAnimator.transform.FindChild("leg left 2").GetComponent<UISprite>().depth = 1;
 					currentSkinAnimator.transform.FindChild("leg right 2").GetComponent<UISprite>().depth = 1;
 					*/
-					currentSkinAnimator.Play("spider fly");
+					
+				if (websSpider.Count != 0) currentSkinAnimator.Play("spider fly 2");
+				else currentSkinAnimator.Play("spider fly");
 				//}
 			}
 
@@ -89,8 +91,8 @@ public class gSpiderClass : MonoBehaviour {
 			//check mouth
 			if ((berry.transform.position - transform.position).magnitude < 0.5F) 
 				if (currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath") ||
-				    currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider fly")) 
-						currentSkinAnimator.Play("spider open month");
+				    currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider fly")) {
+				currentSkinAnimator.Play("spider open month"); } 
 				
 		}
 		fixedUpdateCount ++;

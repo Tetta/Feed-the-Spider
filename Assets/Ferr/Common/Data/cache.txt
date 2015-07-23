@@ -106,6 +106,7 @@ Assets/_prefabs/web holder.prefab
 Assets/_prefabs/level 1.prefab
 Assets/_prefabs/chain 1.prefab
 Assets/_atlases/skin4.prefab
+Assets/_atlases/skin2.prefab
 
 [Ferr2DT_PathTerrain]
 Assets/_prefabs/GameObject.prefab
@@ -214,3 +215,4 @@ Assets/_prefabs/web holder.prefab
 Assets/_prefabs/level 1.prefab
 Assets/_prefabs/chain 1.prefab
 Assets/_atlases/skin4.prefab
+Assets/_atlases/skin2.prefab
