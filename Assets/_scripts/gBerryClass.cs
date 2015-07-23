@@ -232,9 +232,9 @@ public class gBerryClass : MonoBehaviour {
 			transform.GetChild(0).GetComponent<AnimatedAlpha>().alpha = 0.8F - i * 0.2F;
 			transform.localScale = new Vector2(1 - i * 0.05F, 1 - i * 0.05F);
 			transform.position = transform.position + (collisionObject.transform.position - transform.position) * 0.2F;
-			yield return new WaitForSeconds(0.001F);
+			yield return new WaitForSeconds(0.015F);
 		}
-		collisionObject.transform.GetChild (0).GetComponent<Animator> ().CrossFade ("spider eat", 0.3F);
+		collisionObject.transform.GetChild (0).GetComponent<Animator> ().CrossFade ("spider eat", 0.5F);
 
 		StartCoroutine(Coroutine(collisionObject));
 
