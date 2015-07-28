@@ -13,7 +13,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Arimo18.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Colored Slider.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Text Box.prefab
 Assets/_atlases/skin1.prefab
-Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Font - Normal.prefab
 Assets/_prefabs/button market.prefab
 Assets/_prefabs/terrain forest.prefab
 Assets/_prefabs/level 1 old.prefab
@@ -23,8 +22,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Checkbox.prefab
 Assets/_prefabs/teleport.prefab
 Assets/_prefabs/test mode.prefab
 Assets/_prefabs/tumbleweed.prefab
-Assets/NGUI/Examples/Atlases/SciFi/SciFi Font - Header.prefab
-Assets/NGUI/Examples/Atlases/SciFi/SciFi Font - Normal.prefab
 Assets/Ferr/2DTerrain/TerrainMaterials/ForestTerrainMaterial.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Wooden Atlas.prefab
 Assets/_prefabs/cloud.prefab
@@ -51,14 +48,12 @@ Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Input Field.prefab
 Assets/Ferr/2DTerrain/TerrainMaterials/PipeMaterial.prefab
 Assets/_atlases/back forest.prefab
 Assets/_prefabs/terrain ice.prefab
-Assets/NGUI/Examples/Atlases/SciFi/SciFi Atlas.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Arimo20.prefab
 Assets/_prefabs/ad.prefab
 Assets/_atlases/my_atlas.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Vertical Slider.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Horizontal Scroll Bar.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Coalition.prefab
-Assets/NGUI/Examples/Atlases/Refractive/Refractive Font - Normal.prefab
 Assets/_images/terrains/rock terrain.prefab
 Assets/_prefabs/spider old.prefab
 Assets/_prefabs/default level.prefab
@@ -85,9 +80,7 @@ Assets/_prefabs/terrain rock.prefab
 Assets/_prefabs/star.prefab
 Assets/_prefabs/back ice folder.prefab
 Assets/_prefabs/ice.prefab
-Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Atlas.prefab
 Assets/_prefabs/destroyer.prefab
-Assets/NGUI/Examples/Atlases/Refractive/Refractive Font - Header.prefab
 Assets/_atlases/spider.prefab
 Assets/_atlases/back ice.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Vertical Scroll Bar.prefab
@@ -96,7 +89,6 @@ Assets/_images/terrains/forest terrain old.prefab
 Assets/_prefabs/back white.prefab
 Assets/_prefabs/block.prefab
 Assets/_prefabs/destroyer dust.prefab
-Assets/NGUI/Examples/Atlases/Refractive/Refractive Atlas.prefab
 Assets/_images/terrains/terrain path.prefab
 Assets/_prefabs/berry.prefab
 Assets/_atlases/back desert.prefab
@@ -107,6 +99,14 @@ Assets/_prefabs/level 1.prefab
 Assets/_prefabs/chain 1.prefab
 Assets/_atlases/skin4.prefab
 Assets/_atlases/skin2.prefab
+Assets/NGUI/Examples/Atlases/SciFi/SciFi Font - Header.prefab
+Assets/NGUI/Examples/Atlases/SciFi/SciFi Font - Normal.prefab
+Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Atlas.prefab
+Assets/NGUI/Examples/Atlases/Refractive/Refractive Font - Header.prefab
+Assets/NGUI/Examples/Atlases/SciFi/SciFi Atlas.prefab
+Assets/NGUI/Examples/Atlases/Refractive/Refractive Font - Normal.prefab
+Assets/NGUI/Examples/Atlases/Refractive/Refractive Atlas.prefab
+Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Font - Normal.prefab
 
 [Ferr2DT_PathTerrain]
 Assets/_prefabs/GameObject.prefab
@@ -122,7 +122,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Arimo18.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Colored Slider.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Text Box.prefab
 Assets/_atlases/skin1.prefab
-Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Font - Normal.prefab
 Assets/_prefabs/button market.prefab
 Assets/_prefabs/terrain forest.prefab
 Assets/_prefabs/level 1 old.prefab
@@ -132,8 +131,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Checkbox.prefab
 Assets/_prefabs/teleport.prefab
 Assets/_prefabs/test mode.prefab
 Assets/_prefabs/tumbleweed.prefab
-Assets/NGUI/Examples/Atlases/SciFi/SciFi Font - Header.prefab
-Assets/NGUI/Examples/Atlases/SciFi/SciFi Font - Normal.prefab
 Assets/Ferr/2DTerrain/TerrainMaterials/ForestTerrainMaterial.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Wooden Atlas.prefab
 Assets/_prefabs/cloud.prefab
@@ -160,14 +157,12 @@ Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Input Field.prefab
 Assets/Ferr/2DTerrain/TerrainMaterials/PipeMaterial.prefab
 Assets/_atlases/back forest.prefab
 Assets/_prefabs/terrain ice.prefab
-Assets/NGUI/Examples/Atlases/SciFi/SciFi Atlas.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Arimo20.prefab
 Assets/_prefabs/ad.prefab
 Assets/_atlases/my_atlas.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Vertical Slider.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Horizontal Scroll Bar.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Coalition.prefab
-Assets/NGUI/Examples/Atlases/Refractive/Refractive Font - Normal.prefab
 Assets/_images/terrains/rock terrain.prefab
 Assets/_prefabs/spider old.prefab
 Assets/_prefabs/default level.prefab
@@ -194,9 +189,7 @@ Assets/_prefabs/terrain rock.prefab
 Assets/_prefabs/star.prefab
 Assets/_prefabs/back ice folder.prefab
 Assets/_prefabs/ice.prefab
-Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Atlas.prefab
 Assets/_prefabs/destroyer.prefab
-Assets/NGUI/Examples/Atlases/Refractive/Refractive Font - Header.prefab
 Assets/_atlases/spider.prefab
 Assets/_atlases/back ice.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Vertical Scroll Bar.prefab
@@ -205,7 +198,6 @@ Assets/_images/terrains/forest terrain old.prefab
 Assets/_prefabs/back white.prefab
 Assets/_prefabs/block.prefab
 Assets/_prefabs/destroyer dust.prefab
-Assets/NGUI/Examples/Atlases/Refractive/Refractive Atlas.prefab
 Assets/_images/terrains/terrain path.prefab
 Assets/_prefabs/berry.prefab
 Assets/_atlases/back desert.prefab
@@ -216,3 +208,11 @@ Assets/_prefabs/level 1.prefab
 Assets/_prefabs/chain 1.prefab
 Assets/_atlases/skin4.prefab
 Assets/_atlases/skin2.prefab
+Assets/NGUI/Examples/Atlases/SciFi/SciFi Font - Header.prefab
+Assets/NGUI/Examples/Atlases/SciFi/SciFi Font - Normal.prefab
+Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Atlas.prefab
+Assets/NGUI/Examples/Atlases/Refractive/Refractive Font - Header.prefab
+Assets/NGUI/Examples/Atlases/SciFi/SciFi Atlas.prefab
+Assets/NGUI/Examples/Atlases/Refractive/Refractive Font - Normal.prefab
+Assets/NGUI/Examples/Atlases/Refractive/Refractive Atlas.prefab
+Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Font - Normal.prefab

@@ -60,7 +60,7 @@ public class gSpiderClass : MonoBehaviour {
 			}
 
 			//check jump
-			if (GetComponent<Rigidbody2D>().velocity.magnitude <= 0.001F && websSpider.Count == 0) {
+			if (GetComponent<Rigidbody2D>().velocity.magnitude <= 0.003F && websSpider.Count == 0) {
 				if (transform.rotation.z > 0.4F || transform.rotation.z < -0.4F) {
 					currentSkinAnimator.Play("spider jump");
 					StartCoroutine(coroutineJump());
