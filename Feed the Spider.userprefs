@@ -1,11 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_scripts\gGrootClass.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader">
     <Files>
-      <File FileName="Assets\_scripts\gGrootClass.cs" Line="15" Column="35" />
+      <File FileName="Assets\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader" Line="23" Column="34" />
+      <File FileName="Assets\_scripts\gSpiderClass.cs" Line="63" Column="63" />
+      <File FileName="Assets\_scripts\gGrootClass.cs" Line="1" Column="1" />
       <File FileName="Assets\_scripts\staticClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\gSpiderClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\gBerryClass.cs" Line="281" Column="153" />
+      <File FileName="Assets\_scripts\gBerryClass.cs" Line="1" Column="1" />
       <File FileName="Assets\_scripts\gWebClass.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
