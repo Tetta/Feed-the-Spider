@@ -110,6 +110,7 @@ Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Font - Normal.prefab
 Assets/Standard Assets/Effects/Projectors/Prefabs/GridProjector.prefab
 Assets/Standard Assets/Effects/Projectors/Prefabs/BlobShadowProjector.prefab
 Assets/Standard Assets/Effects/Projectors/Prefabs/BlobLightProjector.prefab
+Assets/_atlases/skin3.prefab
 
 [Ferr2DT_PathTerrain]
 Assets/_prefabs/GameObject.prefab
@@ -222,3 +223,4 @@ Assets/NGUI/Examples/Atlases/Fantasy/Fantasy Font - Normal.prefab
 Assets/Standard Assets/Effects/Projectors/Prefabs/GridProjector.prefab
 Assets/Standard Assets/Effects/Projectors/Prefabs/BlobShadowProjector.prefab
 Assets/Standard Assets/Effects/Projectors/Prefabs/BlobLightProjector.prefab
+Assets/_atlases/skin3.prefab
