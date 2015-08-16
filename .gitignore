@@ -1,4 +1,4 @@
- ##################
+﻿ ##################
 # Unity ignores:
 #
 # !!! WARNING !!!
@@ -22,3 +22,5 @@ Temp
 *.sln
 *.userprefs 
 Assets/Ferr2DTerrainMeshes
+
+Assets/_prefabs/Meshes
