@@ -204,8 +204,11 @@ public class gBerryClass : MonoBehaviour {
 			gHandClass.delHand();
 			berryState = "start finish";
 
-			//collisionObject.transform.GetChild(0).GetComponent<Animator>().StopPlayback();
-			collisionObject.transform.GetChild(0).GetComponent<Animator>().Play("spider open month");
+			if (collisionObject.transform.GetChild (0).GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
+				collisionObject.transform.GetChild (0).GetComponent<Animator> ().Play("spider open month legs");
+			else 
+				collisionObject.transform.GetChild (0).GetComponent<Animator> ().Play("spider open month");
+
 			//GetComponent<Animation>().Play();
 			//transform.position = collisionObject.gameObject.transform.position;
 			if (initClass.progress.Count == 0) initClass.getProgress();
@@ -234,8 +237,11 @@ public class gBerryClass : MonoBehaviour {
 			transform.position = transform.position + (collisionObject.transform.position - transform.position) * 0.2F;
 			yield return new WaitForSeconds(0.015F);
 		}
-		collisionObject.transform.GetChild (0).GetComponent<Animator> ().CrossFade ("spider eat", 0.5F);
 
+		if (collisionObject.transform.GetChild (0).GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
+			collisionObject.transform.GetChild (0).GetComponent<Animator> ().CrossFade ("spider eat legs", 0.5F);
+		else 
+			collisionObject.transform.GetChild (0).GetComponent<Animator> ().CrossFade ("spider eat", 0.5F);
 		StartCoroutine(Coroutine(collisionObject));
 
 	}

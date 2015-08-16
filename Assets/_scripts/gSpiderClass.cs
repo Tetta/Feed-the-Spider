@@ -50,7 +50,8 @@ public class gSpiderClass : MonoBehaviour {
 		*/
 		if (fixedUpdateCount % 50 == 0 && gBerryClass.berryState != "start finish") {
 			if ((berry.transform.position - transform.position).magnitude >= 0.5F) {
-				if (currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider open month")) {
+				if (currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider open month") ||
+				    currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider open month legs")) {
 					currentSkinAnimator.Play("spider idle", 1);
 					//currentSkinAnimator.Play("spider breath", 0);
 					//Debug.Log(currentSkinAnimator.Play("spider idle");
@@ -83,15 +84,18 @@ public class gSpiderClass : MonoBehaviour {
 					*/
 					
 				if (websSpider.Count != 0) currentSkinAnimator.Play("spider fly 2");
-				else currentSkinAnimator.Play("spider fly");
-				//}
+				 else {
+					currentSkinAnimator.Play("spider fly");
+				}
 			}
 
 		} else if (fixedUpdateCount % 10 == 0 && gBerryClass.berryState == "") {
 			//check mouth
 			if ((berry.transform.position - transform.position).magnitude < 0.5F) 
-				if (currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath") ||
-				    currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider fly")) {
+				if (currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
+				    currentSkinAnimator.Play("spider open month legs");
+				else if (currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider fly") ||
+				currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider fly 2")) {
 				currentSkinAnimator.Play("spider open month"); } 
 				
 		}
