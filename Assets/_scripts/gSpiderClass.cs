@@ -114,7 +114,7 @@ public class gSpiderClass : MonoBehaviour {
 
 	void OnClick () {
 		Debug.Log (234);
-		currentSkinAnimator.Play("spider see", -1);
+		currentSkinAnimator.Play("spider blink", -1);
 	}
 
 	public IEnumerator coroutineJump(){
