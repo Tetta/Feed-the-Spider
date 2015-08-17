@@ -162,7 +162,11 @@ public class gBerryClass : MonoBehaviour {
 		*/
 		//acceleration end
 
-		if (transform.position.x < -4 || transform.position.x > 4 || transform.position.y < -6 || transform.position.y > 6) StartCoroutine(gSpiderClass.coroutineCry());
+		if (transform.position.x < -4 || transform.position.x > 4 || transform.position.y < -6 || transform.position.y > 6) 
+		if (!GameObject.Find("spider").transform.GetChild(0).GetComponent<Animator>().GetCurrentAnimatorStateInfo(1).IsName("spider sad") &&
+			!GameObject.Find("spider").transform.GetChild(0).GetComponent<Animator>().GetCurrentAnimatorStateInfo(1).IsName("spider sad 0"))
+		StartCoroutine(gSpiderClass.coroutineCry());
+
 		//timer
 		if (initLevelMenuClass.levelDemands == 1) {
 			int levels = staticClass.levels[Convert.ToInt32(Application.loadedLevelName.Substring(5)), 1];

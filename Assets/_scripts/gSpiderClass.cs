@@ -124,8 +124,8 @@ public class gSpiderClass : MonoBehaviour {
 	}
 
 	public static IEnumerator coroutineCry(){
-		GameObject.Find("spider").transform.GetChild(0).GetComponent<Animator>().Play("spider cry", 1);
-
+		Debug.Log (33);
+		GameObject.Find("spider").transform.GetChild(0).GetComponent<Animator>().Play("spider sad", 1);
 		yield return new WaitForSeconds(2F);
 		GameObject.Find("restart").SendMessage("OnClick");
 	}
