@@ -8,7 +8,7 @@ public class gSpiderClass : MonoBehaviour {
 	//private GameObject restart;
 	private int fixedUpdateCount;
 	private GameObject berry;
-	private Animator currentSkinAnimator;
+	public Animator currentSkinAnimator;
 	private Rigidbody2D rigid2D;
 	public static List<int> websSpider = new List<int>();
 	//private GameObject completeMenu;
@@ -19,9 +19,26 @@ public class gSpiderClass : MonoBehaviour {
 		guiStars[1] = GameObject.Find("gui star 2");
 		guiStars[2] = GameObject.Find("gui star 3");	
 		berry = GameObject.Find("berry");
-		//потом поменять на текущий скин
-		currentSkinAnimator = transform.GetChild(0).GetComponent<Animator>();
-		rigid2D = GetComponent<Rigidbody2D>();
+
+		//включаем текущий скин и выключаем все остальные
+		for (int i = 0; i < 5; i++) {
+			if (transform.GetChild(i).name == staticClass.currentSkin) {
+				transform.GetChild(i).gameObject.SetActive(true);
+				currentSkinAnimator = transform.GetChild(i).GetComponent<Animator>();
+				//включаем текущую шапку и выключаем все остальные
+				for (int j = 0; j < 4; j++) {
+					if (transform.GetChild (i).GetChild (0).GetChild (j).name == staticClass.currentHat) {
+						transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
+					} else 
+						transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
+				}
+			} else 
+				transform.GetChild(i).gameObject.SetActive(false);
+
+
+		}
+
+		rigid2D = GetComponent<Rigidbody2D> ();
 
 		//completeMenu = GameObject.Find("gui").transform.Find("complete menu").gameObject;
 
@@ -123,9 +140,9 @@ public class gSpiderClass : MonoBehaviour {
 
 	}
 
-	public static IEnumerator coroutineCry(){
+	public static IEnumerator coroutineCry(Animator spiderAnimator){
 		Debug.Log (33);
-		GameObject.Find("spider").transform.GetChild(0).GetComponent<Animator>().Play("spider sad", 1);
+		spiderAnimator.Play("spider sad", 1);
 		yield return new WaitForSeconds(2F);
 		GameObject.Find("restart").SendMessage("OnClick");
 	}

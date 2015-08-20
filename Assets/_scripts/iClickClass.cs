@@ -12,6 +12,7 @@ public class iClickClass : MonoBehaviour {
 	public string functionDragStart = "";
 	public string functionDrag = "";
 	public static GameObject currentButton = null;
+	public List<EventDelegate> onFinished = new List<EventDelegate>();
 
 	private float timeSinceTouch = 0;
 	private bool enableDrag = false;
@@ -45,13 +46,22 @@ public class iClickClass : MonoBehaviour {
 
 
 	void pressMarketItem(bool isPressed) {
-		transform.parent.GetComponent<UIScrollView>().Press(isPressed);
 		if (!isPressed) {
-			GetComponent<UIPlayAnimation>().enabled = true;
-			GetComponent<UIButtonScale>().enabled = true;
-			enableDrag = false;
+			GetComponent<Animator> ().Play ("button");
+			Debug.Log (GetComponent<Animator> ());
+			Debug.Log (44);
 		}
-		timeSinceTouch = Time.time;
+		//off for tests
+		//if (onFinished != null) EventDelegate.Execute(onFinished);
+
+		//old code
+		//transform.parent.GetComponent<UIScrollView>().Press(isPressed);
+		//if (!isPressed) {
+		//	GetComponent<UIPlayAnimation>().enabled = true;
+		//	GetComponent<UIButtonScale>().enabled = true;
+		//	enableDrag = false;
+		//}
+		//timeSinceTouch = Time.time;
 	}
 	
 	void dragStartMarketItem() {
@@ -76,7 +86,8 @@ public class iClickClass : MonoBehaviour {
 	}
 
 	public void backTransitionExit ( ) {
-		GetComponent<Animation>().Play("back transition exit");
+		//GetComponent<Animation>().Play("back transition exit");
+		GetComponent<Animator>().Play("back transition exit unscaled");
 		if (ActiveAnimation.current != null) {
 			currentButton = ActiveAnimation.current.gameObject;
 			//if (name == "market") marketMenu.SetActive(true);
@@ -88,7 +99,9 @@ public class iClickClass : MonoBehaviour {
 		if (currentButton != null) {
 			if (currentButton.name == "button market") {
 				marketClass.instance.gameObject.SetActive(true);
-				marketClass.instance.marketMainMenu.SetActive(true);
+				//for new market
+				//marketClass.instance.marketMainMenu.SetActive(true);
+				marketClass.instance.coinsMenu.SetActive(true);
 				GetComponent<Animation>().Play("back transition open");
 			} else if  (currentButton.name == "button settings") {
 				GameObject.Find("settings folder").transform.GetChild(0).gameObject.SetActive(true);

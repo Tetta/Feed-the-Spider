@@ -112,6 +112,7 @@ Assets/Standard Assets/Effects/Projectors/Prefabs/BlobShadowProjector.prefab
 Assets/Standard Assets/Effects/Projectors/Prefabs/BlobLightProjector.prefab
 Assets/_atlases/skin3.prefab
 Assets/_atlases/skin5.prefab
+Assets/_atlases/hats.prefab
 
 [Ferr2DT_PathTerrain]
 Assets/_prefabs/GameObject.prefab
@@ -226,3 +227,4 @@ Assets/Standard Assets/Effects/Projectors/Prefabs/BlobShadowProjector.prefab
 Assets/Standard Assets/Effects/Projectors/Prefabs/BlobLightProjector.prefab
 Assets/_atlases/skin3.prefab
 Assets/_atlases/skin5.prefab
+Assets/_atlases/hats.prefab

@@ -68,6 +68,9 @@ public class marketClass : MonoBehaviour {
 		
 		ListnersAdded = true;
 		gameObject.SetActive(false);
+
+		//for tests
+		//Time.timeScale = 0;
 	}
 
 	//--------------------------------------

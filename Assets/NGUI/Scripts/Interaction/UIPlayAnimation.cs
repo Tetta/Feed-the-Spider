@@ -123,7 +123,7 @@ public class UIPlayAnimation : MonoBehaviour
 		if (animator != null)
 		{
 			// Ensure that the animator is disabled as we will be sampling it manually
-			if (animator.enabled) animator.enabled = false;
+			//if (animator.enabled) animator.enabled = false;
 
 			// Don't continue since we already have an animator to work with
 			return;
@@ -137,8 +137,8 @@ public class UIPlayAnimation : MonoBehaviour
 #endif
 		}
 
-		if (target != null && target.enabled)
-			target.enabled = false;
+		//if (target != null && target.enabled)
+			//target.enabled = false;
 	}
 
 	void OnEnable ()
@@ -271,6 +271,7 @@ public class UIPlayAnimation : MonoBehaviour
 
 			if (anim != null)
 			{
+				Debug.Log (3333);
 				if (resetOnPlay) anim.Reset();
 				for (int i = 0; i < onFinished.Count; ++i)
 					EventDelegate.Add(anim.onFinished, OnFinished, true);

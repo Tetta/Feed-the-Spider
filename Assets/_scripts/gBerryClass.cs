@@ -14,7 +14,7 @@ public class gBerryClass : MonoBehaviour {
 	private GameObject pauseMenu;
 	private GameObject[] guiStars = new GameObject[3];
 	//private UISprite[] guiStarsComplete = new UISprite[3];
-	//private GameObject spider;
+	private Animator spiderAnimator;
 	//private GameObject restart;
 	private GameObject back;
 	private Vector3 dir = new Vector3(0, 0, 0);
@@ -75,7 +75,7 @@ public class gBerryClass : MonoBehaviour {
 		//guiStarsComplete[2] = GameObject.Find("gui").transform.GetChild(0).GetChild(4).GetComponent<UISprite>();
 		//restart = GameObject.Find("restart");
 	
-		//spider = GameObject.Find("spider");
+		spiderAnimator = GameObject.Find ("spider").transform.GetChild(int.Parse(staticClass.currentSkin.Substring(4, 1)) - 1).GetComponent<Animator>();
 		//timer
 		if (initLevelMenuClass.levelDemands == 1) {
 			int levels = staticClass.levels[Convert.ToInt32(Application.loadedLevelName.Substring(5)), 1];
@@ -163,9 +163,9 @@ public class gBerryClass : MonoBehaviour {
 		//acceleration end
 
 		if (transform.position.x < -4 || transform.position.x > 4 || transform.position.y < -6 || transform.position.y > 6) 
-		if (!GameObject.Find("spider").transform.GetChild(0).GetComponent<Animator>().GetCurrentAnimatorStateInfo(1).IsName("spider sad") &&
-			!GameObject.Find("spider").transform.GetChild(0).GetComponent<Animator>().GetCurrentAnimatorStateInfo(1).IsName("spider sad 0"))
-		StartCoroutine(gSpiderClass.coroutineCry());
+			if (!spiderAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad") &&
+			    !spiderAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad 0"))
+				StartCoroutine(gSpiderClass.coroutineCry(spiderAnimator));
 
 		//timer
 		if (initLevelMenuClass.levelDemands == 1) {
@@ -208,10 +208,10 @@ public class gBerryClass : MonoBehaviour {
 			gHandClass.delHand();
 			berryState = "start finish";
 
-			if (collisionObject.transform.GetChild (0).GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
-				collisionObject.transform.GetChild (0).GetComponent<Animator> ().Play("spider open month legs");
+			if (spiderAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
+				spiderAnimator.Play("spider open month legs");
 			else 
-				collisionObject.transform.GetChild (0).GetComponent<Animator> ().Play("spider open month");
+				spiderAnimator.Play("spider open month");
 
 			//GetComponent<Animation>().Play();
 			//transform.position = collisionObject.gameObject.transform.position;
@@ -242,10 +242,10 @@ public class gBerryClass : MonoBehaviour {
 			yield return new WaitForSeconds(0.015F);
 		}
 
-		if (collisionObject.transform.GetChild (0).GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
-			collisionObject.transform.GetChild (0).GetComponent<Animator> ().CrossFade ("spider eat legs", 0.5F);
+		if (spiderAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
+			spiderAnimator.CrossFade ("spider eat legs", 0.5F);
 		else 
-			collisionObject.transform.GetChild (0).GetComponent<Animator> ().CrossFade ("spider eat", 0.5F);
+			spiderAnimator.CrossFade ("spider eat", 0.5F);
 		StartCoroutine(Coroutine(collisionObject));
 
 	}

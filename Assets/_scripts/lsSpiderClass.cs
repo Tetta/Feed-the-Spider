@@ -35,7 +35,22 @@ public class lsSpiderClass : MonoBehaviour {
 		if (initClass.progress.Count == 0) initClass.getProgress();
 		transform.localPosition = GameObject.Find("level " + initClass.progress["currentLevel"]).transform.localPosition + new Vector3(0, 104, 0);
 		if (transform.position.x > 0) cameraUI.transform.position = new Vector3(transform.position.x, cameraUI.transform.position.y, cameraUI.transform.position.z);
-		currentSkinAnimator = transform.GetChild(0).GetComponent<Animator>();
+
+		//включаем текущий скин и выключаем все остальные
+		for (int i = 0; i < 5; i++) {
+			if (transform.GetChild(i).name == staticClass.currentSkin) {
+				transform.GetChild(i).gameObject.SetActive(true);
+				currentSkinAnimator = transform.GetChild(i).GetComponent<Animator>();
+				//включаем текущую шапку и выключаем все остальные
+				for (int j = 0; j < 4; j++) {
+					if (transform.GetChild (i).GetChild (0).GetChild (j).name == staticClass.currentHat) {
+						transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
+					} else 
+						transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
+				}
+			} else 
+				transform.GetChild(i).gameObject.SetActive(false);
+		}
 	}
 	
 	// Update is called once per frame

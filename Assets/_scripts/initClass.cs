@@ -12,6 +12,7 @@ public class initClass : MonoBehaviour {
 	public GameObject leaderboards;
 	public GameObject closeMenu;
 	public GameObject market;
+	public GameObject spider;
 
 	static public Dictionary<string, int> progress = new Dictionary<string, int>();
 	//static public string mainMenuState = "start";
@@ -61,6 +62,22 @@ public class initClass : MonoBehaviour {
 
 			Debug.Log( "......................................");
 			//
+
+			//включаем текущий скин и выключаем все остальные
+			for (int i = 0; i < 5; i++) {
+				if (spider.transform.GetChild(i).name == staticClass.currentSkin) {
+					spider.transform.GetChild(i).gameObject.SetActive(true);
+					//включаем текущую шапку и выключаем все остальные
+					for (int j = 0; j < 4; j++) {
+						if (spider.transform.GetChild (i).GetChild (0).GetChild (j).name == staticClass.currentHat) {
+							spider.transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
+						} else 
+							spider.transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
+					}
+				} else 
+					spider.transform.GetChild(i).gameObject.SetActive(false);
+			}
+
 		}
 
 
@@ -128,6 +145,10 @@ public class initClass : MonoBehaviour {
 			else if (strProgress.Substring(i, 1) == ";") {
 				flag = true;
 				progress[strKey] = int.Parse(strValue);
+				//скины и шапки. запись в статик переменную
+				if (strKey.Substring(0, 4) == "skin") if (progress[strKey] == 2) staticClass.currentSkin = strKey;
+				if (strKey.Substring(0, 3) == "hat") if (progress[strKey] == 2) staticClass.currentHat = strKey;
+				//if (strKey.Substring(0, 4) == "skin") {Debug.Log (strKey); Debug.Log (progress[strKey]);}
 				strKey = "";
 				strValue = "";
 			} else if (flag) strKey += strProgress.Substring(i, 1);
@@ -139,10 +160,13 @@ public class initClass : MonoBehaviour {
 			
 			else if (strProgressDefault.Substring(i, 1) == ";") {
 				flag = true;
-				if (!progress.ContainsKey(strKey)) progress[strKey] = 0;
+				if (!progress.ContainsKey(strKey)) progress[strKey] = int.Parse(strValue);
 				strKey = "";
+				strValue = "";
 			} else if (flag) strKey += strProgressDefault.Substring(i, 1);
+			else if (!flag) strValue += strProgressDefault.Substring(i, 1);
 		}
+		//Debug.Log (strProgress);
 		saveProgress();
 	}
 
