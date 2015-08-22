@@ -1,6 +1,6 @@
 
 [Ferr2DT_TerrainMaterial]
-Assets/_prefabs/GameObject.prefab
+Assets/_prefabs/card.prefab
 Assets/_prefabs/back desert.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Popup List.prefab
 Assets/_images/terrains/forest terrain.prefab
@@ -15,7 +15,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Text Box.prefab
 Assets/_atlases/skin1.prefab
 Assets/_prefabs/button market.prefab
 Assets/_prefabs/terrain forest.prefab
-Assets/_prefabs/level 1 old.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Progress Bar.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Button.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Checkbox.prefab
@@ -39,7 +38,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Horizontal Slider.prefab
 Assets/_images/terrains/ice terrain.prefab
 Assets/Ferr/2DTerrain/Examples/Assets/GooPlayer.prefab
 Assets/_fonts/1.prefab
-Assets/_prefabs/web2.prefab
 Assets/NGUI/Examples/Models/Orc Armor/Orc Bracers.prefab
 Assets/_prefabs/yeti.prefab
 Assets/_prefabs/button market effect.prefab
@@ -115,7 +113,6 @@ Assets/_atlases/skin5.prefab
 Assets/_atlases/hats.prefab
 
 [Ferr2DT_PathTerrain]
-Assets/_prefabs/GameObject.prefab
 Assets/_prefabs/back desert.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Popup List.prefab
 Assets/_images/terrains/forest terrain.prefab
@@ -130,7 +127,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Text Box.prefab
 Assets/_atlases/skin1.prefab
 Assets/_prefabs/button market.prefab
 Assets/_prefabs/terrain forest.prefab
-Assets/_prefabs/level 1 old.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Progress Bar.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Button.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Checkbox.prefab
@@ -154,7 +150,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Horizontal Slider.prefab
 Assets/_images/terrains/ice terrain.prefab
 Assets/Ferr/2DTerrain/Examples/Assets/GooPlayer.prefab
 Assets/_fonts/1.prefab
-Assets/_prefabs/web2.prefab
 Assets/NGUI/Examples/Models/Orc Armor/Orc Bracers.prefab
 Assets/_prefabs/yeti.prefab
 Assets/_prefabs/button market effect.prefab
@@ -228,3 +223,4 @@ Assets/Standard Assets/Effects/Projectors/Prefabs/BlobLightProjector.prefab
 Assets/_atlases/skin3.prefab
 Assets/_atlases/skin5.prefab
 Assets/_atlases/hats.prefab
+Assets/_prefabs/card.prefab

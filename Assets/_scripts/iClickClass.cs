@@ -7,6 +7,7 @@ public class iClickClass : MonoBehaviour {
 	public static GameObject backTransition = null;
 
 	public string functionStart = "";
+	public string functionEnable = "";
 	public string functionClick = "";
 	public string functionPress = "";
 	public string functionDragStart = "";
@@ -29,6 +30,11 @@ public class iClickClass : MonoBehaviour {
 	
 	}
 
+
+	void OnEnable() {
+		if (functionEnable != "") SendMessage(functionEnable);
+	}
+
 	void OnClick() {
 		if (functionClick != "") SendMessage(functionClick);
 	}
@@ -44,6 +50,70 @@ public class iClickClass : MonoBehaviour {
 		if (functionDrag != "") SendMessage(functionDrag);
 	}
 
+
+	void enableCard() {
+		//если куплен
+		if (initClass.progress [name] >= 1) {
+			//skin
+			transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+			transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+			//title
+			transform.GetChild(2).gameObject.SetActive(true);
+			GetComponent<UIWidget>().alpha = 1;
+
+
+		} else {
+			transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+			transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+			transform.GetChild(2).gameObject.SetActive(false);
+			GetComponent<UIWidget>().alpha = 0.5F;
+		}
+
+		//если выбран текущий скин
+		if (name == staticClass.currentSkin) {
+			pressCard(false);
+		}
+	}
+
+	void pressCard(bool isPressed) {
+		if (!isPressed) {
+			//stop all animation
+			for (int i = 0; i < 5; i++) {
+				Transform prevObject = transform.parent.GetChild(i);
+				if (initClass.progress[name] >= 1) prevObject.GetChild(1).gameObject.SetActive(false);
+				if (prevObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("card selected") ||
+				    prevObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("card select")
+				    ) prevObject.GetComponent<Animator>().Play("default");
+			}
+
+			//включаем текущий скин и выключаем все остальные
+			Transform spider = transform.parent.parent.GetChild(1).GetChild(0);
+			for (int i = 0; i < 5; i++) {
+				if (spider.GetChild(i).name == name) {
+					spider.GetChild(i).gameObject.SetActive(true);
+					//включаем описание скина
+					spider.GetChild(i + 5).gameObject.SetActive(true);
+					spider.GetChild(i).GetComponent<Animator>().Play ("spider hi");
+				} else {
+					spider.GetChild(i).gameObject.SetActive(false);
+					spider.GetChild(i + 5).gameObject.SetActive(false);
+				}
+				
+			}
+			GetComponent<Animator> ().Play ("card select");
+			//если куплен, то выбираем
+			if (initClass.progress[name] >= 1) {
+				transform.GetChild(1).gameObject.SetActive(true);
+				staticClass.currentSkin = name;
+				initClass.progress[name] = 2;
+				initClass.saveProgress();
+				//выключаем get booster
+				transform.parent.parent.GetChild(1).GetChild(1).gameObject.SetActive(false);
+			} else 
+				transform.parent.parent.GetChild(1).GetChild(1).gameObject.SetActive(true);
+
+		}
+	}
 
 	void pressMarketItem(bool isPressed) {
 		if (!isPressed) {
