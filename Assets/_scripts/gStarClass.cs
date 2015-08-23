@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class gStarClass : MonoBehaviour {
 
+	private GameObject psStarDestroy;
 	// Use this for initialization
 	void Start () {
 		StartCoroutine (startStar());
@@ -49,8 +51,10 @@ public class gStarClass : MonoBehaviour {
 	}
 
 	public IEnumerator destroyStar(){
-		GetComponent<Animation> ().Play ("star destroy");
-		yield return StartCoroutine(staticClass.waitForRealTime(0.5F));
+		transform.GetChild(0).GetComponent<ParticleSystem> ().Play ();
+		transform.GetChild(1).position = new Vector3 (0, 0, -10000);
+		//GetComponent<Animation> ().Play ("star destroy");
+		yield return StartCoroutine(staticClass.waitForRealTime(1.1F));
 		Destroy (gameObject);
 	}
 }
