@@ -20,7 +20,7 @@ public class Ferr2DT_MaterialSelector : ScriptableWizard
         Ferr2DT_MaterialSelector wiz = ScriptableWizard.DisplayWizard<Ferr2DT_MaterialSelector>("Select Terrain Material");
         wiz.materials      = new List<Ferr2DT_TerrainMaterial>();
         wiz.onPickMaterial = aOnPickMaterial;
-        wiz.materials      = Ferr_ComponentTracker.GetComponents<Ferr2DT_TerrainMaterial>();
+        wiz.materials      = Ferr.ComponentTracker.GetComponents<Ferr2DT_TerrainMaterial>();
     }
 
     void OnGUI() {

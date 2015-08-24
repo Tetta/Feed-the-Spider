@@ -24,50 +24,6 @@ public class Ferr2D_Path : MonoBehaviour
     #endregion
 
     #region Methods
-	/// <summary>
-	/// Creates a Path object from a JSON string.
-	/// </summary>
-	/// <param name="aJSON">A JSON string, gets parsed and sent to FromJSON(Ferr_JSONValue)</param>
-	public void FromJSON(string aJSON) {
-		FromJSON(Ferr_JSON.Parse(aJSON));
-	}
-	/// <summary>
-	/// Creates a Path object from a JSON value object.
-	/// </summary>
-	/// <param name="aJSON">A JSON object with path data!</param>
-	public void           FromJSON(Ferr_JSONValue aJSON) {
-		closed         = aJSON["closed", false         ];
-		pathVerts      = new List<Vector2>();
-		object[] verts = aJSON["verts",  new object[]{}];
-		
-		for (int i = 0; i < verts.Length; i++) {
-			if (verts[i] is Ferr_JSONValue) {
-				Ferr_JSONValue v = verts[i] as Ferr_JSONValue;
-				pathVerts.Add(new Vector2(v[0,0f], v[1,0f]));
-			}
-		}
-	}
-	/// <summary>
-	/// Creates a JSON value object from this path.
-	/// </summary>
-	/// <returns>JSON Value object, can put it into a larger JSON object, or just ToString it.</returns>
-	public Ferr_JSONValue ToJSON  () {
-		Ferr_JSONValue result = new Ferr_JSONValue();
-		result["closed"] = closed;
-		
-		object[] list = new object[pathVerts.Count];
-		for (int i = 0; i < pathVerts.Count; i++) {
-			Ferr_JSONValue vert = new Ferr_JSONValue();
-			vert[0] = pathVerts[i].x;
-			vert[1] = pathVerts[i].y;
-			list[i] = vert;
-		}
-		
-		result["verts"] = list;
-		
-		return result;
-	}
-
     /// <summary>
     /// Moves the object location to the center of the path verts. Also offsets the path locations to match.
     /// </summary>
@@ -96,7 +52,7 @@ public class Ferr2D_Path : MonoBehaviour
         Component[] coms = gameObject.GetComponents(typeof(Ferr2D_IPath));
         for (int i = 0; i < coms.Length; i++)
         {
-            (coms[i] as Ferr2D_IPath).RecreatePath(aFullUpdate);
+            (coms[i] as Ferr2D_IPath).Build(aFullUpdate);
         }
     }
 	

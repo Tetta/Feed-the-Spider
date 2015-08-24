@@ -20,6 +20,11 @@ public class AN_GMSRTMProxy : MonoBehaviour
         CallActivityFunction("RTMFindMatch", minPlayers, maxPlayers, pIds);
     }
 
+	public static void RTMFindMatch(string[] pIds)
+	{
+		CallActivityFunction("RTMFindMatch", pIds);
+	}
+
     public static void sendDataToAll(string data, int sendType)
     {
         CallActivityFunction("sendDataToAll", data, sendType.ToString());
@@ -27,7 +32,7 @@ public class AN_GMSRTMProxy : MonoBehaviour
 
     public static void sendDataToPlayers(string data, string players, int sendType)
     {
-        CallActivityFunction("sendDataToAll", data, players, sendType.ToString());
+		CallActivityFunction("sendDataToPlayers", data, players, sendType.ToString());
     }
 
     public static void ShowWaitingRoomIntent()
@@ -94,9 +99,9 @@ public class AN_GMSRTMProxy : MonoBehaviour
         CallActivityFunction("TBM_DismissInvitation", invitationId);
     }
 
-    public static void TBM_CreateMatch(int minPlayers, int maxPlayers)
+	public static void TBM_CreateMatch(int minPlayers, int maxPlayers, string[] playersIds)
     {
-        CallActivityFunction("TBM_CreateMatch", minPlayers, maxPlayers);
+        CallActivityFunction("TBM_CreateMatch", minPlayers, maxPlayers, playersIds);
     }
 
     public static void CancelMatch(string matchId)

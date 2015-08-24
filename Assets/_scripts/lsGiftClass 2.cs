@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnionAssets.FLE;
+//using UnionAssets.FLE;
 
 public class lsGiftClass2 : MonoBehaviour {
 	//private const string MY_BANNERS_AD_UNIT_ID		 = "ca-app-pub-6101605888755494/1824764765"; 

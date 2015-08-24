@@ -1,3 +1,43 @@
+6.8:
+Fixes:
+Facebook connection fix
+Twitter connection fix
+License Checking fix for Android Lollipop target platform (API 21 or higher)
+GP_SnapshotMeta TotalPlayedTime loading fix
+
+New Features:
+Remove Plugin option added
+Facebook post message in background
+Image JPG/PNG Format option added to Camera and Gallery API
+
+6.7:
+Fixes:
+Google+ Sharing fix. AndroidSocialGate.StartShareIntent is deprecated for now, use AndroidSocialGate.StartGooglePlusShare instead
+Real-Time Multiplayer connection lost after Application Pause
+Load Image from Gallery scale to Max Allowed Size fix
+Show Waiting Room UI bug fix
+Camera image capture fail event fixed
+
+
+New Features:
+Leaderboards submitScoreImmediate added
+Google Play Real-Time Multiplayer FindMatch has new availability to create a room with the invited players only
+'Replace old norification with new one' option added to Push Notifications Settings
+GooglePlaySavedGamesManager has options to show 'Add Button' and 'Delete' overflow menu option in Saved Games native UI
+Device applications list API. Read more: https://goo.gl/dRwWOA
+Network Info API. Read more: https://goo.gl/j7TNFc
+Settings Page API. Read more: https://goo.gl/w7IHSO
+
+6.6:
+
+New features:
+Google Play Services updated to 7571000
+New Achievement API - setStepsImmediate
+Create Turn-Based Multiplayer Match with explicit Friends IDs
+
+Fixes:
+clearDefaultAccount API replaced with clearDefaultAccountAndReconnect (reason - API Deprecated)
+
 6.5:
 
 New features:
