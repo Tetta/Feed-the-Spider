@@ -13,7 +13,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Arimo18.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Colored Slider.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Text Box.prefab
 Assets/_atlases/skin1.prefab
-Assets/_prefabs/button market.prefab
 Assets/_prefabs/terrain forest.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Progress Bar.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Button.prefab
@@ -40,7 +39,6 @@ Assets/Ferr/2DTerrain/TerrainMaterials/CaveTerrainMaterial.prefab
 Assets/_fonts/1.prefab
 Assets/NGUI/Examples/Models/Orc Armor/Orc Bracers.prefab
 Assets/_prefabs/yeti.prefab
-Assets/_prefabs/button market effect.prefab
 Assets/_atlases/atlas_spider.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Input Field.prefab
 Assets/Ferr/2DTerrain/TerrainMaterials/RockTerrainMaterial.prefab
@@ -125,7 +123,6 @@ Assets/NGUI/Examples/Atlases/Wooden/Arimo18.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Colored Slider.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Text Box.prefab
 Assets/_atlases/skin1.prefab
-Assets/_prefabs/button market.prefab
 Assets/_prefabs/terrain forest.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Progress Bar.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Button.prefab
@@ -152,7 +149,6 @@ Assets/Ferr/2DTerrain/Examples/Assets/GooPlayer.prefab
 Assets/_fonts/1.prefab
 Assets/NGUI/Examples/Models/Orc Armor/Orc Bracers.prefab
 Assets/_prefabs/yeti.prefab
-Assets/_prefabs/button market effect.prefab
 Assets/_atlases/atlas_spider.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Input Field.prefab
 Assets/Ferr/2DTerrain/TerrainMaterials/PipeMaterial.prefab

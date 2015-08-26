@@ -26,6 +26,7 @@ public class initClass : MonoBehaviour {
 		if (progress.Count == 0) {
 			getProgress();
 			staticClass.initLevels();
+			//Debug.Log ();
 			market.SetActive(true);
 			if (progress["sound"] == 0) setSound(false);
 			if (progress["music"] == 1) GameObject.Find("music").GetComponent<AudioSource>().enabled = true;
@@ -136,6 +137,7 @@ public class initClass : MonoBehaviour {
 		//сброс прогресса
 		//PlayerPrefs.SetString("progress", strProgressDefault);
 		string strProgress = PlayerPrefs.GetString("progress");
+		Debug.Log (strProgress);
 		//NGUIDebug.Log(strProgress);
 		if (strProgress == "") strProgress = strProgressDefault;
 		string strKey = "", strValue = "";

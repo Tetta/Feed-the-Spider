@@ -40,11 +40,17 @@ public class ctrlDailyBonusClass : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+	}
+	void OnClick () {
+		Debug.Log ("click clickDailyBonus");
+		StartCoroutine(clickDailyBonus ());
+
 	}
 
-
-	public void clickDailyBonus () {
+	public IEnumerator clickDailyBonus () {
+		GetComponent<Animator> ().Play ("cloud disabled");
+		yield return new WaitForSeconds(0.5F);
+		Debug.Log ("clickDailyBonus");
 		GameObject bonusesTemp = GameObject.Find("bonuses temp");
 		Dictionary<string, int> portions = new Dictionary<string, int>();
 		portions["hints_1"] = 30;		portions["hints_2"] = 15;		portions["hints_3"] = 10;
@@ -91,7 +97,7 @@ public class ctrlDailyBonusClass : MonoBehaviour {
 					Transform clouds = GameObject.Find("clouds").transform;
 					for (int i = 0; i < 5; i++) {
 						if (clouds.GetChild(i).gameObject != gameObject)
-							StartCoroutine(coroutineClickOther(clouds.GetChild(i).GetComponent<UIPlayAnimation>()));
+							clouds.GetChild(i).gameObject.SendMessage("OnClick");
 					}
 				}
 
@@ -99,25 +105,12 @@ public class ctrlDailyBonusClass : MonoBehaviour {
 			}
 			counter += portion.Value;
 		}
-
-	}
-
-	IEnumerator coroutineClickOther(UIPlayAnimation go) {
-		yield return new WaitForSeconds(0.5F);
-		go.Play(true);
-		StartCoroutine(coroutineCloseBonusMenuAnim());
-
-
-	}
-
-	IEnumerator coroutineCloseBonusMenuAnim() {
-		yield return new WaitForSeconds(3F);
-		dailyBonusMenu.transform.GetChild(0).GetComponent<Animation>().Play("menu exit");
+		yield return new WaitForSeconds(2F);
+		dailyBonusMenu.transform.GetChild(0).GetComponent<Animator>().Play("menu exit");
 		StartCoroutine(coroutineCloseBonusMenu());
 
-		
-		
 	}
+
 	IEnumerator coroutineCloseBonusMenu() {
 		yield return new WaitForSeconds(0.5F);
 		dailyBonusMenu.SetActive(false);
