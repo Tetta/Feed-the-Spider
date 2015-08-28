@@ -57,6 +57,7 @@ public class staticClass {
 	//level1 = 0-3: 0-3 звезд
 	//level1 = 4: пройдено испытание
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public static string currentSkin = "skin1";
 	public static string currentHat = "hat1";
 
@@ -64,6 +65,17 @@ public class staticClass {
 		"hints=3;webs=3;collectors=3;teleports=3;complect=0;music=0;sound=1;dailyBonus=0;" +
 			"skin1=2;skin2=0;skin3=0;skin4=0;skin5=0;" +
 			"hat1=2;hat2=0;hat3=0;hat4=0;hat5=0;" +
+=======
+	public static string currentSkin = "skin2";
+	public static string currentHat = "hat4";
+	public static string currentBerry = "berry1";
+
+	public static string strProgressDefault = "googlePlay=0;lastLevel=76;currentLevel=2;coins=1000;gems=0;energyTime=0;energy=100;" +
+		"hints=3;webs=3;collectors=3;teleports=3;complect=0;music=0;sound=1;dailyBonus=0;" +
+			"berry1=2;berry2=1;berry3=1;berry4=1;berry5=1;" +
+			"hat1=2;hat2=1;hat3=1;hat4=1;hat5=1;" +
+			"skin1=2;skin2=1;skin3=1;skin4=1;skin5=1;" +
+>>>>>>> origin/master
 =======
 	public static string currentSkin = "skin2";
 	public static string currentHat = "hat4";

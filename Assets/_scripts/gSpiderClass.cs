@@ -9,7 +9,11 @@ public class gSpiderClass : MonoBehaviour {
 	private int fixedUpdateCount;
 	private GameObject berry;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Animator currentSkinAnimator;
+=======
+	//public Animator currentSkinAnimator;
+>>>>>>> origin/master
 =======
 	//public Animator currentSkinAnimator;
 >>>>>>> origin/master
@@ -25,6 +29,10 @@ public class gSpiderClass : MonoBehaviour {
 		berry = GameObject.Find("berry");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		/*
+>>>>>>> origin/master
 =======
 		/*
 >>>>>>> origin/master
@@ -43,17 +51,23 @@ public class gSpiderClass : MonoBehaviour {
 			} else 
 				transform.GetChild(i).gameObject.SetActive(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 		}
 
 =======
+=======
+>>>>>>> origin/master
 		}
 		*/
 		//staticClass.changeSkin (out currentSkinAnimator);
 		staticClass.changeSkin ();
 		staticClass.changeHat ();
 		//currentSkinAnimator = transform.GetChild(0).GetComponent<Animator>();
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
 >>>>>>> origin/master
 		rigid2D = GetComponent<Rigidbody2D> ();
 
@@ -149,7 +163,11 @@ public class gSpiderClass : MonoBehaviour {
 	void OnClick () {
 		Debug.Log (234);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		currentSkinAnimator.Play("spider blink", -1);
+=======
+		staticClass.currentSkinAnimator.Play("spider blink", -1);
+>>>>>>> origin/master
 =======
 		staticClass.currentSkinAnimator.Play("spider blink", -1);
 >>>>>>> origin/master
