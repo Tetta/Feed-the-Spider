@@ -27,9 +27,6 @@ public class AndroidNativeSettingsEditor : Editor {
 	private AndroidNativeSettings settings;
 
 
-	private const string version_info_file = "Plugins/StansAssets/Versions/AN_VersionInfo.txt"; 
-
-
 	void Awake() {
 		ApplaySettings();
 
@@ -131,17 +128,13 @@ public class AndroidNativeSettingsEditor : Editor {
 
 	public static bool IsInstalled {
 		get {
-			if(FileStaticAPI.IsFileExists(PluginsInstalationUtil.ANDROID_DESTANATION_PATH + "androidnative.jar") && FileStaticAPI.IsFileExists(version_info_file)) {
-				return true;
-			} else {
-				return false;
-			}
+			return SA_VersionsManager.Is_AN_Installed;
 		}
 	}
 
 	public static bool IsUpToDate {
 		get {
-			if(AndroidNativeSettings.VERSION_NUMBER.Equals(DataVersion)) {
+			if(CurrentVersion == SA_VersionsManager.AN_Version) {
 				return true;
 			} else {
 				return false;
@@ -150,22 +143,19 @@ public class AndroidNativeSettingsEditor : Editor {
 	}
 
 
-	public static float Version {
+	public static int CurrentVersion {
 		get {
-			return System.Convert.ToSingle(DataVersion);
+			return SA_VersionsManager.ParceVersion(AndroidNativeSettings.VERSION_NUMBER);
+		}
+	}
+
+	public static int CurrentMagorVersion {
+		get {
+			return SA_VersionsManager.ParceMagorVersion(AndroidNativeSettings.VERSION_NUMBER);
 		}
 	}
 
 
-	public static string DataVersion {
-		get {
-			if(FileStaticAPI.IsFileExists(version_info_file)) {
-				return FileStaticAPI.Read(version_info_file);
-			} else {
-				return "Unknown";
-			}
-		}
-	}
 
 	public static bool IsFacebookInstalled {
 		get {
@@ -179,7 +169,7 @@ public class AndroidNativeSettingsEditor : Editor {
 
 
 	public static void UpdateVersionInfo() {
-		FileStaticAPI.Write(version_info_file, AndroidNativeSettings.VERSION_NUMBER);
+		FileStaticAPI.Write(SA_VersionsManager.AN_VERSION_INFO_PATH, AndroidNativeSettings.VERSION_NUMBER);
 		UpdateManifest();
 	}
 
@@ -223,18 +213,26 @@ public class AndroidNativeSettingsEditor : Editor {
 		if(IsInstalled) {
 			if(!IsUpToDate) {
 
-				DrawUpdate();
-
-				EditorGUILayout.HelpBox("Update Required \nResources version: " + DataVersion + " Plugin version: " + AndroidNativeSettings.VERSION_NUMBER, MessageType.Warning);
+				EditorGUILayout.HelpBox("Update Required \nResources version: " + SA_VersionsManager.AN_StringVersionId + " Plugin version: " + AndroidNativeSettings.VERSION_NUMBER, MessageType.Warning);
 
 				EditorGUILayout.BeginHorizontal();
 				EditorGUILayout.Space();
 				Color c = GUI.color;
 				GUI.color = Color.cyan;
-				if(GUILayout.Button("Update to " + AndroidNativeSettings.VERSION_NUMBER,  GUILayout.Width(250))) {
-					AN_Plugin_Update();
-					UpdateVersionInfo();
+
+
+
+				if(CurrentMagorVersion != SA_VersionsManager.AN_MagorVersion) {
+					if(GUILayout.Button("How to update",  GUILayout.Width(250))) {
+						Application.OpenURL("https://goo.gl/Z9wgEI");
+					}
+				} else {
+					if(GUILayout.Button("Upgrade Resources",  GUILayout.Width(250))) {
+						AN_Plugin_Update();
+						UpdateVersionInfo();
+					}
 				}
+
 
 				GUI.color = c;
 				EditorGUILayout.Space();
@@ -251,53 +249,6 @@ public class AndroidNativeSettingsEditor : Editor {
 
 	}
 
-
-	private void DrawUpdate() {
-		if(Version <= 4.4f) {
-			EditorGUILayout.HelpBox("AndroidManifest.xml was updated in 4.5 \nNew version contains AndroidManifest.xml chnages, Please remove Assets/Plugins/Android/AndroidManifest.xml file before update or add manualy File Sharing Block from Assets/Plugins/StansAssets/Android/AndroidManifest.xml", MessageType.Warning);
-			
-			EditorGUILayout.BeginHorizontal();
-			EditorGUILayout.Space();
-			
-			if(GUILayout.Button("Remove AndroidManifest and Update to " + AndroidNativeSettings.VERSION_NUMBER,  GUILayout.Width(250))) {
-				
-				string file = "AndroidManifest.xml";
-				FileStaticAPI.DeleteFile(PluginsInstalationUtil.ANDROID_DESTANATION_PATH + file);
-				
-				AN_Plugin_Update();
-				UpdateVersionInfo();
-			}
-			
-			
-			EditorGUILayout.Space();
-			EditorGUILayout.EndHorizontal();
-			EditorGUILayout.Space();
-			
-		}
-
-
-		if(Version <= 4.5f) {
-			EditorGUILayout.HelpBox("AndroidManifest.xml was updated in 4.6 \nNew version contains AndroidManifest.xml chnages, Please remove Assets/Plugins/Android/AndroidManifest.xml file before update or add manualy %APP_BUNDLE_ID% tockens from Assets/Plugins/StansAssets/Android/AndroidManifest.xml", MessageType.Warning);
-			
-			EditorGUILayout.BeginHorizontal();
-			EditorGUILayout.Space();
-			
-			if(GUILayout.Button("Remove AndroidManifest and Update to " + AndroidNativeSettings.VERSION_NUMBER,  GUILayout.Width(250))) {
-				
-				string file = "AndroidManifest.xml";
-				FileStaticAPI.DeleteFile(PluginsInstalationUtil.ANDROID_DESTANATION_PATH + file);
-				
-				AN_Plugin_Update();
-				UpdateVersionInfo();
-			}
-			
-			
-			EditorGUILayout.Space();
-			EditorGUILayout.EndHorizontal();
-			EditorGUILayout.Space();
-			
-		}
-	}
 
 	private void Actions() {
 		AndroidNativeSettings.Instance.ShowActions = EditorGUILayout.Foldout(AndroidNativeSettings.Instance.ShowActions, "More Actions");
@@ -367,7 +318,9 @@ public class AndroidNativeSettingsEditor : Editor {
 				UpdateVersionInfo();
 
 			}
-
+			if(GUILayout.Button("Remove",  GUILayout.Width(160))) {
+				SA_RemoveTool.RemovePlugins();
+			}
 			
 			EditorGUILayout.EndHorizontal();
 		}
@@ -492,6 +445,10 @@ public class AndroidNativeSettingsEditor : Editor {
 				EditorGUILayout.BeginHorizontal();
 				settings.PoupsandPreloadersAPI = EditorGUILayout.Toggle(AN_API_NAME.PoupsandPreloaders,  settings.PoupsandPreloadersAPI);
 				settings.CheckAppLicenseAPI = EditorGUILayout.Toggle(AN_API_NAME.CheckAppLicense,  settings.CheckAppLicenseAPI);
+				EditorGUILayout.EndHorizontal();
+
+				EditorGUILayout.BeginHorizontal();
+				settings.NetworkStateAPI = EditorGUILayout.Toggle(AN_API_NAME.NetworkInfo,  settings.NetworkStateAPI);
 				EditorGUILayout.EndHorizontal();
 				
 				EditorGUI.indentLevel--;
@@ -1061,6 +1018,10 @@ public class AndroidNativeSettingsEditor : Editor {
 			permissions.Add("com.android.vending.CHECK_LICENSE");
 		}
 
+		if (AndroidNativeSettings.Instance.NetworkStateAPI) {
+			permissions.Add("android.permission.ACCESS_WIFI_STATE");
+		}
+
 		return permissions;
 	}
 
@@ -1487,6 +1448,11 @@ public class AndroidNativeSettingsEditor : Editor {
 		AndroidNativeSettings.Instance.ShowPushWhenAppIsForeground = EditorGUILayout.Toggle ("", AndroidNativeSettings.Instance.ShowPushWhenAppIsForeground);
 		EditorGUILayout.EndHorizontal ();
 
+		EditorGUILayout.BeginHorizontal ();
+		EditorGUILayout.LabelField ("Replace old notification with new one");
+		AndroidNativeSettings.Instance.ReplaceOldNotificationWithNew = EditorGUILayout.Toggle ("", AndroidNativeSettings.Instance.ReplaceOldNotificationWithNew);
+		EditorGUILayout.EndHorizontal ();
+
 		AndroidNativeSettings.Instance.EnableVibrationPush = EditorGUILayout.Toggle ("Enable Vibration", AndroidNativeSettings.Instance.EnableVibrationPush);
 
 		Texture2D icon = (Texture2D)EditorGUILayout.ObjectField ("Push Notification Icon", AndroidNativeSettings.Instance.PushNotificationIcon, typeof(Texture2D), false);
@@ -1612,7 +1578,10 @@ public class AndroidNativeSettingsEditor : Editor {
 		AndroidNativeSettings.Instance.MaxImageLoadSize	 	= EditorGUILayout.IntField(AndroidNativeSettings.Instance.MaxImageLoadSize);
 		EditorGUILayout.EndHorizontal();
 		
-		
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Image Format");
+		AndroidNativeSettings.Instance.ImageFormat = (AndroidCameraImageFormat) EditorGUILayout.EnumPopup(AndroidNativeSettings.Instance.ImageFormat);
+		EditorGUILayout.EndHorizontal();
 		
 		GUI.enabled = !AndroidNativeSettings.Instance.UseProductNameAsFolderName;
 		if(AndroidNativeSettings.Instance.UseProductNameAsFolderName) {

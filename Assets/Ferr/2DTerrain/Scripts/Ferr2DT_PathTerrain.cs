@@ -100,25 +100,40 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
     /// <summary>
     /// Z offset value for how slanted the edges should be. This can add a nice parallax effect to your terrain.
     /// </summary>
-    public float    slantAmount = 0;
+	public float    slantAmount       = 0;
+	/// <summary>
+	/// Adds extra grid spaced verts to the fill mesh for use with vertex lighting or painting.
+	/// </summary>
+	public bool     fillSplit         = false;
+	/// <summary>
+	/// Distance between vert splits on the fill mesh.
+	/// </summary>
+	public float    fillSplitDistance = 4;
 
     /// <summary>
     /// Should we generate a collider on Start?
     /// </summary>
-    public bool     createCollider  = true;
+    public bool     createCollider    = true;
 	/// <summary>
-	/// By default in Unity versions >= 4.3, Ferr2DT will create a 2D Poly Collider
-	/// Use this to force a 3D mesh collider instead
+	/// Use this to force a 3D mesh collider instead of a 2D collider
 	/// </summary>
-	public bool     create3DCollider = false;
+	public bool     create3DCollider  = false;
+	/// <summary>
+	/// Indicates the collider will be used by any effectors on this object
+	/// </summary>
+	public bool     usedByEffector    = false;
+	/// <summary>
+	/// Use a 2D edge collider instead of a polygon collider
+	/// </summary>
+	public bool     useEdgeCollider   = false;
     /// <summary>
     /// Transfers over into the collider, when it gets generated
     /// </summary>
-    public bool     isTrigger       = false;
+    public bool     isTrigger         = false;
     /// <summary>
     /// How wide should the collider be on the Z axis? (Unity units)
     /// </summary>
-    public float    depth           = 4.0f;
+    public float    depth             = 4.0f;
     /// <summary>
     /// An option to pass along for 3D colliders
     /// </summary>
@@ -135,18 +150,15 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
     /// For offseting the collider, so it can line up with stuff better visually. On fill = None terrain,
     /// this behaves significantly different than regular closed terrain.
     /// </summary>
-    public float[]  surfaceOffset   = new float[] {0,0,0,0};
+    public float[]  surfaceOffset          = new float[] {0,0,0,0};
     /// <summary>
     /// When the collider is created (or Recreated), this will be assigned as its material!
     /// </summary>
-    public PhysicMaterial physicsMaterial = null;
-
-#if !(UNITY_4_2 || UNITY_4_1 || UNITY_4_1 || UNITY_4_0 || UNITY_3_5 || UNITY_3_4 || UNITY_3_3 || UNITY_3_1 || UNITY_3_0)
+    public PhysicMaterial physicsMaterial  = null;
 	/// <summary>
 	/// When the collider is created (or Recreated), this will be assigned as its material!
 	/// </summary>
 	public PhysicsMaterial2D physicsMaterial2D = null;
-#endif
 
     public bool  collidersLeft     = true;
     public bool  collidersRight    = true;
@@ -169,6 +181,23 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
             return path; 
         }
     }
+    /// <summary>
+    /// Used by IProceduralMesh for saving. Just a call to GetComponent<MeshFilter>!
+    /// </summary>
+    public Mesh MeshData {
+        get {
+            return GetComponent<MeshFilter>().sharedMesh;
+        }
+    }
+    /// <summary>
+    /// Used by IProceduralMesh for saving. Just a call to GetComponent<MeshFilter>!
+    /// </summary>
+    public MeshFilter MeshFilter {
+        get {
+            return GetComponent<MeshFilter>();
+        }
+    }
+
     private Ferr2D_DynamicMesh DMesh {
         get {
             if (dMesh == null)
@@ -203,113 +232,18 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
     #endregion
 
     #region Creation methods
-	/// <summary>
-	/// Creates a TerrainMaterial from a JSON string. Does NOT recreate mesh data automatically or link materials!
-	/// </summary>
-	/// <param name="aJSON">A JSON string containing TerrainPath and Path data</param>
-	public void           FromJSON(string aJSON) {
-		FromJSON(Ferr_JSON.Parse(aJSON));
-	}
-	/// <summary>
-	/// Creates a TerrainMaterial from a JSON object. Does NOT recreate mesh data automatically or link materials!
-	/// </summary>
-	/// <param name="aJSON">A parsed JSON value containing PathTerrain and Path data</param>
-	public void           FromJSON(Ferr_JSONValue aJSON) {
-		fill             = (Ferr2DT_FillMode)Enum.Parse(typeof(Ferr2DT_FillMode), aJSON["fill", "Closed"]);
-		fillY            = aJSON["fillY",            0];
-		fillZ            = aJSON["fillZ",            0.2f];
-		splitCorners     = aJSON["splitCorners",     true];
-		smoothPath       = aJSON["smoothPath",       false];
-		splitCount       = (int)aJSON["splitCount",  4];
-		splitDist        = aJSON["splitDist",        1];
-		splitMiddle      = aJSON["splitMiddle",      true];
-		pixelsPerUnit    = aJSON["pixelsPerUnit",    32];
-		stretchThreshold = aJSON["stretchThreshold", 0.5f];
-		vertexColor      = Ferr_Color.FromHex(aJSON["vertexColor", "FFFFFF"]);
-		createTangents   = aJSON["createTangents",   false];
-		createCollider   = aJSON["createCollider",   true];
-		create3DCollider = aJSON["create3DCollider", false];
-		depth            = aJSON["depth",            4];
-		isTrigger        = aJSON["isTrigger",        false];
-		sharpCorners     = aJSON["sharpCorners",     false];
-		sharpCornerDistance      = aJSON["sharpCornerDist", 2];
-		smoothSphereCollisions   = aJSON["ssCollisions",    false];
-		randomByWorldCoordinates = aJSON["randomBWC",       false];
-		slantAmount      = aJSON["slantAmount",      0];
-		uvOffset.x       = aJSON["uvOffset.x",       0];
-		uvOffset.y       = aJSON["uvOffset.y",       0];
-		surfaceOffset[0] = aJSON["surfaceOffset.0",  0];
-		surfaceOffset[1] = aJSON["surfaceOffset.1",  0];
-		surfaceOffset[2] = aJSON["surfaceOffset.2",  0];
-		surfaceOffset[3] = aJSON["surfaceOffset.3",  0];
-		collidersBottom  = aJSON["colliders.bottom", true];
-		collidersTop     = aJSON["colliders.top",    true];
-		collidersLeft    = aJSON["colliders.left",   true];
-		collidersRight   = aJSON["colliders.right",  true];
-		
-		Ferr_JSONValue overrides = aJSON["directionOverrides"];
-		for (int i = 0; i < overrides.Length; i++) { 
-			directionOverrides.Add ( (Ferr2DT_TerrainDirection)Enum.Parse(typeof(Ferr2DT_TerrainDirection), overrides[i,"None"]) );
-            vertScales.Add(1);
-		}
-		
-		Path.FromJSON (aJSON["path"]);
-	}
-	/// <summary>
-	/// Creates a JSON object containing PathTerrain and Path data.
-	/// </summary>
-	/// <returns>A JSON Value containing PathTerrain and Path data. You can ToString this for the JSON string.</returns>
-	public Ferr_JSONValue ToJSON  () {
-		Ferr_JSONValue result = new Ferr_JSONValue();
-		result["fill"            ] = ""+fill;
-		result["fillY"           ] = fillY;
-		result["fillZ"           ] = fillZ;
-		result["splitCorners"    ] = splitCorners;
-		result["smoothPath"      ] = smoothPath;
-		result["splitDist"       ] = splitDist;
-		result["splitCount"      ] = splitCount;
-		result["splitMiddle"     ] = splitMiddle;
-		result["pixelsPerUnit"   ] = pixelsPerUnit;
-		result["stretchThreshold"] = stretchThreshold;
-		result["vertexColor"     ] = Ferr_Color.ToHex(vertexColor);
-		result["createTangents"  ] = createTangents;
-		result["randomBWC"       ] = randomByWorldCoordinates;
-		result["slantAmount"     ] = slantAmount;
-		result["createCollider"  ] = createCollider;
-		result["create3DCollider"] = create3DCollider;
-		result["isTrigger"       ] = isTrigger;
-		result["ssCollisions"    ] = smoothSphereCollisions;
-		result["sharpCorners"    ] = sharpCorners;
-		result["sharpCornerDist" ] = sharpCornerDistance;
-		result["depth"           ] = depth;
-		result["uvOffset.x"      ] = uvOffset.x;
-		result["uvOffset.y"      ] = uvOffset.y;
-		result["surfaceOffset.0" ] = surfaceOffset[0];
-		result["surfaceOffset.1" ] = surfaceOffset[1];
-		result["surfaceOffset.2" ] = surfaceOffset[2];
-		result["surfaceOffset.3" ] = surfaceOffset[3];
-		result["colliders.bottom"] = collidersBottom;
-		result["colliders.top"   ] = collidersTop;
-		result["colliders.left"  ] = collidersLeft;
-		result["colliders.right" ] = collidersRight;
-		
-		result["directionOverrides"] = 0;
-		Ferr_JSONValue dir = result["directionOverrides"];
-		for (int i = 0; i < directionOverrides.Count; i++) {
-			dir[i] = directionOverrides[i].ToString ();
-		}
-		result["path"] = Path.ToJSON();
-		return result;
-	}
-
+    [Obsolete("Please use Build() instead! This method will be removed in 1.1")]
+    public void RecreatePath(bool aFullBuild = true) {
+        Build(aFullBuild);
+    }
     /// <summary>
-    /// The Ferr2DT_IPath method, gets called automatically whenever the Ferr2DT path gets updated in the 
+    /// This method gets called automatically whenever the Ferr2DT path gets updated in the 
     /// editor. This will completely recreate the the visual mesh (only) for the terrain. If you want
     /// To recreate the collider as well, that's a separate call to RecreateCollider.
     /// </summary>
-    public  void RecreatePath    (bool aFullUpdate = true) {
-        //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-        //sw.Start();
+    public  void Build    (bool aFullBuild = true) {
+	    //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+	    //sw.Start();
 
         if (terrainMaterial == null) {
             Debug.LogWarning("Cannot create terrain without a Terrain Material!");
@@ -333,17 +267,17 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
 		
 		// add a fill if the user desires
         if        ((fill == Ferr2DT_FillMode.Skirt  || fill == Ferr2DT_FillMode.FillOnlySkirt) && terrainMaterial.fillMaterial != null) {
-			AddFill(true);
+	        AddFill(true,  aFullBuild);
         } else if ((fill == Ferr2DT_FillMode.Closed || fill == Ferr2DT_FillMode.InvertedClosed || fill == Ferr2DT_FillMode.FillOnlyClosed) && terrainMaterial.fillMaterial != null) {
-            AddFill(false);
+            AddFill(false, aFullBuild);
         }
 		int[] submesh2 = DMesh.GetCurrentTriangleList(submesh1.Length);
-		
-		// compile the mesh!
-	    Mesh m = GetComponent<MeshFilter>().sharedMesh = GetMesh();
-		DMesh.Build(ref m, createTangents && aFullUpdate);
-		
-		// set up submeshes and submaterials
+
+        // compile the mesh!
+        Mesh m = GetComponent<MeshFilter>().sharedMesh = GetMesh();
+		DMesh.Build(ref m, createTangents && aFullBuild);
+
+        // set up submeshes and submaterials
         if (submesh1.Length > 0 && submesh2.Length > 0) {
             m.subMeshCount = 2;
             m.SetTriangles(submesh1, 1);
@@ -355,14 +289,18 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
             m.subMeshCount = 1;
             m.SetTriangles(submesh2, 0);
         }
-
+	    
+	    bool hasCollider = GetComponent<MeshCollider>() != null || GetComponent<PolygonCollider2D>() != null || GetComponent<EdgeCollider2D>() != null;
+	    if (createCollider && hasCollider) {
+		    RecreateCollider();
+	    }
 #if UNITY_EDITOR
-        if (aFullUpdate) {
+	    if (aFullBuild && gameObject.isStatic) {
             UnityEditor.Unwrapping.GenerateSecondaryUVSet(m);
         }
 #endif
-        //sw.Stop();
-        //Debug.Log("Creating mesh took: " + sw.Elapsed.TotalMilliseconds + "ms");
+	    //sw.Stop();
+	    //Debug.Log("Creating mesh took: " + sw.Elapsed.TotalMilliseconds + "ms");
 	}
 	
 	Mesh GetMesh() {
@@ -435,16 +373,13 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
 	/// attached already.
 	/// </summary>
 	public  void RecreateCollider() {
-        if (!createCollider) return;
-#if UNITY_4_2 || UNITY_4_1 || UNITY_4_1 || UNITY_4_0 || UNITY_3_5 || UNITY_3_4 || UNITY_3_3 || UNITY_3_1 || UNITY_3_0
-		RecreateCollider3D();
-#else
+		if (!createCollider) return;
+		
 		if (create3DCollider) {
 			RecreateCollider3D();
 		} else {
 			RecreateCollider2D();
 		}
-#endif
 	}
 
     private void                RecreateCollider3D()
@@ -468,61 +403,96 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
         if (!collidersBottom) colMesh.RemoveFaces(new Vector3( 0,-1,0), 45);
 
         // make sure there's a MeshCollider component on this object
-        if (GetComponent<MeshCollider>() == null) {
-            gameObject.AddComponent<MeshCollider>();
+		MeshCollider collider = GetComponent<MeshCollider>();
+        if (collider == null) {
+            collider = gameObject.AddComponent<MeshCollider>();
         }
-        if (physicsMaterial != null) GetComponent<MeshCollider>().sharedMaterial = physicsMaterial;
-        GetComponent<MeshCollider>().smoothSphereCollisions = smoothSphereCollisions;
-        GetComponent<MeshCollider>().isTrigger              = isTrigger;
+        if (physicsMaterial != null) collider.sharedMaterial = physicsMaterial;
+		#if !UNITY_5
+        collider.smoothSphereCollisions = smoothSphereCollisions;
+		#endif
+        collider.isTrigger              = isTrigger;
 
         // compile the mesh!
-        Mesh   m    = GetComponent<MeshCollider>().sharedMesh;
+        Mesh   m    = collider.sharedMesh;
         string name = "Ferr2DT_PathCollider_" + gameObject.GetInstanceID();
         if (m == null || m.name != name) {
-            GetComponent<MeshCollider>().sharedMesh = m = new Mesh();
+            collider.sharedMesh = m = new Mesh();
             m.name = name;
         }
-        GetComponent<MeshCollider>().sharedMesh = null;
+        collider.sharedMesh = null;
         colMesh.Build(ref m, createTangents);
-        GetComponent<MeshCollider>().sharedMesh = m;
+        collider.sharedMesh = m;
     }
 	private void                RecreateCollider2D() {
-#if !(UNITY_4_2 || UNITY_4_1 || UNITY_4_1 || UNITY_4_0 || UNITY_3_5 || UNITY_3_4 || UNITY_3_3 || UNITY_3_1 || UNITY_3_0)
-
-		// make sure there's a collider component on this object
-		if (GetComponent<PolygonCollider2D>() == null) {
-			gameObject.AddComponent<PolygonCollider2D>();
-		}
-		if (physicsMaterial2D != null) GetComponent<PolygonCollider2D>().sharedMaterial = physicsMaterial2D;
-
-        List<List<Vector2>> segs = GetColliderVerts();
-		PolygonCollider2D   poly = GetComponent<PolygonCollider2D>();
-		poly.pathCount = segs.Count;
-        poly.isTrigger = isTrigger;
-        if (segs.Count > 1 || (!collidersBottom || !collidersLeft || !collidersRight || !collidersTop)) {
+		List<Collider2D>    colliders = new List<Collider2D>(1);
+		List<List<Vector2>> segs      = GetColliderVerts();
+		bool                closed    = collidersBottom && collidersLeft && collidersRight && collidersTop;
+		
+		if (useEdgeCollider) {
+			EdgeCollider2D[]     edges    = GetComponents<EdgeCollider2D>();
+			List<EdgeCollider2D> edgePool = new List<EdgeCollider2D>(edges);
+			int                  extra    = edges.Length - segs.Count;
+			
+			if (extra > 0) {
+				// we have too many, remove a few
+				for (int i=0; i<extra; i+=1) {
+					Destroy(edgePool[0]);
+					edgePool.RemoveAt(0);
+				}
+			} else {
+				// we have too few, add in a few
+				for (int i=0; i<Mathf.Abs(extra); i+=1) {
+					edgePool.Add(gameObject.AddComponent<EdgeCollider2D>());
+				}
+			}
+			
 			for (int i = 0; i < segs.Count; i++) {
-				poly.SetPath (i, ExpandColliderPath(segs[i], colliderThickness).ToArray());
+				EdgeCollider2D edge = edgePool[i];
+				edge.points = segs[i].ToArray();
+				colliders.Add(edge);
 			}
 		} else {
-			if (fill == Ferr2DT_FillMode.InvertedClosed) {
-				Rect bounds = Ferr2D_Path.GetBounds(segs[0]);
-				poly.pathCount = 2;
-				poly.SetPath (0, segs[0].ToArray());
-				poly.SetPath (1, new Vector2[]{
-					new Vector2(bounds.xMin-bounds.width, bounds.yMax+bounds.height),
-					new Vector2(bounds.xMax+bounds.width, bounds.yMax+bounds.height),
-					new Vector2(bounds.xMax+bounds.width, bounds.yMin-bounds.height),
-					new Vector2(bounds.xMin-bounds.width, bounds.yMin-bounds.height)
-				});
+			// make sure there's a collider component on this object
+			PolygonCollider2D poly = GetComponent<PolygonCollider2D>();
+			if (poly == null) {
+				poly = gameObject.AddComponent<PolygonCollider2D>();
+			}
+			colliders.Add(poly);
+			
+			poly.pathCount = segs.Count;
+			if (segs.Count > 1 || !closed) {
+				for (int i = 0; i < segs.Count; i++) {
+					poly.SetPath (i, ExpandColliderPath(segs[i], colliderThickness).ToArray());
+				}
 			} else {
-                if (segs.Count > 0 && segs[0].Count > 0) {
-                    poly.SetPath(0, segs[0].ToArray());
-                }
+				if (fill == Ferr2DT_FillMode.InvertedClosed) {
+					Rect bounds = Ferr2D_Path.GetBounds(segs[0]);
+					poly.pathCount = 2;
+					poly.SetPath (0, segs[0].ToArray());
+					poly.SetPath (1, new Vector2[]{
+						new Vector2(bounds.xMin-bounds.width, bounds.yMax+bounds.height),
+						new Vector2(bounds.xMax+bounds.width, bounds.yMax+bounds.height),
+						new Vector2(bounds.xMax+bounds.width, bounds.yMin-bounds.height),
+						new Vector2(bounds.xMin-bounds.width, bounds.yMin-bounds.height)
+					});
+				} else {
+	                if (segs.Count > 0 && segs[0].Count > 0) {
+	                    poly.SetPath(0, segs[0].ToArray());
+	                }
+				}
 			}
 		}
-#else
-		Debug.LogWarning("Ferr2DTerrain cannot create a 2D collider in Unity versions < 4.3! No collider has been generated!");
-#endif
+		
+		
+		for (int i=0; i<colliders.Count; i+=1) {
+
+			colliders[i].isTrigger      = isTrigger;
+			colliders[i].sharedMaterial = physicsMaterial2D;
+			#if UNITY_5
+			colliders[i].usedByEffector = usedByEffector;
+			#endif
+		}
 	}
 	private List<Vector2>       ExpandColliderPath(List<Vector2> aList, float aAmount) {
 		int count = aList.Count;
@@ -650,7 +620,7 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
         for (int i = 0; i < segments.Count; i++) order.Add(i);
         
         order.Sort(
-            new Ferr_LambdaComparer<int>(
+            new Ferr.LambdaComparer<int>(
                 (x, y) => {
                     Ferr2DT_TerrainDirection dirx = dirs[x] == Ferr2DT_TerrainDirection.None ? Ferr2D_Path.GetDirection(Path.pathVerts, segments[x], 0, fill == Ferr2DT_FillMode.InvertedClosed) : dirs[x];
                     Ferr2DT_TerrainDirection diry = dirs[y] == Ferr2DT_TerrainDirection.None ? Ferr2D_Path.GetDirection(Path.pathVerts, segments[y], 0, fill == Ferr2DT_FillMode.InvertedClosed) : dirs[y];
@@ -659,11 +629,31 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
             ));
 
         // process the segments into meshes
-        for (int i = 0; i < order.Count; i++) {
-            AddSegment(Ferr2D_Path.IndicesToPath(Path.pathVerts, segments[order[i]]), GetScalesFromIndices(segments[order[i]]), order.Count <= 1 && Path.closed, smoothPath, dirs[order[i]]);
+	    for (int i = 0; i < order.Count; i++) {
+		    List<int> currSeg = segments[order[i]];
+		    List<int> prevSeg = order[i]-1 < 0 ?  segments[segments.Count-1] : segments[order[i]-1];
+		    List<int> nextSeg = segments[(order[i]+1) % segments.Count];
+		    
+		    int curr = currSeg[0];
+		    int prev = prevSeg[prevSeg.Count-2];
+		    int next = currSeg[1];
+		    
+		    Vector2 p1 = Path.pathVerts[prev] - Path.pathVerts[curr];
+		    Vector2 p2 = Path.pathVerts[next] - Path.pathVerts[curr];
+		    bool leftInner = Mathf.Atan2(p1.x*p2.y - p1.y*p2.x, Vector2.Dot(p1, p2)) < 0;
+		    
+		    curr = currSeg[currSeg.Count-1];
+		    prev = currSeg[currSeg.Count-2];
+		    next = nextSeg[1];
+		    
+		    p1 = Path.pathVerts[prev] - Path.pathVerts[curr];
+		    p2 = Path.pathVerts[next] - Path.pathVerts[curr];
+		    bool rightInner = Mathf.Atan2(p1.x*p2.y - p1.y*p2.x, Vector2.Dot(p1, p2)) < 0;
+		    
+		    AddSegment(Ferr2D_Path.IndicesToPath(Path.pathVerts, segments[order[i]]), leftInner, rightInner, GetScalesFromIndices(segments[order[i]]), order.Count <= 1 && Path.closed, smoothPath, dirs[order[i]]);
         }
     }
-	private void AddSegment(List<Vector2> aSegment, List<float> aScale, bool aClosed, bool aSmooth, Ferr2DT_TerrainDirection aDir = Ferr2DT_TerrainDirection.None) {
+	private void AddSegment(List<Vector2> aSegment, bool aLeftInner, bool aRightInner, List<float> aScale, bool aClosed, bool aSmooth, Ferr2DT_TerrainDirection aDir = Ferr2DT_TerrainDirection.None) {
 		Ferr2DT_SegmentDescription desc;
 		if (aDir != Ferr2DT_TerrainDirection.None) { desc = terrainMaterial.GetDescriptor(aDir); }
 		else                                       { desc = GetDescription(aSegment);            }
@@ -700,8 +690,8 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
 		}
         
 		if (!aClosed) {
-			AddCap(aSegment, desc, -1, aScale[0], aSmooth);
-			AddCap(aSegment, desc,  1, aScale[aScale.Count-1], aSmooth);
+			AddCap(aSegment, desc, aLeftInner, -1, aScale[0], aSmooth);
+			AddCap(aSegment, desc, aRightInner, 1, aScale[aScale.Count-1], aSmooth);
 		}
 		UnityEngine.Random.seed = tSeed;
 	}
@@ -741,8 +731,9 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
 			else if ((pos [aCuts - 1] - pos [0]).magnitude >= 0.12F && (pos [aCuts - 1] - pos [0]).magnitude < 0.30F) body  = terrainMaterial.ToUV(aDesc.body[1]);
 			else body  = terrainMaterial.ToUV(aDesc.body[0]);
 		}
-
+		
 		//my changing end
+
 		float d     = (body.height / 2) * unitsPerUV.y;
 		float yOff  = fill == Ferr2DT_FillMode.InvertedClosed ? -aDesc.yOffset : aDesc.yOffset;
         if (randomByWorldCoordinates) {
@@ -774,7 +765,7 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
 			p3 = v3;
 		}
 	}
-	private void AddCap    (List<Vector2> aSegment, Ferr2DT_SegmentDescription aDesc, float aDir, float aScale, bool aSmooth) {
+	private void AddCap    (List<Vector2> aSegment, Ferr2DT_SegmentDescription aDesc, bool aInner, float aDir, float aScale, bool aSmooth) {
 		int     index = 0;
 		Vector2 dir   = Vector2.zero;
 		if (aDir < 0) {
@@ -789,8 +780,13 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
 		Vector2 pos  = aSegment[index];
         float   yOff = fill == Ferr2DT_FillMode.InvertedClosed ? -aDesc.yOffset : aDesc.yOffset;
         Rect cap;
-        if (aDir < 0) cap = fill == Ferr2DT_FillMode.InvertedClosed ? terrainMaterial.ToUV(aDesc.rightCap) : terrainMaterial.ToUV(aDesc.leftCap );
-        else          cap = fill == Ferr2DT_FillMode.InvertedClosed ? terrainMaterial.ToUV(aDesc.leftCap ) : terrainMaterial.ToUV(aDesc.rightCap);
+		if (aDir < 0) {
+			if (fill == Ferr2DT_FillMode.InvertedClosed) cap = (!aInner && aDesc.innerRightCap.width > 0) ? terrainMaterial.ToUV(aDesc.innerRightCap) : terrainMaterial.ToUV(aDesc.rightCap);
+			else                                         cap = ( aInner && aDesc.innerLeftCap .width > 0) ? terrainMaterial.ToUV(aDesc.innerLeftCap ) : terrainMaterial.ToUV(aDesc.leftCap );
+		} else        {
+			if (fill == Ferr2DT_FillMode.InvertedClosed) cap = (!aInner && aDesc.innerLeftCap .width > 0) ? terrainMaterial.ToUV(aDesc.innerLeftCap ) : terrainMaterial.ToUV(aDesc.leftCap );
+			else                                         cap = ( aInner && aDesc.innerRightCap.width > 0) ? terrainMaterial.ToUV(aDesc.innerRightCap) : terrainMaterial.ToUV(aDesc.rightCap);
+		}
         
 		float width =  cap.width     * unitsPerUV.x;
 		float scale = (cap.height/2) * unitsPerUV.y * aScale;
@@ -827,8 +823,9 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
             DMesh.AddFace(v2, v1, v4, v3);
         }
 	}
-	private void AddFill   (bool aSkirt) {
-		float         fillDist  = (terrainMaterial.ToUV( terrainMaterial.GetBody((Ferr2DT_TerrainDirection)0,0) ).width * (terrainMaterial.edgeMaterial.mainTexture.width  / pixelsPerUnit)) / (Mathf.Max(1, splitCount)) * splitDist;
+	private void AddFill   (bool aSkirt, bool aFullBuild) {
+        float         texWidth  = terrainMaterial.edgeMaterial ? 256 : terrainMaterial.edgeMaterial.mainTexture.width;
+		float         fillDist  = (terrainMaterial.ToUV( terrainMaterial.GetBody((Ferr2DT_TerrainDirection)0,0) ).width * (texWidth  / pixelsPerUnit)) / (Mathf.Max(1, splitCount)) * splitDist;
 		List<Vector2> fillVerts = GetSegmentsCombined(fillDist);
         Vector2       scale     = Vector2.one;
 
@@ -850,7 +847,7 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
         }
 
         int       offset  = DMesh.VertCount;
-        List<int> indices = Ferr2D_Triangulator.GetIndices(ref fillVerts, true, fill == Ferr2DT_FillMode.InvertedClosed);
+		List<int> indices = Ferr2D_Triangulator.GetIndices(ref fillVerts, true, fill == Ferr2DT_FillMode.InvertedClosed, fillSplit && aFullBuild ? fillSplitDistance : 0);
         for (int i = 0; i < fillVerts.Count; i++) {
             DMesh.AddVertex(fillVerts[i].x, fillVerts[i].y, fillZ, (fillVerts[i].x + uvOffset.x + transform.position.x) / scale.x, (fillVerts[i].y + uvOffset.y + transform.position.y ) / scale.y);
         }
@@ -911,7 +908,7 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
             }
 
             if (aRecreate) {
-                RecreatePath(true);
+                Build(true);
             }
         }
     }

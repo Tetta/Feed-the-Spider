@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnionAssets.FLE;
+//using UnionAssets.FLE;
 
 public class marketClass : MonoBehaviour {
 	public static marketClass instance = null;
@@ -56,18 +56,20 @@ public class marketClass : MonoBehaviour {
 		AndroidInAppPurchaseManager.instance.addProduct(complect);
 		
 		
+
 		//listening for purchase and consume events
-		AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_PURCHASED, OnProductPurchased);
-		AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_CONSUMED,  OnProductConsumed);
+		//off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_PURCHASED, OnProductPurchased);
+		//off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_CONSUMED,  OnProductConsumed);
 		
 		//initilaizing store
-		AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
+		//off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
 		
 		//you may use loadStore function without parametr if you have filled base64EncodedPublicKey in plugin settings
-		AndroidInAppPurchaseManager.instance.loadStore();
+		//off AndroidInAppPurchaseManager.instance.loadStore();
 		
 		ListnersAdded = true;
-		gameObject.SetActive(false);
+		//gameObject.SetActive(false);
+		transform.position = new Vector3 (0, 0, -10000);
 	}
 
 	//--------------------------------------
@@ -78,10 +80,17 @@ public class marketClass : MonoBehaviour {
 		if (initClass.progress.Count == 0) {
 			initClass.getProgress();
 		}
-		coinsLabel.text = initClass.progress["coins"].ToString();
-		energyLabel.text = initClass.progress["energy"].ToString();
-		hintsLabel.text = initClass.progress["hints"].ToString();
-		collectorsLabel.text = initClass.progress["collectors"].ToString();
+		//for tests
+		//Time.timeScale = 0;
+
+		//coinsLabel.text = initClass.progress["coins"].ToString();
+		//energyLabel.text = initClass.progress["energy"].ToString();
+		//hintsLabel.text = initClass.progress["hints"].ToString();
+		//collectorsLabel.text = initClass.progress["collectors"].ToString();
+	}
+	void OnDisable() {
+		Debug.Log ("OnDisable");
+		//Time.timeScale = 1;
 	}
 
 	public void purchaseForCoins() {
@@ -149,7 +158,8 @@ public class marketClass : MonoBehaviour {
 				ncm.name = "not coins menu";
 				UIPlayAnimation anim = ncm.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UIPlayAnimation>();
 				GameObject backTr = GameObject.Find("root/Camera/UI Root/back transition");
-				EventDelegate.Add(anim.onFinished, backTr.GetComponent<iClickClass>().backTransitionExit);
+				//bug new system
+				//EventDelegate.Add(anim.onFinished, backTr.GetComponent<iClickClass>().backTransitionExit);
 			} else {
 				bought = true;
 				initClass.progress["coins"] -= cost;
@@ -231,7 +241,7 @@ public class marketClass : MonoBehaviour {
 
 	}
 }
-	
+	/*
 	private static void OnProductPurchased(CEvent e) {
 		BillingResult result = e.data as BillingResult;
 		
@@ -271,12 +281,12 @@ public class marketClass : MonoBehaviour {
 	
 	private static void OnBillingConnected(CEvent e) {
 		BillingResult result = e.data as BillingResult;
-		AndroidInAppPurchaseManager.instance.removeEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
+		//off AndroidInAppPurchaseManager.instance.removeEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
 		
 		
 		if(result.isSuccess) {
 			//Store connection is Successful. Next we loading product and customer purchasing details
-			AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_RETRIEVE_PRODUC_FINISHED, OnRetrieveProductsFinised);
+			//off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_RETRIEVE_PRODUC_FINISHED, OnRetrieveProductsFinised);
 			AndroidInAppPurchaseManager.instance.retrieveProducDetails();
 			
 		} 
@@ -290,7 +300,7 @@ public class marketClass : MonoBehaviour {
 	
 	private static void OnRetrieveProductsFinised(CEvent e) {
 		BillingResult result = e.data as BillingResult;
-		AndroidInAppPurchaseManager.instance.removeEventListener (AndroidInAppPurchaseManager.ON_RETRIEVE_PRODUC_FINISHED, OnRetrieveProductsFinised);
+		//off AndroidInAppPurchaseManager.instance.removeEventListener (AndroidInAppPurchaseManager.ON_RETRIEVE_PRODUC_FINISHED, OnRetrieveProductsFinised);
 		
 		if(result.isSuccess) {
 			
@@ -304,7 +314,7 @@ public class marketClass : MonoBehaviour {
 		
 	}
 	
-	
+	*/
 	
 	private static void UpdateStoreData() {
 		//marketClass.instance.

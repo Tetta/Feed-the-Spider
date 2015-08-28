@@ -23,9 +23,9 @@ public class Ferr2DT_Builder {
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
         sw.Start();
 
-        List<Ferr2DT_PathTerrain> terrains = Ferr_ComponentTracker.GetComponents<Ferr2DT_PathTerrain>(); //Ferr2DT_AssetTracker.GetPrefabs();
+        List<Ferr2DT_PathTerrain> terrains = Ferr.ComponentTracker.GetComponents<Ferr2DT_PathTerrain>(); //Ferr2DT_AssetTracker.GetPrefabs();
         for (int i = 0; i < terrains.Count; i++) {
-            terrains[i].RecreatePath(true);;
+            terrains[i].Build(true);;
         }
 
         sw.Stop();

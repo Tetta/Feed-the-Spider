@@ -69,7 +69,7 @@ public class InfiniteTerrain : MonoBehaviour {
             }
         }
 
-        terrain.RecreatePath    (false);
+        terrain.Build    (false);
         terrain.RecreateCollider();
     }
     void  NewRight      () {

@@ -61,9 +61,9 @@ public class GooglePlayTBM : SA_Singleton<GooglePlayTBM>
         AN_GMSRTMProxy.TBM_DismissInvitation(invitationId);
     }
 
-    public void CreateMatch(int minPlayers, int maxPlayers)
+	public void CreateMatch(int minPlayers, int maxPlayers, string[] playersIds = null)
     {
-        AN_GMSRTMProxy.TBM_CreateMatch(minPlayers, maxPlayers);
+		AN_GMSRTMProxy.TBM_CreateMatch(minPlayers, maxPlayers, playersIds);
     }
 
     public void CancelMatch(string matchId)

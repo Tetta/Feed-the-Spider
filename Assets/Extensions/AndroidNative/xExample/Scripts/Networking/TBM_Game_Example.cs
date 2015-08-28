@@ -1,6 +1,5 @@
 //#define SA_DEBUG_MODE
 using UnityEngine;
-using UnionAssets.FLE;
 using System.Collections;
 
 public class TBM_Game_Example : AndroidNativeExampleBase {
@@ -33,9 +32,10 @@ public class TBM_Game_Example : AndroidNativeExampleBase {
 		
 
 
-		GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_CONNECTED, OnPlayerConnected);
-		GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_DISCONNECTED, OnPlayerDisconnected);
-		GooglePlayConnection.instance.addEventListener(GooglePlayConnection.CONNECTION_RESULT_RECEIVED, OnConnectionResult);
+		GooglePlayConnection.ActionPlayerConnected +=  OnPlayerConnected;
+		GooglePlayConnection.ActionPlayerDisconnected += OnPlayerDisconnected;
+		
+		GooglePlayConnection.ActionConnectionResultReceived += OnConnectionResult;
 		
 		
 		
@@ -233,9 +233,8 @@ public class TBM_Game_Example : AndroidNativeExampleBase {
 		playerLabel.text = GooglePlayManager.instance.player.name;
 	}
 
-	private void OnConnectionResult(CEvent e) {
-		
-		GooglePlayConnectionResult result = e.data as GooglePlayConnectionResult;
+	private void OnConnectionResult(GooglePlayConnectionResult result) {
+
 		SA_StatusBar.text = "ConnectionResul:  " + result.code.ToString();
 		Debug.Log(result.code.ToString());
 	}
