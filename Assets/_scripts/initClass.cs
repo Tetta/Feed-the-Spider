@@ -26,8 +26,6 @@ public class initClass : MonoBehaviour {
 		if (progress.Count == 0) {
 			getProgress();
 			staticClass.initLevels();
-			//Debug.Log ();
-			market.SetActive(true);
 			if (progress["sound"] == 0) setSound(false);
 			if (progress["music"] == 1) GameObject.Find("music").GetComponent<AudioSource>().enabled = true;
 			//опции
@@ -64,23 +62,27 @@ public class initClass : MonoBehaviour {
 			Debug.Log( "......................................");
 			//
 
-			//включаем текущий скин и выключаем все остальные
-			for (int i = 0; i < 5; i++) {
-				if (spider.transform.GetChild(i).name == staticClass.currentSkin) {
-					spider.transform.GetChild(i).gameObject.SetActive(true);
-					//включаем текущую шапку и выключаем все остальные
-					for (int j = 0; j < 4; j++) {
-						if (spider.transform.GetChild (i).GetChild (0).GetChild (j).name == staticClass.currentHat) {
-							spider.transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
-						} else 
-							spider.transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
-					}
-				} else 
-					spider.transform.GetChild(i).gameObject.SetActive(false);
-			}
 
 		}
 
+		//market
+		Debug.Log ("initClass: market.SetActive(true)");
+		market.SetActive(true);
+
+		//включаем текущий скин и выключаем все остальные
+		for (int i = 0; i < 5; i++) {
+			if (spider.transform.GetChild(i).name == staticClass.currentSkin) {
+				spider.transform.GetChild(i).gameObject.SetActive(true);
+				//включаем текущую шапку и выключаем все остальные
+				for (int j = 0; j < 4; j++) {
+					if (spider.transform.GetChild (i).GetChild (0).GetChild (j).name == staticClass.currentHat) {
+						spider.transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
+					} else 
+						spider.transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
+				}
+			} else 
+				spider.transform.GetChild(i).gameObject.SetActive(false);
+		}
 
 		if (GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) {
 			achievements.SetActive(true);
@@ -151,6 +153,7 @@ public class initClass : MonoBehaviour {
 				//скины и шапки. запись в статик переменную
 				if (strKey.Substring(0, 4) == "skin") if (progress[strKey] == 2) staticClass.currentSkin = strKey;
 				if (strKey.Substring(0, 3) == "hat") if (progress[strKey] == 2) staticClass.currentHat = strKey;
+				if (strKey.Length == 6) if(strKey.Substring(0, 5) == "berry") if (progress[strKey] == 2) staticClass.currentBerry = strKey;
 				//if (strKey.Substring(0, 4) == "skin") {Debug.Log (strKey); Debug.Log (progress[strKey]);}
 				strKey = "";
 				strValue = "";

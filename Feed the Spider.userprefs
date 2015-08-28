@@ -1,16 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_scripts\iClickClass.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_scripts\gStarClass.cs">
     <Files>
-      <File FileName="Assets\_scripts\iClickClass.cs" Line="295" Column="95" />
-      <File FileName="Assets\_scripts\staticClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\marketClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\gSpiderClass.cs" Line="1" Column="1" />
       <File FileName="Assets\_scripts\initClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\initLevelMenuClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\ctrlDailyBonusClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\NGUI\Scripts\Internal\UIDrawCall.cs" Line="260" Column="1" />
-      <File FileName="Assets\_scripts\lsLevelClass.cs" Line="45" Column="27" />
+      <File FileName="Assets\_scripts\iClickClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\marketClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\gBerryClass.cs" Line="231" Column="75" />
+      <File FileName="Assets\_scripts\gSpiderClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\lsSpiderClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\staticClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\_scripts\gStarClass.cs" Line="54" Column="47" />
     </Files>
     <Pads>
       <Pad Id="ClassPad">

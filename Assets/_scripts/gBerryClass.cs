@@ -14,7 +14,7 @@ public class gBerryClass : MonoBehaviour {
 	private GameObject pauseMenu;
 	private GameObject[] guiStars = new GameObject[3];
 	//private UISprite[] guiStarsComplete = new UISprite[3];
-	private Animator spiderAnimator;
+	//private Animator spiderAnimator;
 	//private GameObject restart;
 	private GameObject back;
 	private Vector3 dir = new Vector3(0, 0, 0);
@@ -75,7 +75,7 @@ public class gBerryClass : MonoBehaviour {
 		//guiStarsComplete[2] = GameObject.Find("gui").transform.GetChild(0).GetChild(4).GetComponent<UISprite>();
 		//restart = GameObject.Find("restart");
 	
-		spiderAnimator = GameObject.Find ("spider").transform.GetChild(int.Parse(staticClass.currentSkin.Substring(4, 1)) - 1).GetComponent<Animator>();
+		//spiderAnimator = GameObject.Find ("root/spider").transform.GetChild(int.Parse(staticClass.currentSkin.Substring(4, 1)) - 1).GetComponent<Animator>();
 		//timer
 		if (initLevelMenuClass.levelDemands == 1) {
 			int levels = staticClass.levels[Convert.ToInt32(Application.loadedLevelName.Substring(5)), 1];
@@ -143,7 +143,9 @@ public class gBerryClass : MonoBehaviour {
 		if (back == null) back = GameObject.Find("back rock");
 		if (back == null) back = GameObject.Find("back ice");
 		if (back == null) back = GameObject.Find("back desert");
-		Debug.Log (back);
+
+		staticClass.changeBerry ();
+
 	}
 	
 	// Update is called once per frame
@@ -163,9 +165,9 @@ public class gBerryClass : MonoBehaviour {
 		//acceleration end
 
 		if (transform.position.x < -4 || transform.position.x > 4 || transform.position.y < -6 || transform.position.y > 6) 
-			if (!spiderAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad") &&
-			    !spiderAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad 0"))
-				StartCoroutine(gSpiderClass.coroutineCry(spiderAnimator));
+			if (!staticClass.currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad") &&
+			    !staticClass.currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad 0"))
+				StartCoroutine(gSpiderClass.coroutineCry(staticClass.currentSkinAnimator));
 
 		//timer
 		if (initLevelMenuClass.levelDemands == 1) {
@@ -207,11 +209,10 @@ public class gBerryClass : MonoBehaviour {
 			//tutorial
 			gHandClass.delHand();
 			berryState = "start finish";
-
-			if (spiderAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
-				spiderAnimator.Play("spider open month legs");
+			if (staticClass.currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
+				staticClass.currentSkinAnimator.Play("spider open month legs", 1);
 			else 
-				spiderAnimator.Play("spider open month");
+				staticClass.currentSkinAnimator.Play("spider open month", 1);
 
 			//GetComponent<Animation>().Play();
 			//transform.position = collisionObject.gameObject.transform.position;
@@ -236,16 +237,17 @@ public class gBerryClass : MonoBehaviour {
 	public IEnumerator coroutineEat(Collision2D collisionObject){
 		collisionObject.rigidbody.isKinematic = false;
 		for (float i = 0; i < 5; i+=0.5F) {
-			transform.GetChild(0).GetComponent<AnimatedAlpha>().alpha = 0.8F - i * 0.2F;
+			transform.GetChild(int.Parse(staticClass.currentBerry.Substring(5, 1)) - 1).GetComponent<AnimatedAlpha>().alpha = 0.8F - i * 0.2F;
 			transform.localScale = new Vector2(1 - i * 0.05F, 1 - i * 0.05F);
 			transform.position = transform.position + (collisionObject.transform.position - transform.position) * 0.2F;
 			yield return new WaitForSeconds(0.015F);
+
 		}
 
-		if (spiderAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
-			spiderAnimator.CrossFade ("spider eat legs", 0.5F);
+		if (staticClass.currentSkinAnimator.GetCurrentAnimatorStateInfo(0).IsName("spider breath"))
+			staticClass.currentSkinAnimator.CrossFade ("spider eat legs", 0.5F);
 		else 
-			spiderAnimator.CrossFade ("spider eat", 0.5F);
+			staticClass.currentSkinAnimator.CrossFade ("spider eat", 0.5F);
 		StartCoroutine(Coroutine(collisionObject));
 
 	}

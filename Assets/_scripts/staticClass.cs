@@ -72,6 +72,8 @@ public class staticClass {
 			"score1_1=0;score1_2=0;score2_1=0;score2_2=0;" +
 			"gift1=0;gift2=0;";
 
+	public static Animator currentSkinAnimator;
+
 	public static IEnumerator waitForRealTime(float delay){
 		while(true){
 			float pauseEndTime = Time.realtimeSinceStartup + delay;
@@ -81,5 +83,55 @@ public class staticClass {
 			break;
 		}
 	}
+
+
+	//включаем текущий скин и выключаем все остальные
+	//public static void changeSkin(out Animator currentSkinAnimator){
+	public static void changeSkin(){
+		GameObject spider = GameObject.Find ("root/spider");
+		//currentSkinAnimator = new Animator ();
+		if (spider == null) return; 
+		Transform spiderTr = spider.transform;
+		for (int i = 0; i < 5; i++) { 
+			if (spiderTr.GetChild (i).name == staticClass.currentSkin) {
+				spiderTr.GetChild (i).gameObject.SetActive (true);
+				currentSkinAnimator = spiderTr.GetChild (i).GetComponent<Animator> ();
+			} else 
+				spiderTr.GetChild (i).gameObject.SetActive (false);
+		}
+		//Debug.Log("Select skin: " + staticClass.currentSkin);
+		changeHat ();
+	}
+
+	//включаем текущую шапку и выключаем все остальные
+	public static void changeHat(){
+		if (GameObject.Find ("root/spider") == null) return;
+		Transform spider = GameObject.Find ("root/spider").transform;
+		for (int i = 0; i < 5; i++) {
+			if (spider.GetChild (i).name == staticClass.currentSkin) {
+				for (int j = 0; j < 4; j++) {
+					if (spider.GetChild (i).GetChild (0).GetChild (j).name == staticClass.currentHat) {
+						spider.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
+					} else 
+						spider.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
+				}
+			} 
+		}
+		//Debug.Log("Select hat: " + staticClass.currentHat);
+
+	}
+
+	//включаем текущую ягоду и выключаем все остальные
+	public static void changeBerry(){
+		if (GameObject.Find ("root/berry") == null) return;
+		Transform berry = GameObject.Find ("root/berry").transform;
+		for (int i = 0; i < 5; i++) {
+			if (berry.GetChild(i).name == staticClass.currentBerry) 
+				berry.GetChild(i).gameObject.SetActive(true);
+			else berry.GetChild(i).gameObject.SetActive(false);
+		}
+		
+	}
+
 }
 

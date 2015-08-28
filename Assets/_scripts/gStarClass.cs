@@ -51,6 +51,7 @@ public class gStarClass : MonoBehaviour {
 	}
 
 	public IEnumerator destroyStar(){
+		GetComponent<Collider2D> ().enabled = false;
 		transform.GetChild(0).GetComponent<ParticleSystem> ().Play ();
 		transform.GetChild(1).position = new Vector3 (0, 0, -10000);
 		//GetComponent<Animation> ().Play ("star destroy");

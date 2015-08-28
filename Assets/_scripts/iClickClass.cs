@@ -75,6 +75,7 @@ public class iClickClass : MonoBehaviour {
 		//если куплен
 		//Debug.Log (name);
 		//Debug.Log (initClass.progress [name]);
+		if (initClass.progress.Count == 0) initClass.getProgress();
 		if (initClass.progress [name] >= 1) {
 			//skin
 			transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
@@ -92,7 +93,7 @@ public class iClickClass : MonoBehaviour {
 		}
 
 		//если выбран текущий скин или шапка или ягода
-		if (name == staticClass.currentSkin || name == staticClass.currentHat || name == staticClass.currentBerry) {
+		if (initClass.progress [name] == 2) {
 			pressCard(false);
 		}
 	}
@@ -108,31 +109,34 @@ public class iClickClass : MonoBehaviour {
 				    ) prevObject.GetComponent<Animator>().Play("default");
 			}
 
-			//включаем текущий скин и выключаем все остальные
+			//start включаем preview текущий скин и выключаем все остальные
 			string skinName = name;
 			if (name.Substring(0, 3) == "hat") skinName = staticClass.currentSkin;
-			Transform spider = transform.parent.parent.GetChild(1).GetChild(0);
+			Transform previewObj = transform.parent.parent.GetChild(1).GetChild(0);
 			for (int i = 0; i < 5; i++) {
-				if (spider.GetChild(i).name == skinName) {
-					spider.GetChild(i).gameObject.SetActive(true);
+				if (previewObj.GetChild(i).name == skinName) {
+					previewObj.GetChild(i).gameObject.SetActive(true);
 					//включаем описание скина
-					spider.GetChild(i + 5).gameObject.SetActive(true);
-					spider.GetChild(i).GetComponent<Animator>().Play ("spider hi");
-					//включаем текущую шапку и выключаем все остальные
-					for (int j = 0; j < 4; j++) {
-						if (spider.GetChild (i).GetChild (0).GetChild (j).name == name) {
-							spider.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
-						} else 
-							spider.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
+					previewObj.GetChild(i + 5).gameObject.SetActive(true);
+					if (name.Length != 6) previewObj.GetChild(i).GetComponent<Animator>().Play ("spider hi");
+					if (name.Substring(0, 3) == "hat") {
+						//включаем текущую шапку и выключаем все остальные
+						for (int j = 0; j < 4; j++) {
+							if (previewObj.GetChild (i).GetChild (0).GetChild (j).name == name) {
+								previewObj.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
+							} else 
+								previewObj.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
+						}
 					}
 
-
 				} else {
-					spider.GetChild(i).gameObject.SetActive(false);
-					spider.GetChild(i + 5).gameObject.SetActive(false);
+					previewObj.GetChild(i).gameObject.SetActive(false);
+					previewObj.GetChild(i + 5).gameObject.SetActive(false);
 				}
 				
 			}
+			//end включаем preview текущий скин и выключаем все остальные
+
 			GetComponent<Animator> ().Play ("card select");
 			//если куплен, то выбираем
 			if (initClass.progress[name] >= 1) {
@@ -142,15 +146,19 @@ public class iClickClass : MonoBehaviour {
 				if (name.Substring(0, 4) == "skin") {
 					initClass.progress[staticClass.currentSkin] = 1;
 					staticClass.currentSkin = name;
+					staticClass.changeSkin ();
 				} else if (name.Substring(0, 3) == "hat") {
 					initClass.progress[staticClass.currentHat] = 1;
 					staticClass.currentHat = name;
-				} else if (name.Substring(0, 3) == "berry") {
+					staticClass.changeHat ();
+				} else if (name.Substring(0, 5) == "berry") {
 					initClass.progress[staticClass.currentBerry] = 1;
 					staticClass.currentBerry = name;
+					staticClass.changeBerry ();
 				}
 				initClass.progress[name] = 2;
 				initClass.saveProgress();
+
 				//выключаем get booster
 				transform.parent.parent.GetChild(1).GetChild(1).gameObject.SetActive(false);
 			} else 

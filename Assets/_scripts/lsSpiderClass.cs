@@ -17,10 +17,7 @@ public class lsSpiderClass : MonoBehaviour {
 	public GameObject gem2Inactive;
 
 	private string spiderState = "";
-	//private NavMeshAgent spiderAgent;
-	//private GameObject spider2;
-	private Animator currentSkinAnimator;
-	//private Vector3 velSpider;
+
 	private Vector3 velCamera;
 	private Vector3 startPosSpider;
 	private Vector3 posIsland;
@@ -36,21 +33,9 @@ public class lsSpiderClass : MonoBehaviour {
 		transform.localPosition = GameObject.Find("level " + initClass.progress["currentLevel"]).transform.localPosition + new Vector3(0, 104, 0);
 		if (transform.position.x > 0) cameraUI.transform.position = new Vector3(transform.position.x, cameraUI.transform.position.y, cameraUI.transform.position.z);
 
-		//включаем текущий скин и выключаем все остальные
-		for (int i = 0; i < 5; i++) {
-			if (transform.GetChild(i).name == staticClass.currentSkin) {
-				transform.GetChild(i).gameObject.SetActive(true);
-				currentSkinAnimator = transform.GetChild(i).GetComponent<Animator>();
-				//включаем текущую шапку и выключаем все остальные
-				for (int j = 0; j < 4; j++) {
-					if (transform.GetChild (i).GetChild (0).GetChild (j).name == staticClass.currentHat) {
-						transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (true);
-					} else 
-						transform.GetChild (i).GetChild (0).GetChild (j).gameObject.SetActive (false);
-				}
-			} else 
-				transform.GetChild(i).gameObject.SetActive(false);
-		}
+		staticClass.changeSkin ();
+		staticClass.changeHat ();
+
 	}
 	
 	// Update is called once per frame
@@ -60,7 +45,7 @@ public class lsSpiderClass : MonoBehaviour {
 		if (spiderState == "jump up") {
 			if (Time.time - timerJump > 0.33F) {
 				spiderState = "jump";
-				currentSkinAnimator.speed = 0;
+				staticClass.currentSkinAnimator.speed = 0;
 			}
 
 		}
@@ -78,7 +63,7 @@ public class lsSpiderClass : MonoBehaviour {
 			if (t >= 1) {
 				if (velCamera != Vector3.zero) cameraUI.transform.position = new Vector3 (posIsland.x, 0, 0);
 				spiderState = "";
-				currentSkinAnimator.speed = 1;
+				staticClass.currentSkinAnimator.speed = 1;
 				StartCoroutine(selectLevelMenuCorourine());
 			}
 		}
@@ -106,7 +91,7 @@ public class lsSpiderClass : MonoBehaviour {
 		//Debug.Log("tan2: " + tan2);
 
 		timerJump = Time.time;
-		currentSkinAnimator.Play("spider jump");
+		staticClass.currentSkinAnimator.Play("spider jump");
 	}
 
 	public IEnumerator selectLevelMenuCorourine () {
