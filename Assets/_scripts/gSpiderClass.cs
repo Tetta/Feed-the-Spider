@@ -8,15 +8,7 @@ public class gSpiderClass : MonoBehaviour {
 	//private GameObject restart;
 	private int fixedUpdateCount;
 	private GameObject berry;
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public Animator currentSkinAnimator;
-=======
 	//public Animator currentSkinAnimator;
->>>>>>> origin/master
-=======
-	//public Animator currentSkinAnimator;
->>>>>>> origin/master
 	private Rigidbody2D rigid2D;
 	public static List<int> websSpider = new List<int>();
 	//private GameObject completeMenu;
@@ -28,14 +20,7 @@ public class gSpiderClass : MonoBehaviour {
 		guiStars[2] = GameObject.Find("gui star 3");	
 		berry = GameObject.Find("berry");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 		/*
->>>>>>> origin/master
-=======
-		/*
->>>>>>> origin/master
 		//включаем текущий скин и выключаем все остальные
 		for (int i = 0; i < 5; i++) {
 			if (transform.GetChild(i).name == staticClass.currentSkin) {
@@ -50,25 +35,12 @@ public class gSpiderClass : MonoBehaviour {
 				}
 			} else 
 				transform.GetChild(i).gameObject.SetActive(false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-		}
-
-=======
-=======
->>>>>>> origin/master
 		}
 		*/
 		//staticClass.changeSkin (out currentSkinAnimator);
 		staticClass.changeSkin ();
 		staticClass.changeHat ();
 		//currentSkinAnimator = transform.GetChild(0).GetComponent<Animator>();
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
->>>>>>> origin/master
 		rigid2D = GetComponent<Rigidbody2D> ();
 
 		//completeMenu = GameObject.Find("gui").transform.Find("complete menu").gameObject;
@@ -162,15 +134,7 @@ public class gSpiderClass : MonoBehaviour {
 
 	void OnClick () {
 		Debug.Log (234);
-<<<<<<< HEAD
-<<<<<<< HEAD
-		currentSkinAnimator.Play("spider blink", -1);
-=======
 		staticClass.currentSkinAnimator.Play("spider blink", -1);
->>>>>>> origin/master
-=======
-		staticClass.currentSkinAnimator.Play("spider blink", -1);
->>>>>>> origin/master
 	}
 
 	public IEnumerator coroutineJump(){
