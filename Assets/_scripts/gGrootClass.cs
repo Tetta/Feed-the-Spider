@@ -12,7 +12,8 @@ public class gGrootClass : MonoBehaviour {
 	private GameObject spider;
 	private int globalCounter = 0;
 	private string grootState = "";
-	private float  chainLength = 0.1735F; // origin 0.17578F;
+	//private float  chainLength = 0.1735F; // origin 0.17578F;
+	private float  chainLength = 0.169F; // origin 0.17578F;
 	private int maxChainCount = 10;
 	private int chainCount = 0;
 	private GameObject[] chain;
@@ -33,8 +34,8 @@ public class gGrootClass : MonoBehaviour {
 		chain = new GameObject[11];
 		jointGroot = GetComponent<HingeJoint2D> ();
 		terrains = GameObject.FindGameObjectsWithTag("terrain");
-		spider = GameObject.Find("spider");
-		berry = GameObject.Find("berry");
+		spider = GameObject.Find("/root/spider");
+		berry = GameObject.Find("/root/berry");
 
 	}
 	

@@ -17,6 +17,7 @@ public class initLevelMenuClass : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Time.timeScale = 1;
 		//temp
 		staticClass.initLevels();
 		//temp

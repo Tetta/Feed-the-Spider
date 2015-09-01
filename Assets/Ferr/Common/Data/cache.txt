@@ -1,7 +1,6 @@
 
 [Ferr2DT_TerrainMaterial]
 Assets/_prefabs/card.prefab
-Assets/_prefabs/back desert.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Popup List.prefab
 Assets/_images/terrains/forest terrain.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Background.prefab
@@ -111,7 +110,6 @@ Assets/_atlases/skin5.prefab
 Assets/_atlases/hats.prefab
 
 [Ferr2DT_PathTerrain]
-Assets/_prefabs/back desert.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Simple Popup List.prefab
 Assets/_images/terrains/forest terrain.prefab
 Assets/NGUI/Examples/Atlases/Wooden/Control - Background.prefab

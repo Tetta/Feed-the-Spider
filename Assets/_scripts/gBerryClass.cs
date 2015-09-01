@@ -23,6 +23,16 @@ public class gBerryClass : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		/*int w = 0;
+
+		while(w < 1000)
+		{
+			Debug.Log(22);
+			w++;
+
+
+		}*/
+
 		Time.timeScale = 1;
 		//notifer
 		/* OFF FOR TESTS
@@ -145,6 +155,8 @@ public class gBerryClass : MonoBehaviour {
 		if (back == null) back = GameObject.Find("back desert");
 
 		staticClass.changeBerry ();
+		//title внизу
+		GameObject.Find ("label title number level").GetComponent<UILabel> ().text = Application.loadedLevelName.Substring (5);
 
 	}
 	
@@ -257,6 +269,7 @@ public class gBerryClass : MonoBehaviour {
 		yield return new WaitForSeconds(1.5F);
 		collisionObject.transform.GetChild(0).GetComponent<Animator>().Play("spider idle", 1);
 		completeMenu.SetActive(true);
+		//вызов complete menu, передача полученныx очков (int bonusTime, int bonusLevel, bool gem, int starsCount)
 		completeMenu.GetComponent<lsLevelMenuClass> ().completeMenuEnable (400, 200, true, 3);
 
 		berryState = "finish";

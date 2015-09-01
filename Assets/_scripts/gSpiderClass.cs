@@ -15,6 +15,8 @@ public class gSpiderClass : MonoBehaviour {
 	//private GameObject berry;
 	// Use this for initialization
 	void Start () {
+		Debug.Log ("start " + Time.unscaledTime);
+
 		guiStars[0] = GameObject.Find("gui star 1");
 		guiStars[1] = GameObject.Find("gui star 2");
 		guiStars[2] = GameObject.Find("gui star 3");	

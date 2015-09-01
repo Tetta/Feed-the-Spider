@@ -62,11 +62,12 @@ public class iClickClass : MonoBehaviour {
 	public IEnumerator coroutinePressButtonTransition() {
 		GetComponent<Animator> ().Play ("button");
 		yield return StartCoroutine(staticClass.waitForRealTime(0.2F));
-		GameObject.Find("back transition").GetComponent<Animator> ().Play ("back transition exit");
-		yield return StartCoroutine(staticClass.waitForRealTime(0.2F));
+		GameObject.Find ("panel back transition").GetComponent<Animator> ().Play ("back transition enabled");
+		//GameObject.Find("back transition").GetComponent<Animator> ().Play ("back transition exit");
+		//yield return StartCoroutine(staticClass.waitForRealTime(0.2F));
 		Debug.Log ("functionPressButtonTransition: " + functionPressButtonTransition);
 		SendMessage(functionPressButtonTransition);
-		yield return StartCoroutine(staticClass.waitForRealTime(0.2F));
+		//yield return StartCoroutine(staticClass.waitForRealTime(0.2F));
 	}
 
 
@@ -165,6 +166,33 @@ public class iClickClass : MonoBehaviour {
 				transform.parent.parent.GetChild(1).GetChild(1).gameObject.SetActive(true);
 
 		}
+	}
+
+	public IEnumerator CoroutineLoadLevel(){
+		Time.timeScale = 0;
+		Application.backgroundLoadingPriority = ThreadPriority.Low;
+		AsyncOperation async = new AsyncOperation (); 
+
+		if (name == "start level menu") async = Application.LoadLevelAsync("level menu");
+		else if (name == "button back")async = Application.LoadLevelAsync("menu");
+		if (name == "restart") async = Application.LoadLevelAsync(Application.loadedLevel);
+		else if (name == "button next") {
+			async = Application.LoadLevelAsync("level menu");
+		} else if (name == "button play 0") {
+			initLevelMenuClass.levelDemands = 0;
+			async = Application.LoadLevelAsync("level" + initClass.progress["currentLevel"]);
+		} else if (name == "button play 1") {
+			initLevelMenuClass.levelDemands = 1;
+			async = Application.LoadLevelAsync("level" + initClass.progress["currentLevel"]);
+		} else if (name.Substring(0, 5) == "level") {
+			if (initClass.progress["lastLevel"] >= Convert.ToInt32(name.Substring(5)) - 1) async = Application.LoadLevelAsync("level" + Convert.ToInt32(name.Substring(5)));
+		}
+		async.allowSceneActivation = false;
+		yield return StartCoroutine(staticClass.waitForRealTime(0.5F));
+		async.allowSceneActivation = true;
+		yield return async;
+			
+			
 	}
 
 	void pressMarketItem(bool isPressed) {
@@ -296,6 +324,7 @@ public class iClickClass : MonoBehaviour {
 		
 		
 	}
+
 	void openMenu () {
 		Debug.Log ("openMenu: " + name);
 		GameObject menu = null;
@@ -392,27 +421,6 @@ public class iClickClass : MonoBehaviour {
 		Localization.language = name;
 	}
 
-	public IEnumerator CoroutineLoadLevel(){
-		Time.timeScale = 1;
-
-		//yield return new WaitForSeconds(0.1F);
-		yield return new WaitForSeconds(0.1F);
-		if (name == "start level menu") Application.LoadLevel("level menu");
-		else if (name == "button back") Application.LoadLevel("menu");
-		if (name == "restart") Application.LoadLevel(Application.loadedLevel);
-		else if (name == "button next") {
-			Application.LoadLevel("level menu");
-		} else if (name == "button play 0") {
-			initLevelMenuClass.levelDemands = 0;
-			Application.LoadLevel("level" + initClass.progress["currentLevel"]);
-		} else if (name == "button play 1") {
-			initLevelMenuClass.levelDemands = 1;
-			Application.LoadLevel("level" + initClass.progress["currentLevel"]);
-		} else if (name.Substring(0, 5) == "level") {
-			if (initClass.progress["lastLevel"] >= Convert.ToInt32(name.Substring(5)) - 1) Application.LoadLevel("level" + Convert.ToInt32(name.Substring(5)));
-		}
-
-	}
 
 	void buyEnergy () {
 		marketClass.instance.item = gameObject;
