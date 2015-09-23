@@ -10,10 +10,10 @@ public enum Ferr2DT_EditMode {
 }
 
 public class Ferr2DT_SceneOverlay {
-	static Texture2D ferr2DIcon   = Ferr_EditorTools.GetGizmo("Ferr2DTIconSmall.png");
-	static Texture2D overrideIcon = Ferr_EditorTools.GetGizmo("OverrideIcon.png");
-	static Texture2D scaleIcon    = Ferr_EditorTools.GetGizmo("ScaleIcon.png");
-	static Texture2D noneIcon     = Ferr_EditorTools.GetGizmo("NoTabIcon.png");
+	static Texture2D ferr2DIcon   = Ferr.EditorTools.GetGizmo("2DTerrain/Gizmos/Ferr2DTIconSmall.png");
+	static Texture2D overrideIcon = Ferr.EditorTools.GetGizmo("2DTerrain/Gizmos/OverrideIcon.png");
+	static Texture2D scaleIcon    = Ferr.EditorTools.GetGizmo("2DTerrain/Gizmos/ScaleIcon.png");
+	static Texture2D noneIcon     = Ferr.EditorTools.GetGizmo("2DTerrain/Gizmos/NoTabIcon.png");
 	
     static bool showTop = true;
     static int  top     = 0;
@@ -52,16 +52,16 @@ public class Ferr2DT_SceneOverlay {
 	    // reset the color back to normal
 	    GUI.contentColor = Color.white;
 	    
-	    Ferr_Menu.SnapMode   = (Ferr2DT_SnapMode)EditorGUI.EnumPopup(new Rect(currX, top, size * 6, size), Ferr_Menu.SnapMode, EditorStyles.toolbarPopup);
+	    Ferr2DT_Menu.SnapMode   = (Ferr2DT_Menu.SnapType)EditorGUI.EnumPopup(new Rect(currX, top, size * 6, size), Ferr2DT_Menu.SnapMode, EditorStyles.toolbarPopup);
 	    currX += size * 6;
 	    smartSnap = GUI.Toggle(new Rect(currX, top, size * 5, size), smartSnap, new GUIContent("Smart Snap", "[Ctrl+R]"), EditorStyles.toolbarButton);
 	    currX += size * 5 + 6;
 	    
-	    Ferr_Menu.HideMeshes = !GUI.Toggle(new Rect(currX, top, size * 5, size), !Ferr_Menu.HideMeshes, "Show Meshes",       EditorStyles.toolbarButton);
+	    Ferr2DT_Menu.HideMeshes = !GUI.Toggle(new Rect(currX, top, size * 5, size), !Ferr2DT_Menu.HideMeshes, "Show Meshes",       EditorStyles.toolbarButton);
 	    currX += size * 5;
-	    showCollider         =  GUI.Toggle(new Rect(currX, top, size * 6, size), showCollider,          "Show Colliders",    EditorStyles.toolbarButton);
+	    showCollider            =  GUI.Toggle(new Rect(currX, top, size * 6, size), showCollider,             "Show Colliders",    EditorStyles.toolbarButton);
 	    currX += size * 6;
-	    showIndices          =  GUI.Toggle(new Rect(currX, top, size * 2, size), showIndices,           "123",               EditorStyles.toolbarButton);
+	    showIndices             =  GUI.Toggle(new Rect(currX, top, size * 2, size), showIndices,              "123",               EditorStyles.toolbarButton);
 	    currX += size * 2;
 	    
         if        (Event.current.control && Event.current.keyCode == KeyCode.Q) {

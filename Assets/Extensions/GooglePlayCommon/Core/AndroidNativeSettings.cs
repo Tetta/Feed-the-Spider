@@ -17,8 +17,8 @@ using UnityEditor;
 
 public class AndroidNativeSettings : ScriptableObject {
 
-	public const string VERSION_NUMBER = "6.5";
-	public const string GOOGLE_PLAY_SDK_VERSION_NUMBER = "7327000";
+	public const string VERSION_NUMBER = "6.8.1";
+	public const string GOOGLE_PLAY_SDK_VERSION_NUMBER = "7571000";
 
 
 	public bool EnablePlusAPI 		= true;
@@ -43,7 +43,7 @@ public class AndroidNativeSettings : ScriptableObject {
 	public string GalleryFolderName = string.Empty;
 	public int MaxImageLoadSize = 512;
 	public AN_CameraCaptureType CameraCaptureMode;
-
+	public AndroidCameraImageFormat ImageFormat = AndroidCameraImageFormat.JPG;
 
 
 	public bool ShowPluginSettings = false;
@@ -80,6 +80,7 @@ public class AndroidNativeSettings : ScriptableObject {
 	public bool ExternalAppsAPI = true;
 	public bool PoupsandPreloadersAPI = true;
 	public bool CheckAppLicenseAPI = true;
+	public bool NetworkStateAPI = false;
 
 	public bool InAppPurchasesAPI = true;
 
@@ -128,6 +129,7 @@ public class AndroidNativeSettings : ScriptableObject {
 	public string ParseAppId = "YOUR_PARSE_APP_ID";
 	public string DotNetKey = "YOUR_PARSE_DOT_NET_KEY";
 
+	public bool ReplaceOldNotificationWithNew = false;
 	public bool ShowPushWhenAppIsForeground = true;
 	public bool EnableVibrationPush = false;
 	public Texture2D PushNotificationIcon = null;

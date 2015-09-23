@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnionAssets.FLE;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -61,9 +60,13 @@ public class PlayServiceCustomLBExample : MonoBehaviour {
 
 		
 		//listen for GooglePlayConnection events
-		GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_CONNECTED, OnPlayerConnected);
-		GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_DISCONNECTED, OnPlayerDisconnected);
-		GooglePlayConnection.instance.addEventListener(GooglePlayConnection.CONNECTION_RESULT_RECEIVED, OnConnectionResult);
+
+		
+		GooglePlayConnection.ActionPlayerConnected +=  OnPlayerConnected;
+		GooglePlayConnection.ActionPlayerDisconnected += OnPlayerDisconnected;
+		
+		GooglePlayConnection.ActionConnectionResultReceived += OnConnectionResult;
+
 
 
 
@@ -334,9 +337,8 @@ public class PlayServiceCustomLBExample : MonoBehaviour {
 
 	}
 	
-	private void OnConnectionResult(CEvent e) {
-		
-		GooglePlayConnectionResult result = e.data as GooglePlayConnectionResult;
+	private void OnConnectionResult(GooglePlayConnectionResult result) {
+
 		SA_StatusBar.text = "Connection Resul:  " + result.code.ToString();
 		Debug.Log(result.code.ToString());
 	}
@@ -377,11 +379,10 @@ public class PlayServiceCustomLBExample : MonoBehaviour {
 
 	void OnDestroy() {
 
-		if(GooglePlayConnection.HasInstance) {
-			GooglePlayConnection.instance.removeEventListener (GooglePlayConnection.PLAYER_CONNECTED, OnPlayerConnected);
-			GooglePlayConnection.instance.removeEventListener (GooglePlayConnection.PLAYER_DISCONNECTED, OnPlayerDisconnected);
-			GooglePlayConnection.instance.removeEventListener(GooglePlayConnection.CONNECTION_RESULT_RECEIVED, OnConnectionResult);
-		}
+		GooglePlayConnection.ActionPlayerConnected +=  OnPlayerConnected;
+		GooglePlayConnection.ActionPlayerDisconnected += OnPlayerDisconnected;
+		
+		GooglePlayConnection.ActionConnectionResultReceived += OnConnectionResult;
 
 		
 		GooglePlayManager.ActionScoreSubmited -= OnScoreSbumitted;

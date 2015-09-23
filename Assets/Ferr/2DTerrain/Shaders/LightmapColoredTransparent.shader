@@ -23,7 +23,7 @@ Shader "Ferr/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 li
 			#define  MAX_LIGHTS 8
 			
 			#include "UnityCG.cginc"
-			#include "LitCommon.cginc"
+			#include "Ferr2DTCommon.cginc"
 			
 			ENDCG
 		}
@@ -38,10 +38,10 @@ Shader "Ferr/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0 li
 			#define  FERR2DT_LIGHTMAP
 			
 			#include "UnityCG.cginc"
-			#include "LitCommon.cginc"
+			#include "Ferr2DTCommon.cginc"
 			
 			ENDCG
 		}
 	}
-	Fallback "VertexLit"
+	Fallback "Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)"
 }

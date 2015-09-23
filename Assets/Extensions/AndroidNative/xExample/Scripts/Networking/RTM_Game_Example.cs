@@ -1,6 +1,5 @@
 //#define SA_DEBUG_MODE
 using UnityEngine;
-using UnionAssets.FLE;
 using System.Collections;
 
 public class RTM_Game_Example : AndroidNativeExampleBase {
@@ -38,9 +37,10 @@ public class RTM_Game_Example : AndroidNativeExampleBase {
 		GooglePlayInvitationManager.ActionInvitationAccepted += ActionInvitationAccepted;
 		GooglePlayRTM.ActionRoomCreated += OnRoomCreated;
 
-		GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_CONNECTED, OnPlayerConnected);
-		GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_DISCONNECTED, OnPlayerDisconnected);
-		GooglePlayConnection.instance.addEventListener(GooglePlayConnection.CONNECTION_RESULT_RECEIVED, OnConnectionResult);
+		GooglePlayConnection.ActionPlayerConnected +=  OnPlayerConnected;
+		GooglePlayConnection.ActionPlayerDisconnected += OnPlayerDisconnected;
+		
+		GooglePlayConnection.ActionConnectionResultReceived += OnConnectionResult;
 
 		
 		if(GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) {
@@ -213,7 +213,7 @@ public class RTM_Game_Example : AndroidNativeExampleBase {
 
 
 		GooglePlayManager.ActionFriendsListLoaded +=  OnFriendListLoaded;
-		GooglePlayManager.instance.LoadFriends();
+		GooglePlayManager.Instance.LoadFriends();
 	}
 
 	void OnFriendListLoaded (GooglePlayResult result) {
@@ -233,9 +233,7 @@ public class RTM_Game_Example : AndroidNativeExampleBase {
 		}
 	}
 	
-	private void OnConnectionResult(CEvent e) {
-		
-		GooglePlayConnectionResult result = e.data as GooglePlayConnectionResult;
+	private void OnConnectionResult(GooglePlayConnectionResult result) {
 		SA_StatusBar.text = "ConnectionResul:  " + result.code.ToString();
 		Debug.Log(result.code.ToString());
 	}
@@ -250,7 +248,7 @@ public class RTM_Game_Example : AndroidNativeExampleBase {
 		inviteId = invitation.Id;
 
 		AndroidDialog dialog =  AndroidDialog.Create("Invite", "You have new invite from: " + invitation.Participant.DisplayName, "Manage Manually", "Open Google Inbox");
-		dialog.OnComplete += OnInvDialogComplete;
+		dialog.ActionComplete += OnInvDialogComplete;
 	}
 
 	void ActionInvitationAccepted (GP_Invite invitation) {
@@ -281,7 +279,7 @@ public class RTM_Game_Example : AndroidNativeExampleBase {
 		switch(result) {
 		case AndroidDialogResult.YES:
 			AndroidDialog dialog =  AndroidDialog.Create("Manage Invite", "Would you like to accept this invite?", "Accept", "Decline");
-			dialog.OnComplete += OnInvManageDialogComplete;
+			dialog.ActionComplete += OnInvManageDialogComplete;
 			break;
 		case AndroidDialogResult.NO:
 			GooglePlayRTM.instance.OpenInvitationInBoxUI();

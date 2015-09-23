@@ -1,6 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+using Poly2Tri;
 
 /// <summary>
 /// This thing can be better, but it'll do for now. It takes a list of points, and creates a 2D mesh describing it.
@@ -15,54 +17,85 @@ public static class Ferr2D_Triangulator
     /// <param name="aTreatAsPath">Should we discard any triangles at all? Use this if you want to get rid of triangles that are outside the path.</param>
     /// <param name="aInvert">if we're treating it as a path, should we instead sicard triangles inside the path?</param>
     /// <returns>A magical list of indices describing the triangulation!</returns>
-	public  static List<int> GetIndices           (ref List<Vector2> aPoints, bool aTreatAsPath, bool aInvert) {
-        
-		Vector4            bounds = GetBounds(aPoints);
-        LibTessDotNet.Tess tess   = new LibTessDotNet.Tess();
+	public  static List<int> GetIndices           (ref List<Vector2> aPoints, bool aTreatAsPath, bool aInvert, float aVertGridSpacing = 0) {
+		
+		Vector4 bounds = GetBounds(aPoints);
+		
+        if (aVertGridSpacing > 0) {
+            SplitEdges(ref aPoints, aVertGridSpacing);
+        }
 
-        LibTessDotNet.ContourVertex[] verts = new LibTessDotNet.ContourVertex[aPoints.Count];
-        for (int i = 0; i < aPoints.Count; i++) {
-            verts[i] = new LibTessDotNet.ContourVertex();
-            verts[i].Position = new LibTessDotNet.Vec3();
-            verts[i].Position.X = aPoints[i].x;
-            verts[i].Position.Y = aPoints[i].y;
-            verts[i].Position.Z = 0;
-        }
-        tess.AddContour(verts, LibTessDotNet.ContourOrientation.Original);
-        if (aInvert) {
-            aPoints.Add(new Vector2(bounds.x - (bounds.z - bounds.x) * 1, bounds.w - (bounds.y - bounds.w) * 1)); // 4
-            aPoints.Add(new Vector2(bounds.z + (bounds.z - bounds.x) * 1, bounds.w - (bounds.y - bounds.w) * 1)); // 3
-            aPoints.Add(new Vector2(bounds.z + (bounds.z - bounds.x) * 1, bounds.y + (bounds.y - bounds.w) * 1)); // 2
-            aPoints.Add(new Vector2(bounds.x - (bounds.z - bounds.x) * 1, bounds.y + (bounds.y - bounds.w) * 1)); // 1
-            LibTessDotNet.ContourVertex[] outer = new LibTessDotNet.ContourVertex[4];
-            for (int i = 0; i < 4; i++) {
-                outer[i] = new LibTessDotNet.ContourVertex();
-                outer[i].Position = new LibTessDotNet.Vec3();
-                outer[i].Position.X = aPoints[(aPoints.Count - 4) + i].x;
-                outer[i].Position.Y = aPoints[(aPoints.Count - 4) + i].y;
-                outer[i].Position.Z = 0;
-            }
-            tess.AddContour(outer, aInvert ? LibTessDotNet.ContourOrientation.CounterClockwise : LibTessDotNet.ContourOrientation.Clockwise);
-        }
-        tess.Tessellate(LibTessDotNet.WindingRule.EvenOdd, LibTessDotNet.ElementType.Polygons, 3);
-        List<int> result = new List<int>();
-        for (int i = 0; i < tess.Elements.Length; i += 3) {
-            for (int t = 0; t < 3; t++) {
-                if (tess.Elements[i + t] == -1) {
-                    continue;
-                }
-                for (int v = 0; v < aPoints.Count; v++) {
-                    if (aPoints[v].x == tess.Vertices[tess.Elements[i + t]].Position.X &&
-                        aPoints[v].y == tess.Vertices[tess.Elements[i + t]].Position.Y) {
-                        result.Add(v);
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
+		List<PolygonPoint> verts = new List<PolygonPoint>(aPoints.Count);
+		for (int i = 0; i < aPoints.Count; i++) {
+			verts.Add(new PolygonPoint( aPoints[i].x, aPoints[i].y));
+		}
+
+		Polygon poly;
+		if (aInvert) {
+			aPoints.Add(new Vector2(bounds.x - (bounds.z - bounds.x) * 1, bounds.w - (bounds.y - bounds.w) * 1)); // 4
+			aPoints.Add(new Vector2(bounds.z + (bounds.z - bounds.x) * 1, bounds.w - (bounds.y - bounds.w) * 1)); // 3
+			aPoints.Add(new Vector2(bounds.z + (bounds.z - bounds.x) * 1, bounds.y + (bounds.y - bounds.w) * 1)); // 2
+			aPoints.Add(new Vector2(bounds.x - (bounds.z - bounds.x) * 1, bounds.y + (bounds.y - bounds.w) * 1)); // 1
+			List<PolygonPoint> outer = new List<PolygonPoint>(4);
+			for (int i = 0; i < 4; i++) {
+				outer.Add( new PolygonPoint( aPoints[(aPoints.Count - 4) + i].x, aPoints[(aPoints.Count - 4) + i].y) );
+			}
+			poly = new Polygon(outer);
+			poly.AddHole(new Polygon(verts));
+		} else {
+			poly = new Polygon(verts);
+		}
+		
+		if (aVertGridSpacing > 0) {
+			if (aInvert) bounds = GetBounds(aPoints);
+			for (float y = bounds.w + aVertGridSpacing; y <= bounds.y; y+=aVertGridSpacing) {
+				for (float x = bounds.x + aVertGridSpacing; x <= bounds.z; x+=aVertGridSpacing) {
+					TriangulationPoint pt     = new TriangulationPoint(x, y);
+					bool               inside = poly.IsPointInside(pt);
+					if (inside) poly.AddSteinerPoint(pt);
+				}
+			}
+		}
+		P2T.Triangulate(poly);
+		 
+		aPoints.Clear();
+		List<int> result= new List<int>(poly.Triangles.Count * 3);
+		int       ind   = 0;
+		foreach (DelaunayTriangle triangle in poly.Triangles) {
+			TriangulationPoint p1 = triangle.Points[0];
+			TriangulationPoint p2 = triangle.PointCWFrom(p1);
+			TriangulationPoint p3 = triangle.PointCWFrom(p2);
+			
+			aPoints.Add(new Vector2(p1.Xf, p1.Yf));
+			aPoints.Add(new Vector2(p2.Xf, p2.Yf));
+			aPoints.Add(new Vector2(p3.Xf, p3.Yf));
+			result.Add(ind++);
+			result.Add(ind++);
+			result.Add(ind++);
+		}
+		return result;
 	}
-	
+
+    static void SplitEdges(ref List<Vector2> aPoints, float aMaxDist) {
+        float maxDistSq = aMaxDist * aMaxDist;
+
+        for (int i = 0; i < aPoints.Count-1; i++) {
+            float d = (aPoints[i] - aPoints[i + 1]).sqrMagnitude;
+            if (d > maxDistSq) {
+                d = Mathf.Sqrt(d);
+
+                int     splits = (int)(d/aMaxDist) + 2;
+                Vector2 start  = aPoints[i];
+                Vector2 end    = aPoints[i+1];
+                for (int s = 1; s<splits; s+=1) {
+                    Vector2 pt = Vector3.Lerp(start, end, s/(float)splits);
+                    aPoints.Insert(i+s, pt);
+                }
+                i += splits-2;
+            }
+        }
+    }
+
     /// <summary>
     /// Gets a list of line segments that are under the given point. Two indices per segment.
     /// </summary>
@@ -84,6 +117,24 @@ public static class Ferr2D_Triangulator
 				if (aY > height) {
 					result.Add(min);
 					result.Add(max);
+				}
+			}
+		}
+
+		return result;
+	}
+    public  static int CountSegmentsUnder     (List<Vector2> aPath, float aX, float aY, bool aIgnoreLast) {
+		int result = 0;
+        int off = aIgnoreLast ? 4 : 0;
+		for (int i=0;i<aPath.Count-off;i+=1) {
+			int next = i+1 >= aPath.Count-off ? 0 : i+1;
+			int min = aPath[i].x < aPath[next].x ? i : next;
+			int max = aPath[i].x > aPath[next].x ? i : next;
+			
+			if (aPath[min].x <= aX && aPath[max].x > aX) {
+				float height = Mathf.Lerp(aPath[min].y, aPath[max].y, (aX - aPath[min].x) / (aPath[max].x - aPath[min].x));
+				if (aY > height) {
+					result+=1;
 				}
 			}
 		}

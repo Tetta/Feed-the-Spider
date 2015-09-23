@@ -12,45 +12,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
-
-
-	//Events
-	public const string SCORE_SUBMITED            = "score_submited";
-	public const string SCORE_UPDATED             = "score_updated";
-	public const string LEADERBOARDS_LOADED      = "leaderboards_loaded";
-	public const string FRIENDS_LOADED            = "players_loaded";
-	public const string ACHIEVEMENT_UPDATED       = "achievement_updated";
-	public const string ACHIEVEMENTS_LOADED       = "achievements_loaded";
-	public const string SCORE_REQUEST_RECEIVED    = "score_request_received";
-
-
-	public const string SEND_GIFT_RESULT_RECEIVED  = "send_gift_result_received";
-	public const string REQUESTS_INBOX_DIALOG_DISMISSED  = "requests_inbox_dialog_dismissed";
-
-	public const string PENDING_GAME_REQUESTS_DETECTED  = "pending_game_requests_detected";
-	public const string GAME_REQUESTS_ACCEPTED  		= "game_requests_accepted";
-
-
-	public const string AVAILABLE_DEVICE_ACCOUNTS_LOADED  = "availablee_device_accounts_loaded";
-	public const string OAUTH_TOKEN_LOADED  			 = "oauth_token_loaded";
-
-
+	
 	//Actions
-	public static Action<GP_GamesResult> ActionScoreSubmited 							= delegate {};
-	public static Action<GP_GamesResult> ActionPlayerScoreUpdated						= delegate {};
-	public static Action<GooglePlayResult> ActionLeaderboardsLoaded 					= delegate {};
-	public static Action<GooglePlayResult> ActionFriendsListLoaded 						= delegate {};
-	public static Action<GP_GamesResult> ActionAchievementUpdated 						= delegate {};
-	public static Action<GooglePlayResult> ActionAchievementsLoaded 					= delegate {};
-	public static Action<GooglePlayResult> ActionScoreRequestReceived 					= delegate {};
+	public static event Action<GP_GamesResult> ActionScoreSubmited 							= delegate {};
+	public static event Action<GP_GamesResult> ActionPlayerScoreUpdated						= delegate {};
+	public static event Action<GooglePlayResult> ActionLeaderboardsLoaded 					= delegate {};
+	public static event Action<GooglePlayResult> ActionFriendsListLoaded 						= delegate {};
+	public static event Action<GP_GamesResult> ActionAchievementUpdated 						= delegate {};
+	public static event Action<GooglePlayResult> ActionAchievementsLoaded 					= delegate {};
+	public static event Action<GooglePlayResult> ActionScoreRequestReceived 					= delegate {};
 
-	public static Action<GooglePlayGiftRequestResult> ActionSendGiftResultReceived 		= delegate {};
-	public static Action ActionRequestsInboxDialogDismissed 							= delegate {};
-	public static Action<List<GPGameRequest>> ActionPendingGameRequestsDetected 		= delegate {};
-	public static Action<List<GPGameRequest>> ActionGameRequestsAccepted 				= delegate {};
+	public static event Action<GooglePlayGiftRequestResult> ActionSendGiftResultReceived 		= delegate {};
+	public static event Action ActionRequestsInboxDialogDismissed 							= delegate {};
+	public static event Action<List<GPGameRequest>> ActionPendingGameRequestsDetected 		= delegate {};
+	public static event Action<List<GPGameRequest>> ActionGameRequestsAccepted 				= delegate {};
 
-	public static Action<List<string>> ActionAvailableDeviceAccountsLoaded 				= delegate {};
-	public static Action<string> ActionOAuthTokenLoaded 								= delegate {};
+	public static event Action<List<string>> ActionAvailableDeviceAccountsLoaded 				= delegate {};
+	public static event Action<string> ActionOAuthTokenLoaded 								= delegate {};
 
 
 
@@ -106,8 +84,7 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 	}
 
 	public void LoadToken() {
-		AN_GMSGeneralProxy.loadToken();
-		
+		LoadToken(currentAccount, "oauth2:https://www.googleapis.com/auth/games");
 	}
 
 	public void InvalidateToken(string token) {
@@ -282,6 +259,11 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 	public void IncrementAchievementById(string achievementId, int numsteps) {
 		if (!GooglePlayConnection.CheckState ()) { return; }
 		AN_GMSGeneralProxy.incrementAchievementById (achievementId, numsteps.ToString());
+	}
+
+	public void SetStepsImmediate(string achievementId, int numsteps) {
+		if (!GooglePlayConnection.CheckState ()) { return; }
+		AN_GMSGeneralProxy.setStepsImmediate (achievementId, numsteps.ToString ());
 	}
 
 	[Obsolete("loadAchievements is deprecated, please use LoadAchievements instead.")]
@@ -508,12 +490,10 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		GooglePlayGiftRequestResult result =  new GooglePlayGiftRequestResult(storeData [0]);
 
 		ActionSendGiftResultReceived(result);
-		dispatch(SEND_GIFT_RESULT_RECEIVED, result);
 	}
 
 	private void OnRequestsInboxDialogDismissed(string data) {
 		ActionRequestsInboxDialogDismissed();
-		dispatch(REQUESTS_INBOX_DIALOG_DISMISSED);
 	}
 
 
@@ -552,7 +532,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		}
 
 		ActionAchievementsLoaded(result);
-		dispatch (ACHIEVEMENTS_LOADED, result);
 
 	}
 
@@ -564,7 +543,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		result.achievementId = storeData [1];
 
 		ActionAchievementUpdated(result);
-		dispatch (ACHIEVEMENT_UPDATED, result);
 
 	}
 
@@ -621,8 +599,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 
 
 		ActionScoreRequestReceived(result);
-		dispatch (SCORE_REQUEST_RECEIVED, result);
-
 	}
 
 	private void OnLeaderboardDataLoaded(string data) {
@@ -681,8 +657,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		_IsLeaderboardsDataLoaded = true;
 
 		ActionLeaderboardsLoaded(result);
-		dispatch (LEADERBOARDS_LOADED, result);
-
 	}
 
 
@@ -725,7 +699,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		}
 
 		ActionPlayerScoreUpdated(result);
-		dispatch (SCORE_UPDATED, result);
 	}
 
 	private void OnScoreSubmitted(string data) {
@@ -741,8 +714,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		result.leaderboardId = storeData [1];
 
 		ActionScoreSubmited(result);
-		dispatch (SCORE_SUBMITED, result);
-
 	}
 
 	private void OnPlayerDataLoaded(string data) {
@@ -788,7 +759,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		
 		Debug.Log ("OnPlayersLoaded, total:" + players.Count.ToString());
 		ActionFriendsListLoaded(result);
-		dispatch (FRIENDS_LOADED, result);
 	}
 
 	private void OnGameRequestsLoaded(string data) {
@@ -820,8 +790,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		}
 
 		ActionPendingGameRequestsDetected(_gameRequests);
-		dispatch(PENDING_GAME_REQUESTS_DETECTED, _gameRequests);
-
 	}
 
 	private void OnGameRequestsAccepted(string data) {
@@ -849,7 +817,6 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		}
 
 		ActionGameRequestsAccepted(acceptedList);
-		dispatch(GAME_REQUESTS_ACCEPTED, acceptedList);
 	}
 
 	private void OnAccountsLoaded(string data) {
@@ -865,14 +832,12 @@ public class GooglePlayManager : SA_Singleton<GooglePlayManager> {
 		}
 
 		ActionAvailableDeviceAccountsLoaded(_deviceGoogleAccountList);
-		dispatch(AVAILABLE_DEVICE_ACCOUNTS_LOADED, _deviceGoogleAccountList);
 	}
 
 	private void OnTokenLoaded(string token) {
 		_loadedAuthToken = token;
 
 		ActionOAuthTokenLoaded(_loadedAuthToken);
-		dispatch(OAUTH_TOKEN_LOADED, _loadedAuthToken);
 	}
 
 

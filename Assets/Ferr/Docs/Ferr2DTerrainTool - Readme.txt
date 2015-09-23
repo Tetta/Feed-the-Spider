@@ -1,5 +1,7 @@
 Thanks for buying the Ferr2D Terrain Tool for Unity3D! We hope your experience with it is the best ever, and should it ever be less than that, please drop us a note and let us know!
 
+If you see Gizmo icon related warnings, and/or the handles aren't displaying properly, please delete the Ferr folder, and re-install the plugin!
+
 For documentation and tutorial videos go here! Or check out the quickstart guide and reference in the same folder as this file.
 http://ferrlib.com/page/Ferr2D_Terrain_Tool
 
@@ -44,9 +46,30 @@ Ctrl +R:     toggle smart snap
 KNOWN ISSUES
 -If you drag your mouse outside the material editor window and let go while dragging a region, no undo data will be saved.
 -Forcing an edge type on the closing segment will have no effect, however, forcing the edge type before the closing segment will affect both.
--Building your game will NOT prebuild terrain prefabs! Only playing the game will, so make sure you play a scene, or 'Assets->Prebuild Ferr2D Terrain' before building your game!
 
 VERSION LOG
+
+v1.0.9 2015-6
++Terrain
+ -Added inner elbow caps (uncheck simple in material editor)
+ -Added split fill feature, which adds verts to enable vertex lighting and vertex painting
+ -Added EdgeCollider2D support
+ -Added UsedByEffector toggle
+ -Colliders will now update with the terrain whenever a collider is present
++Shaders
+ -Added lit wavy shader
+ -Updated shaders for Unity 5
++General
+ -Ferr2D is now directory independant
+ -Improved handle control and performance
+ -Switched triangulation library to poly2tri
+ -Removed legacy code for Unity < v4.3
+ -Removed JSON support
+ -Updated FerrCommon
++Bug fixes
+ -Fixed component tracker occasionally collecting duplicate items
+ -Fixed a bug where empty edge materials would occasionally cause crashes
+ -Fixed a bug with snap settings going crazy on first time use
 
 v1.0.8 2014-10
 +Path Terrain

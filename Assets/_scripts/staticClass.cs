@@ -61,7 +61,11 @@ public class staticClass {
 	public static string currentBerry = "berry1";
 
 	public static string strProgressDefault = "googlePlay=0;lastLevel=76;currentLevel=2;coins=1000;gems=0;energyTime=0;energy=100;" +
+
         "boosters=3;hints=3;webs=3;collectors=3;teleports=3;complect=0;music=0;sound=1;dailyBonus=0;" +
+
+		"hints=3;webs=3;collectors=3;teleports=3;complect=0;music=0;sound=1;dailyBonus=0;" +
+
 			"berry1=2;berry2=1;berry3=1;berry4=1;berry5=1;" +
 			"hat1=2;hat2=1;hat3=1;hat4=1;hat5=1;" +
 			"skin1=2;skin2=1;skin3=1;skin4=1;skin5=1;" +

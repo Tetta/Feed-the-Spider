@@ -12,6 +12,7 @@ public class gGrootClass : MonoBehaviour {
 	private GameObject spider;
 	private int globalCounter = 0;
 	private string grootState = "";
+
 	//private float  chainLength = 0.17578F; // -45 +45
     private float chainLength = 90; // -45 +45
     private int maxChainCount = 10;

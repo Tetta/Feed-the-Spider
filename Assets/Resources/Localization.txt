@@ -50,5 +50,7 @@ marketBonus2, "to the maximum", "к максимуму"
 marketGetBooster, "Get booster!", "Получить бустер!"
 marketSkinBonus, "Collect the complete collection of skins!", "Собери полную коллекцию скинов!"
 marketSkinBonus2, "Get +50%    !", "Получи +50%    !"
+
 marketFindInBooster, "Find in booster!", "Найди в бустере!"
 ad, "ad", "реклама"
+

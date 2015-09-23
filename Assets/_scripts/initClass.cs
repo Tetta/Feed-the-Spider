@@ -71,8 +71,10 @@ public class initClass : MonoBehaviour {
 		market.SetActive(true);
 
 		//включаем текущий скин и выключаем все остальные
+
 		staticClass.changeSkin ();
 		staticClass.changeHat ();
+
 
 		if (GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) {
 			achievements.SetActive(true);

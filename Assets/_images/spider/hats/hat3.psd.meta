@@ -1,6 +1,10 @@
 fileFormatVersion: 2
 guid: 0f87a02005441c74e9cafc34c30fe954
+<<<<<<< HEAD:Assets/_images/spider/hats/hat3.psd.meta
+timeCreated: 1442986198
+=======
 timeCreated: 1439821304
+>>>>>>> origin/master:Assets/_images/spider/hats/hat3.psd.meta
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -37,6 +41,10 @@ TextureImporter:
   lightmap: 0
   rGBM: 0
   compressionQuality: -1
+<<<<<<< HEAD:Assets/_images/spider/hats/hat3.psd.meta
+  allowsAlphaSplitting: 0
+=======
+>>>>>>> origin/master:Assets/_images/spider/hats/hat3.psd.meta
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1

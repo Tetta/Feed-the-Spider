@@ -4,7 +4,7 @@ Shader "Ferr/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)" {
 	}
 	 
 	SubShader {
-		Tags {"IgnoreProjector"="True" "RenderType"="Opaque"}
+		Tags {"Queue"="Geometry" "IgnoreProjector"="True" "RenderType"="Opaque"}
 		Blend Off
 		
 		LOD 100
@@ -22,7 +22,7 @@ Shader "Ferr/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)" {
 			#define  MAX_LIGHTS 8
 			
 			#include "UnityCG.cginc"
-			#include "LitCommon.cginc"
+			#include "Ferr2DTCommon.cginc"
 			
 			ENDCG
 		}
@@ -37,10 +37,10 @@ Shader "Ferr/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)" {
 			#define  FERR2DT_LIGHTMAP
 			
 			#include "UnityCG.cginc"
-			#include "LitCommon.cginc"
+			#include "Ferr2DTCommon.cginc"
 			
 			ENDCG
 		}
 	}
-	Fallback "VertexLit"
+	Fallback "Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)"
 }

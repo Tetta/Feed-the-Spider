@@ -45,10 +45,12 @@ public static class Ferr2DT_TerrainMaterialUtility {
         if (!aEditable) {
             for (int i = 0; i < desc.body.Length; i++)
             {
-                Ferr_EditorTools.DrawRect(aMat.ToScreen( desc.body[i]  ), aBounds);    
+                Ferr.EditorTools.DrawRect(aMat.ToScreen( desc.body[i]  ), aBounds);    
             }
-		    Ferr_EditorTools.DrawRect(aMat.ToScreen( desc.leftCap  ), aBounds);
-		    Ferr_EditorTools.DrawRect(aMat.ToScreen( desc.rightCap ), aBounds);
+		    Ferr.EditorTools.DrawRect(aMat.ToScreen( desc.leftCap  ), aBounds);
+	        Ferr.EditorTools.DrawRect(aMat.ToScreen( desc.rightCap ), aBounds);
+	        Ferr.EditorTools.DrawRect(aMat.ToScreen( desc.innerLeftCap ), aBounds);
+	        Ferr.EditorTools.DrawRect(aMat.ToScreen( desc.innerRightCap), aBounds);
         }
         else if (aSimpleUVs) {
 	        float   height    = MaxHeight(desc);
@@ -61,12 +63,12 @@ public static class Ferr2DT_TerrainMaterialUtility {
             if (desc.leftCap.width == 0 && desc.leftCap.height == 0) pos = new Vector2(desc.body[0].x, desc.body[0].y);
 
             Rect bounds = new Rect(pos.x, pos.y, capWidth*2+bodyWidth*bodyCount, height);
-            bounds = aMat.ToNative(Ferr_EditorTools.UVRegionRect(aMat.ToPixels(bounds),  aBounds));
+            bounds = aMat.ToNative(Ferr.EditorTools.UVRegionRect(aMat.ToPixels(bounds),  aBounds));
 	        bounds = ClampRect(bounds, (Texture2D)aMat.edgeMaterial.mainTexture);
 	        
-	        Ferr_EditorTools.DrawVLine(new Vector2((pos.x + capWidth)* texWidth + aBounds.x, (pos.y * texHeight)+2), height * texHeight);
+	        Ferr.EditorTools.DrawVLine(new Vector2((pos.x + capWidth)* texWidth + aBounds.x, (pos.y * texHeight)+2), height * texHeight);
 	        for (int i = 1; i <= desc.body.Length; i++) {
-		        Ferr_EditorTools.DrawVLine(new Vector2((pos.x + capWidth + bodyWidth*i) * texWidth + aBounds.x, (pos.y * texHeight)+2), height * texHeight);
+		        Ferr.EditorTools.DrawVLine(new Vector2((pos.x + capWidth + bodyWidth*i) * texWidth + aBounds.x, (pos.y * texHeight)+2), height * texHeight);
             }
 
             height    = bounds.height;
@@ -97,12 +99,17 @@ public static class Ferr2DT_TerrainMaterialUtility {
 
         } else {
             for (int i = 0; i < desc.body.Length; i++) {
-                desc.body[i]  = ClampRect(aMat.ToNative(Ferr_EditorTools.UVRegionRect(aMat.ToPixels( desc.body[i] ), aBounds)),  (Texture2D)aMat.edgeMaterial.mainTexture);
+                desc.body[i]  = ClampRect(aMat.ToNative(Ferr.EditorTools.UVRegionRect(aMat.ToPixels( desc.body[i] ), aBounds)),  (Texture2D)aMat.edgeMaterial.mainTexture);
             }
-            if (desc.leftCap.width != 0 && desc.leftCap.height != 0)
-                desc.leftCap  = ClampRect(aMat.ToNative(Ferr_EditorTools.UVRegionRect(aMat.ToPixels( desc.leftCap ),  aBounds)), (Texture2D)aMat.edgeMaterial.mainTexture);
+            if (desc.leftCap.width  != 0 && desc.leftCap.height  != 0)
+                desc.leftCap  = ClampRect(aMat.ToNative(Ferr.EditorTools.UVRegionRect(aMat.ToPixels( desc.leftCap ),  aBounds)), (Texture2D)aMat.edgeMaterial.mainTexture);
             if (desc.rightCap.width != 0 && desc.rightCap.height != 0)
-                desc.rightCap = ClampRect(aMat.ToNative(Ferr_EditorTools.UVRegionRect(aMat.ToPixels( desc.rightCap ), aBounds)), (Texture2D)aMat.edgeMaterial.mainTexture);
+	            desc.rightCap = ClampRect(aMat.ToNative(Ferr.EditorTools.UVRegionRect(aMat.ToPixels( desc.rightCap ), aBounds)), (Texture2D)aMat.edgeMaterial.mainTexture);
+	        
+	        if (desc.innerLeftCap.width  != 0 && desc.innerLeftCap.height  != 0)
+		        desc.innerLeftCap  = ClampRect(aMat.ToNative(Ferr.EditorTools.UVRegionRect(aMat.ToPixels( desc.innerLeftCap ),  aBounds)), (Texture2D)aMat.edgeMaterial.mainTexture);
+	        if (desc.innerRightCap.width != 0 && desc.innerRightCap.height != 0)
+		        desc.innerRightCap = ClampRect(aMat.ToNative(Ferr.EditorTools.UVRegionRect(aMat.ToPixels( desc.innerRightCap ), aBounds)), (Texture2D)aMat.edgeMaterial.mainTexture);
         }
 	}
     public static void ShowSample          (Ferr2DT_TerrainMaterial aMat, Ferr2DT_TerrainDirection aDir, float aWidth) {
@@ -216,43 +223,51 @@ public static class Ferr2DT_TerrainMaterialUtility {
 
         EditorGUILayout.Space();
         desc.body[bodyID] = AtlasField(aMat, desc.body[bodyID], aMat.edgeMaterial != null ? aMat.edgeMaterial.mainTexture : EditorGUIUtility.whiteTexture);
-        if (desc.leftCap.width == 0 && desc.leftCap.height == 0)
-        {
-            if (EditorGUILayout.Toggle("Left Cap", false))
-            {
+        if (desc.leftCap.width == 0 && desc.leftCap.height == 0) {
+            if (EditorGUILayout.Toggle("Left Cap", false)) {
                 desc.leftCap = new Rect(0, 0, 30, 30);
             }
-        }
-        else
-        {
-            if (EditorGUILayout.Toggle("Left Cap", true))
-            {
+        } else {
+            if (EditorGUILayout.Toggle("Left Cap", true)) {
                 desc.leftCap = AtlasField(aMat, desc.leftCap, aMat.edgeMaterial != null ? aMat.edgeMaterial.mainTexture : EditorGUIUtility.whiteTexture);
-            }
-            else
-            {
+            } else {
                 desc.leftCap = new Rect(0, 0, 0, 0);
             }
-
         }
-        if (desc.rightCap.width == 0 && desc.rightCap.height == 0)
-        {
-            if (EditorGUILayout.Toggle("Right Cap", false))
-            {
+	    if (desc.innerLeftCap.width == 0 && desc.innerLeftCap.height == 0) {
+		    if (EditorGUILayout.Toggle("Inner Left Cap", false)) {
+			    desc.innerLeftCap = new Rect(0, 0, 30, 30);
+		    }
+	    } else {
+		    if (EditorGUILayout.Toggle("Inner Left Cap", true)) {
+			    desc.innerLeftCap = AtlasField(aMat, desc.innerLeftCap, aMat.edgeMaterial != null ? aMat.edgeMaterial.mainTexture : EditorGUIUtility.whiteTexture);
+		    } else {
+			    desc.innerLeftCap = new Rect(0, 0, 0, 0);
+		    }
+	    }
+	    
+        if (desc.rightCap.width == 0 && desc.rightCap.height == 0) {
+            if (EditorGUILayout.Toggle("Right Cap", false)) {
                 desc.rightCap = new Rect(0, 0, 30, 30);
             }
-        }
-        else
-        {
-            if (EditorGUILayout.Toggle("Right Cap", true))
-            {
+        } else  {
+            if (EditorGUILayout.Toggle("Right Cap", true)) {
                 desc.rightCap = AtlasField(aMat, desc.rightCap, aMat.edgeMaterial != null ? aMat.edgeMaterial.mainTexture : EditorGUIUtility.whiteTexture);
-            }
-            else
-            {
+            } else {
                 desc.rightCap = new Rect(0, 0, 0, 0);
             }
         }
+	    if (desc.innerRightCap.width == 0 && desc.innerRightCap.height == 0) {
+		    if (EditorGUILayout.Toggle("Inner Right Cap", false)) {
+			    desc.innerRightCap = new Rect(0, 0, 30, 30);
+		    }
+	    } else  {
+		    if (EditorGUILayout.Toggle("Inner Right Cap", true)) {
+			    desc.innerRightCap = AtlasField(aMat, desc.innerRightCap, aMat.edgeMaterial != null ? aMat.edgeMaterial.mainTexture : EditorGUIUtility.whiteTexture);
+		    } else {
+			    desc.innerRightCap = new Rect(0, 0, 0, 0);
+		    }
+	    }
     }
 
     public static float MaxHeight (Ferr2DT_SegmentDescription aDesc) {
@@ -275,13 +290,13 @@ public static class Ferr2DT_TerrainMaterialUtility {
         if (aRect.height < 0) aRect.height = 0;
         return aRect;
     }
-	public static void CheckMaterialRepeat(Material aMat) {
-		if (aMat != null && aMat.mainTexture != null && aMat.mainTexture.wrapMode != TextureWrapMode.Repeat) {
-			if (EditorUtility.DisplayDialog("Ferr2D Terrain", "The Fill Material texture's wrap mode must be set to repeat in order to work properly! Would you like this texture to be updated?", "Yes", "No")) {
-				string    path = AssetDatabase.GetAssetPath(aMat.mainTexture);
-				TextureImporter imp = AssetImporter.GetAtPath(path) as TextureImporter;
+	public static void CheckMaterialMode(Material aMat, TextureWrapMode aDesiredMode) {
+		if (aMat != null && aMat.mainTexture != null && aMat.mainTexture.wrapMode != aDesiredMode) {
+			if (EditorUtility.DisplayDialog("Ferr2D Terrain", "The Material's texture 'Wrap Mode' generally works best when set to "+aDesiredMode+"! Would you like this texture to be updated?", "Yes", "No")) {
+				string          path = AssetDatabase.GetAssetPath(aMat.mainTexture);
+				TextureImporter imp  = AssetImporter.GetAtPath   (path) as TextureImporter;
 				if (imp != null) {
-					imp.wrapMode = TextureWrapMode.Repeat;
+					imp.wrapMode = aDesiredMode;
 					AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
 				}
 			}
@@ -307,7 +322,6 @@ public class Ferr2DT_TerrainMaterialWindow : EditorWindow {
         window.title          = "Ferr2DT Editor";
         if (aMaterial != null && aMaterial.edgeMaterial != null) {
 	        window.minSize = new Vector2(400, 400);
-	        Ferr2DT_TerrainMaterialUtility.CheckMaterialRepeat(aMaterial.fillMaterial);
         }
         window.foldoutStyle           = EditorStyles.foldout;
         window.foldoutStyle.fontStyle = FontStyle.Bold;
@@ -329,26 +343,20 @@ public class Ferr2DT_TerrainMaterialWindow : EditorWindow {
             }
         }
 
-		#if !(UNITY_4_2 || UNITY_4_1 || UNITY_4_1 || UNITY_4_0 || UNITY_3_5 || UNITY_3_4 || UNITY_3_3 || UNITY_3_1 || UNITY_3_0)
 		Undo.RecordObject(material, "Modified Terrain Material");
-		#else
-        Undo.SetSnapshotTarget(material, "Modified Terrain Material");
-        if (!Ferr_EditorTools.HandlesMoving()) {
-            Undo.CreateSnapshot();
-        }
-		#endif
-        if (Ferr_EditorTools.ResetHandles()) {
+
+        if (Ferr.EditorTools.ResetHandles()) {
             GUI.changed = true;
         }
         
         EditorGUILayout .BeginHorizontal ();
         EditorGUILayout .BeginVertical   (GUILayout.Width(width));
 
-        Ferr_EditorTools.Box(5, () => {
+        Ferr.EditorTools.Box(5, () => {
             if (currDir != Ferr2DT_TerrainDirection.None) {
                 Ferr2DT_TerrainMaterialUtility.ShowSample(material, currDir, width-10);
             }
-            Ferr_EditorTools.Box(2, () => {
+            Ferr.EditorTools.Box(2, () => {
                 if (GUILayout.Button("Top")) currDir = Ferr2DT_TerrainDirection.Top;
                 if (currDir == Ferr2DT_TerrainDirection.Top) {
                     if (prevDir != currDir) simpleUVs = Ferr2DT_TerrainMaterialUtility.IsSimple(material.GetDescriptor(currDir));
@@ -357,8 +365,8 @@ public class Ferr2DT_TerrainMaterialWindow : EditorWindow {
                     material.Set(Ferr2DT_TerrainDirection.Top, showTop);
                     if (showTop) ShowDirection(material, currDir);
                 }
-            }, width-10);
-            Ferr_EditorTools.Box(2, () => {
+            }, width-10, 0);
+            Ferr.EditorTools.Box(2, () => {
                 if (GUILayout.Button("Left")) currDir = Ferr2DT_TerrainDirection.Left;
                 if (currDir == Ferr2DT_TerrainDirection.Left) {
                     if (prevDir != currDir) simpleUVs = Ferr2DT_TerrainMaterialUtility.IsSimple(material.GetDescriptor(currDir));
@@ -367,8 +375,8 @@ public class Ferr2DT_TerrainMaterialWindow : EditorWindow {
                     material.Set(Ferr2DT_TerrainDirection.Left, showLeft);
                     if (showLeft) ShowDirection(material, currDir);
                 }
-            }, width - 10);
-            Ferr_EditorTools.Box(2, () => {
+            }, width - 10, 0);
+            Ferr.EditorTools.Box(2, () => {
                 if (GUILayout.Button("Right")) currDir = Ferr2DT_TerrainDirection.Right;
                 if (currDir == Ferr2DT_TerrainDirection.Right) {
                     if (prevDir != currDir) simpleUVs = Ferr2DT_TerrainMaterialUtility.IsSimple(material.GetDescriptor(currDir));
@@ -377,8 +385,8 @@ public class Ferr2DT_TerrainMaterialWindow : EditorWindow {
                     material.Set(Ferr2DT_TerrainDirection.Right, showRight);
                     if (showRight) ShowDirection(material, currDir);
                 }
-            }, width - 10);
-            Ferr_EditorTools.Box(2, () => {
+            }, width - 10, 0);
+            Ferr.EditorTools.Box(2, () => {
                 if (GUILayout.Button("Bottom")) currDir = Ferr2DT_TerrainDirection.Bottom;
                 if (currDir == Ferr2DT_TerrainDirection.Bottom) {
                     if (prevDir != currDir) simpleUVs = Ferr2DT_TerrainMaterialUtility.IsSimple(material.GetDescriptor(currDir));
@@ -387,7 +395,7 @@ public class Ferr2DT_TerrainMaterialWindow : EditorWindow {
                     material.Set(Ferr2DT_TerrainDirection.Bottom, showBottom);
                     if (showBottom) ShowDirection(material, currDir);
                 }
-            }, width - 10);
+            }, width - 10, 0);
         }, 0, (int)this.position.height);
 
         EditorGUILayout.EndVertical  ();
@@ -405,20 +413,14 @@ public class Ferr2DT_TerrainMaterialWindow : EditorWindow {
 
         if (GUI.changed) {
             EditorUtility.SetDirty(material);
-			#if (UNITY_4_2 || UNITY_4_1 || UNITY_4_1 || UNITY_4_0 || UNITY_3_5 || UNITY_3_4 || UNITY_3_3 || UNITY_3_1 || UNITY_3_0)
-            Undo.RegisterSnapshot();
-			#endif
 
             Ferr2DT_PathTerrain[] terrain = GameObject.FindObjectsOfType(typeof(Ferr2DT_PathTerrain)) as Ferr2DT_PathTerrain[];
             for (int i = 0; i < terrain.Length; i++)
             {
                 if(terrain[i].TerrainMaterial == material)
-                    terrain[i].RecreatePath(true);
+                    terrain[i].Build(true);
             }
 		}
-		#if (UNITY_4_2 || UNITY_4_1 || UNITY_4_1 || UNITY_4_0 || UNITY_3_5 || UNITY_3_4 || UNITY_3_3 || UNITY_3_1 || UNITY_3_0)
-        Undo.ClearSnapshotTarget();
-		#endif
 
         prevDir = currDir;
     }

@@ -176,8 +176,9 @@ public class gBerryClass : MonoBehaviour {
 		*/
         //acceleration end
 
-        if (transform.position.x < -4 || transform.position.x > 4 || transform.position.y < -6 || transform.position.y > 6) 
-			if (!staticClass.currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad") &&
+
+        if (transform.position.x < -4 || transform.position.x > 4 || transform.position.y < -6 || transform.position.y > 6)
+            if (!staticClass.currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad") &&
 			    !staticClass.currentSkinAnimator.GetCurrentAnimatorStateInfo(1).IsName("spider sad 0"))
 				StartCoroutine(gSpiderClass.coroutineCry(staticClass.currentSkinAnimator));
 
