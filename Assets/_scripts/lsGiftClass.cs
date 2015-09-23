@@ -23,7 +23,7 @@ public class lsGiftClass : MonoBehaviour {
 	void OnClick () {
 		if (initClass.progress [name] == 0 && giftLevel <= initClass.progress["lastLevel"]) {
 
-			GetComponent<Animation> ().Play ();
+			GetComponent<Animator> ().Play ("button");
 			giftMenu.SetActive (true);
 			clickGift ();
 		}
@@ -87,7 +87,7 @@ public class lsGiftClass : MonoBehaviour {
 	
 	IEnumerator coroutineCloseBonusMenuAnim() {
 		yield return new WaitForSeconds(3F);
-		giftMenu.transform.GetChild(0).GetComponent<Animation>().Play("menu exit");
+		giftMenu.transform.GetChild(0).GetComponent<Animator>().Play("menu exit");
 		StartCoroutine(coroutineCloseBonusMenu());
 	}
 	IEnumerator coroutineCloseBonusMenu() {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-using UnionAssets.FLE;
+//using UnionAssets.FLE;
 using System.Collections.Generic;
 
 public class initLevelMenuClass : MonoBehaviour {
@@ -17,6 +17,7 @@ public class initLevelMenuClass : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Time.timeScale = 1;
 		//temp
 		staticClass.initLevels();
 		//temp

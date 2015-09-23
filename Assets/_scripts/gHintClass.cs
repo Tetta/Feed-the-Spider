@@ -21,7 +21,7 @@ public class gHintClass : MonoBehaviour {
 		//}
 		if (initClass.progress.Count == 0) initClass.getProgress();
 		transform.GetChild(0).GetComponent<UILabel>().text = initClass.progress["hints"].ToString();
-		if (initClass.progress["hints"] != 0) GetComponent<UIPlayAnimation>().enabled = false;
+		//if (initClass.progress["hints"] != 0) GetComponent<UIPlayAnimation>().enabled = false;
 
 		if (hintState == "enable bonus picture") {
 			GameObject.Find("bonuses pictures").transform.GetChild(0).gameObject.SetActive(true);

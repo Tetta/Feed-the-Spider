@@ -18,7 +18,6 @@ public class gBonusClass : MonoBehaviour {
 		if (bonusState == "webs" || bonusState == "teleports") {
 			GetComponent<UIWidget>().autoResizeBoxCollider = false;
 			GetComponent<BoxCollider>().size = new Vector2(4000, 4000);
-			GetComponent<UIPlayAnimation>().enabled = false;
 
 			//ветерок на пауке
 			if (bonusState == "teleports") {
@@ -52,7 +51,6 @@ public class gBonusClass : MonoBehaviour {
 			Debug.Log("2 click");
 			GetComponent<UIWidget>().autoResizeBoxCollider = true;
 			GetComponent<BoxCollider>().size = new Vector2(170, 178);
-			GetComponent<UIPlayAnimation>().enabled = true;
 
 			if (bonusState == "teleports wait click") {
 				StartCoroutine(coroutineTeleportDisable());
@@ -95,9 +93,9 @@ public class gBonusClass : MonoBehaviour {
 		//yield return new WaitForSeconds(0.5F);
 
 		Debug.Log(name);
-		if (name == "webs") GameObject.Find("bonuses pictures").transform.GetChild(2).gameObject.GetComponent<Animator>().Play("menu exit unscaled");
-		if (name == "teleports") GameObject.Find("bonuses pictures").transform.GetChild(3).gameObject.GetComponent<Animator>().Play("menu exit unscaled");
-		if (name == "collectors") GameObject.Find("bonuses pictures").transform.GetChild(4).gameObject.GetComponent<Animator>().Play("menu exit unscaled");
+		if (name == "webs") GameObject.Find("bonuses pictures").transform.GetChild(2).gameObject.GetComponent<Animator>().Play("menu exit");
+		if (name == "teleports") GameObject.Find("bonuses pictures").transform.GetChild(3).gameObject.GetComponent<Animator>().Play("menu exit");
+		if (name == "collectors") GameObject.Find("bonuses pictures").transform.GetChild(4).gameObject.GetComponent<Animator>().Play("menu exit");
 		GameObject.Find("bonuses pictures").transform.GetChild(0).gameObject.SetActive(false);
 		Debug.Log(name);
 		yield return StartCoroutine(staticClass.waitForRealTime(0.3F));

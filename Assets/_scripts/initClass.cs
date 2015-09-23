@@ -12,6 +12,7 @@ public class initClass : MonoBehaviour {
 	public GameObject leaderboards;
 	public GameObject closeMenu;
 	public GameObject market;
+	public GameObject spider;
 
 	static public Dictionary<string, int> progress = new Dictionary<string, int>();
 	//static public string mainMenuState = "start";
@@ -25,13 +26,13 @@ public class initClass : MonoBehaviour {
 		if (progress.Count == 0) {
 			getProgress();
 			staticClass.initLevels();
-			market.SetActive(true);
 			if (progress["sound"] == 0) setSound(false);
 			if (progress["music"] == 1) GameObject.Find("music").GetComponent<AudioSource>().enabled = true;
 			//опции
 			GameObject.Find("settings folder").transform.GetChild(0).gameObject.SetActive(true);
 			GameObject.Find(Localization.language).GetComponent<UIToggle>().value = true;
-			GameObject.Find("settings folder").transform.GetChild(0).gameObject.SetActive(false);
+            //GameObject.Find("English").GetComponent<UIToggle>().value = true;
+            GameObject.Find("settings folder").transform.GetChild(0).gameObject.SetActive(false);
 			//
 			//push
 			// bug GameThrive.Init("0e3f3ad6-c7ee-11e4-9aca-47e056863935", "660292827653", HandleNotification);
@@ -61,8 +62,17 @@ public class initClass : MonoBehaviour {
 
 			Debug.Log( "......................................");
 			//
+
+
 		}
 
+		//market
+		Debug.Log ("initClass: market.SetActive(true)");
+		market.SetActive(true);
+
+		//включаем текущий скин и выключаем все остальные
+		staticClass.changeSkin ();
+		staticClass.changeHat ();
 
 		if (GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) {
 			achievements.SetActive(true);
@@ -71,8 +81,9 @@ public class initClass : MonoBehaviour {
 		} else if (progress["googlePlay"] == 1) GooglePlayConnection.instance.connect ();
 
 		//listen for GooglePlayConnection events
-		GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_CONNECTED, OnPlayerConnected);
-		GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_DISCONNECTED, OnPlayerDisconnected);
+		//off (new plugin)
+		//GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_CONNECTED, OnPlayerConnected);
+		//GooglePlayConnection.instance.addEventListener (GooglePlayConnection.PLAYER_DISCONNECTED, OnPlayerDisconnected);
 	}
 
 	// Update is called once per frame
@@ -118,6 +129,7 @@ public class initClass : MonoBehaviour {
 		//сброс прогресса
 		//PlayerPrefs.SetString("progress", strProgressDefault);
 		string strProgress = PlayerPrefs.GetString("progress");
+		Debug.Log (strProgress);
 		//NGUIDebug.Log(strProgress);
 		if (strProgress == "") strProgress = strProgressDefault;
 		string strKey = "", strValue = "";
@@ -128,6 +140,11 @@ public class initClass : MonoBehaviour {
 			else if (strProgress.Substring(i, 1) == ";") {
 				flag = true;
 				progress[strKey] = int.Parse(strValue);
+				//скины и шапки. запись в статик переменную
+				if (strKey.Substring(0, 4) == "skin") if (progress[strKey] == 2) staticClass.currentSkin = strKey;
+				if (strKey.Substring(0, 3) == "hat") if (progress[strKey] == 2) staticClass.currentHat = strKey;
+				if (strKey.Length == 6) if(strKey.Substring(0, 5) == "berry") if (progress[strKey] == 2) staticClass.currentBerry = strKey;
+				//if (strKey.Substring(0, 4) == "skin") {Debug.Log (strKey); Debug.Log (progress[strKey]);}
 				strKey = "";
 				strValue = "";
 			} else if (flag) strKey += strProgress.Substring(i, 1);
@@ -139,10 +156,13 @@ public class initClass : MonoBehaviour {
 			
 			else if (strProgressDefault.Substring(i, 1) == ";") {
 				flag = true;
-				if (!progress.ContainsKey(strKey)) progress[strKey] = 0;
+				if (!progress.ContainsKey(strKey)) progress[strKey] = int.Parse(strValue);
 				strKey = "";
+				strValue = "";
 			} else if (flag) strKey += strProgressDefault.Substring(i, 1);
+			else if (!flag) strValue += strProgressDefault.Substring(i, 1);
 		}
+		//Debug.Log (strProgress);
 		saveProgress();
 	}
 
@@ -156,8 +176,9 @@ public class initClass : MonoBehaviour {
 
 	private void OnDestroy() {
 		if(!GooglePlayConnection.IsDestroyed) {
-			GooglePlayConnection.instance.removeEventListener (GooglePlayConnection.PLAYER_CONNECTED, OnPlayerConnected);
-			GooglePlayConnection.instance.removeEventListener (GooglePlayConnection.PLAYER_DISCONNECTED, OnPlayerDisconnected);
+			//off (new plugin)
+			//GooglePlayConnection.instance.removeEventListener (GooglePlayConnection.PLAYER_CONNECTED, OnPlayerConnected);
+			//GooglePlayConnection.instance.removeEventListener (GooglePlayConnection.PLAYER_DISCONNECTED, OnPlayerDisconnected);
 		}
 	}
 

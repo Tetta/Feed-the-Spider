@@ -12,8 +12,9 @@ public class gGrootClass : MonoBehaviour {
 	private GameObject spider;
 	private int globalCounter = 0;
 	private string grootState = "";
-	private float  chainLength = 0.1735F; // origin 0.17578F;
-	private int maxChainCount = 10;
+	//private float  chainLength = 0.17578F; // -45 +45
+    private float chainLength = 90; // -45 +45
+    private int maxChainCount = 10;
 	private int chainCount = 0;
 	private GameObject[] chain;
 	private float angle;
@@ -33,8 +34,8 @@ public class gGrootClass : MonoBehaviour {
 		chain = new GameObject[11];
 		jointGroot = GetComponent<HingeJoint2D> ();
 		terrains = GameObject.FindGameObjectsWithTag("terrain");
-		spider = GameObject.Find("spider");
-		berry = GameObject.Find("berry");
+		spider = GameObject.Find("/root/spider");
+		berry = GameObject.Find("/root/berry");
 
 	}
 	
@@ -104,11 +105,13 @@ public class gGrootClass : MonoBehaviour {
 
 				Vector3 mousePosition = Camera.main.ScreenToWorldPoint (gHintClass.checkHint (gameObject, true));
 				Vector3 diff = mousePosition - transform.position;
-				//Debug.Log (diff);
-				float pointBDiffC = Mathf.Sqrt (diff.x * diff.x + diff.y * diff.y);
+                //diff = mousePosition - transform.localPosition;
+                //Debug.Log (diff);
+                float pointBDiffC = Mathf.Sqrt (diff.x * diff.x + diff.y * diff.y);
 				diffX = chainLength / pointBDiffC * diff.x;
 				diffY = chainLength / pointBDiffC * diff.y;
-				grootState = "creating";
+
+                grootState = "creating";
 				GetComponent<Animator>().Play("groot");
 				timeStartCreating = Time.unscaledTime + 0.3F;
 			}
@@ -134,11 +137,13 @@ public class gGrootClass : MonoBehaviour {
 		chain[i].name = "chain " + i;
 		chain[i].transform.parent = transform;
 		chain[i].transform.localScale = new Vector3(1, 1, 1);
-		for (int y = 1; y <= i; y++) {
-			chain[y].transform.position = new Vector3(diffX * (i - y) + diffX * 1.8F , diffY * (i - y ) + diffY * 1.8F, 0) + transform.position;
-			//chain[y].transform.localPosition = new Vector3(diffX * (i - y) * 512, diffY * (i - y ) * 512, 0);
-		}
-		if (i == 1) {
+
+        for (int y = 1; y <= i; y++) {
+             //chain[y].transform.position = new Vector3(diffX * (i - y) + diffX * 0.5F, diffY * (i - y) + diffY * 0.5F, 0) + transform.position + (Vector3)GetComponent<HingeJoint2D>().anchor. /512;
+            chain[y].transform.localPosition = new Vector3(-chainLength * (i - y) - chainLength * 0.5F, 0, 0) + (Vector3)GetComponent<HingeJoint2D>().anchor;
+
+        }
+        if (i == 1) {
 			jointGroot.connectedBody = chain[i].GetComponent<Rigidbody2D>();
 			jointGroot.enabled = true;
 		} else {
@@ -152,22 +157,22 @@ public class gGrootClass : MonoBehaviour {
 			if (terrain.GetComponent<Collider2D>().OverlapPoint(transform.position)) continue;
 
 			//first point
-			if (terrain.GetComponent<Collider2D>().OverlapPoint(chain[1].transform.position + new Vector3(diffX * 0.75F, diffY * 0.75F, 0))) {
-				chainFirst.SetActive(true);
-				//chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX * 0.75F, diffY * 0.75F, 0);
-				chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX* 0.5F, diffY* 0.5F, 0);
-				chainFirst.GetComponent<HingeJoint2D> ().connectedBody = chain[1].GetComponent<Rigidbody2D>();
+			if (terrain.GetComponent<Collider2D>().OverlapPoint(chain[1].transform.position + new Vector3(diffX * 0.75F, diffY * 0.75F, 0)/512)) {
+                chainFirst.SetActive(true);
+                //chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX* 0.5F, diffY* 0.5F, 0);
+                chainFirst.transform.localPosition = chain[1].transform.localPosition + new Vector3( - chainLength * 0.5F, 0, 0);
+                chainFirst.GetComponent<HingeJoint2D> ().connectedBody = chain[1].GetComponent<Rigidbody2D>();
 				grootState = "enable";
 				terrainGrootChains.Add(new terrainGrootChain() {terrain = terrain, chain = chain[1]});
 				continue;
 				//GetComponent<LineRenderer>().material.mainTextureScale = new Vector2(chainCount, 1);
 			} 
 			//second point
-			if (terrain.GetComponent<Collider2D>().OverlapPoint(chain[1].transform.position + new Vector3(diffX * 0.5F, diffY * 0.5F, 0))) {
-				chainFirst.SetActive(true);
-				//chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX * 0.5F, diffY * 0.5F, 0);
-				chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX* 0.5F, diffY* 0.5F, 0);
-				chainFirst.GetComponent<HingeJoint2D> ().connectedBody = chain[1].GetComponent<Rigidbody2D>();
+			if (terrain.GetComponent<Collider2D>().OverlapPoint(chain[1].transform.position + new Vector3(diffX * 0.5F, diffY * 0.5F, 0) / 512)) {
+                chainFirst.SetActive(true);
+                //chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX* 0.5F, diffY* 0.5F, 0);
+                chainFirst.transform.localPosition = chain[1].transform.localPosition + new Vector3(-chainLength * 0.5F, 0, 0);
+                chainFirst.GetComponent<HingeJoint2D> ().connectedBody = chain[1].GetComponent<Rigidbody2D>();
 				grootState = "enable";
 				terrainGrootChains.Add(new terrainGrootChain() {terrain = terrain, chain = chain[1]});
 				continue;
@@ -175,11 +180,11 @@ public class gGrootClass : MonoBehaviour {
 			} 
 
 			//3 point
-			if (terrain.GetComponent<Collider2D>().OverlapPoint(chain[1].transform.position - new Vector3(diffX * 0.25F, diffY * 0.25F, 0))) {
-				chainFirst.SetActive(true);
-				//chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX, diffY, 0);
-				chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX* 0.5F, diffY* 0.5F, 0);
-				chainFirst.GetComponent<HingeJoint2D> ().connectedBody = chain[1].GetComponent<Rigidbody2D>();
+			if (terrain.GetComponent<Collider2D>().OverlapPoint(chain[1].transform.position - new Vector3(diffX * 0.25F, diffY * 0.25F, 0) / 512)) {
+                chainFirst.SetActive(true);
+                //chainFirst.transform.position = chain[1].transform.position + new Vector3(diffX* 0.5F, diffY* 0.5F, 0);
+                chainFirst.transform.localPosition = chain[1].transform.localPosition + new Vector3(-chainLength * 0.5F, 0, 0);
+                chainFirst.GetComponent<HingeJoint2D> ().connectedBody = chain[1].GetComponent<Rigidbody2D>();
 				grootState = "enable";
 				terrainGrootChains.Add(new terrainGrootChain() {terrain = terrain, chain = chain[1]});
 				continue;

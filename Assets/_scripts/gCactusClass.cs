@@ -17,7 +17,8 @@ public class gCactusClass : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collisionObject) {
 		if (collisionObject.gameObject.name == "berry" || collisionObject.gameObject.name == "spider") {
-			restart.SendMessage("OnClick");
+			restart.GetComponent<iClickClass>().StartCoroutine("coroutinePressButtonTransition");
+			//restart.SendMessage("OnPress(false)");
 		}
 		
 	}

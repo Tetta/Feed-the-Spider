@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnionAssets.FLE;
+//using UnionAssets.FLE;
 
 public class marketClass : MonoBehaviour {
 	public static marketClass instance = null;
@@ -19,17 +19,19 @@ public class marketClass : MonoBehaviour {
 	public UILabel energyLabel;
 	public UILabel hintsLabel;
 	public UILabel collectorsLabel;
+    public UILabel boostersLabel;
 
-	public GameObject marketMainMenu;
+    public GameObject marketMainMenu;
 	public GameObject specialMenu;
 	public GameObject coinsMenu;
 	public GameObject hintsMenu;
 	public GameObject customizationMenu;
 	public GameObject notCoinsMenu;
 	public GameObject thanksMenu;
+    public GameObject openBoosterMenu;
+    public GameObject boosterMenu;
 
-	
-	private static bool ListnersAdded = false;
+    private static bool ListnersAdded = false;
 	public GameObject item;
 
 	// Use this for initialization
@@ -56,19 +58,22 @@ public class marketClass : MonoBehaviour {
 		AndroidInAppPurchaseManager.instance.addProduct(complect);
 		
 		
+
 		//listening for purchase and consume events
-		AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_PURCHASED, OnProductPurchased);
-		AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_CONSUMED,  OnProductConsumed);
+		//off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_PURCHASED, OnProductPurchased);
+		//off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_CONSUMED,  OnProductConsumed);
 		
 		//initilaizing store
-		AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
+		//off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
 		
 		//you may use loadStore function without parametr if you have filled base64EncodedPublicKey in plugin settings
-		AndroidInAppPurchaseManager.instance.loadStore();
+		//off AndroidInAppPurchaseManager.instance.loadStore();
 		
 		ListnersAdded = true;
-		gameObject.SetActive(false);
-	}
+		//gameObject.SetActive(false);
+		transform.position = new Vector3 (0, 0, -10000);
+        boostersLabel.text = initClass.progress["boosters"].ToString();
+    }
 
 	//--------------------------------------
 	//  PUBLIC METHODS
@@ -78,10 +83,17 @@ public class marketClass : MonoBehaviour {
 		if (initClass.progress.Count == 0) {
 			initClass.getProgress();
 		}
-		coinsLabel.text = initClass.progress["coins"].ToString();
-		energyLabel.text = initClass.progress["energy"].ToString();
-		hintsLabel.text = initClass.progress["hints"].ToString();
-		collectorsLabel.text = initClass.progress["collectors"].ToString();
+		//for tests
+		//Time.timeScale = 0;
+
+		//coinsLabel.text = initClass.progress["coins"].ToString();
+		//energyLabel.text = initClass.progress["energy"].ToString();
+		//hintsLabel.text = initClass.progress["hints"].ToString();
+		//collectorsLabel.text = initClass.progress["collectors"].ToString();
+	}
+	void OnDisable() {
+		Debug.Log ("OnDisable");
+		//Time.timeScale = 1;
 	}
 
 	public void purchaseForCoins() {
@@ -92,52 +104,9 @@ public class marketClass : MonoBehaviour {
 		int cost = int.Parse(item.transform.GetChild(0).GetComponent<UILabel>().text);
 		bool bought = false;
 
-		//если скин
-		if (item.name.Substring(0,4) == "skin") {
-			//покупаем скин
-			if (initClass.progress[item.name] == 0) {
-				if (cost > initClass.progress["coins"]) {
-					notCoinsMenu.SetActive(true);
-				} else {
-					initClass.progress["coins"] -= cost;
-					coinsLabel.text = initClass.progress["coins"].ToString();
-					thanksMenu.SetActive(true);
-					item.transform.GetChild(3).GetComponent<UISprite>().color = new Color32(255, 255, 255, 255);
-					//убираем label price и icon price [0] и [2]
-					item.transform.GetChild(0).gameObject.SetActive(false);
-					item.transform.GetChild(2).gameObject.SetActive(false);
-					//добавляем accept [3]
-					item.transform.GetChild(3).gameObject.SetActive(true);
-					bought = true;
-				}
-			}
-			if (bought || initClass.progress[item.name] != 0) {
-				bought = true;
-				//если купили, делаем скин активным
-				//делаем accept [3] везде неактивным
-				for (int j = 1; j <= 2; j++) {
-					item.transform.parent.GetChild(j - 1).GetChild(3).GetComponent<UISprite>().color = new Color32(100, 100, 100, 100);
-					if (initClass.progress["skin" + j] == 2) initClass.progress["skin" + j] = 1;
-				}
-				item.transform.GetChild(3).GetComponent<UISprite>().color = new Color32(255, 255, 255, 255);
-				initClass.progress[item.name] = 2;
-			}
-			
-			
-		//hints		
-		} else if (item.name.Substring(0,4) == "hint") {
-			if (cost > initClass.progress["coins"]) {
-					notCoinsMenu.SetActive(true);
-			} else {
-				bought = true;
-				initClass.progress["coins"] -= cost;
-				initClass.progress["hints"] += amount;
-				initClass.saveProgress();
-				coinsLabel.text = initClass.progress["coins"].ToString();
-				hintsLabel.text = initClass.progress["hints"].ToString();
-				thanksMenu.SetActive(true);
-
-			}
+        //если скин
+        if (item.name.Substring(0, 4) == "skin") {
+        
 		//energy		
 		} else if (item.name == "energy item") {
 			if (cost > initClass.progress["coins"]) {
@@ -149,7 +118,8 @@ public class marketClass : MonoBehaviour {
 				ncm.name = "not coins menu";
 				UIPlayAnimation anim = ncm.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UIPlayAnimation>();
 				GameObject backTr = GameObject.Find("root/Camera/UI Root/back transition");
-				EventDelegate.Add(anim.onFinished, backTr.GetComponent<iClickClass>().backTransitionExit);
+				//bug new system
+				//EventDelegate.Add(anim.onFinished, backTr.GetComponent<iClickClass>().backTransitionExit);
 			} else {
 				bought = true;
 				initClass.progress["coins"] -= cost;
@@ -231,7 +201,7 @@ public class marketClass : MonoBehaviour {
 
 	}
 }
-	
+	/*
 	private static void OnProductPurchased(CEvent e) {
 		BillingResult result = e.data as BillingResult;
 		
@@ -271,12 +241,12 @@ public class marketClass : MonoBehaviour {
 	
 	private static void OnBillingConnected(CEvent e) {
 		BillingResult result = e.data as BillingResult;
-		AndroidInAppPurchaseManager.instance.removeEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
+		//off AndroidInAppPurchaseManager.instance.removeEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
 		
 		
 		if(result.isSuccess) {
 			//Store connection is Successful. Next we loading product and customer purchasing details
-			AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_RETRIEVE_PRODUC_FINISHED, OnRetrieveProductsFinised);
+			//off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_RETRIEVE_PRODUC_FINISHED, OnRetrieveProductsFinised);
 			AndroidInAppPurchaseManager.instance.retrieveProducDetails();
 			
 		} 
@@ -290,7 +260,7 @@ public class marketClass : MonoBehaviour {
 	
 	private static void OnRetrieveProductsFinised(CEvent e) {
 		BillingResult result = e.data as BillingResult;
-		AndroidInAppPurchaseManager.instance.removeEventListener (AndroidInAppPurchaseManager.ON_RETRIEVE_PRODUC_FINISHED, OnRetrieveProductsFinised);
+		//off AndroidInAppPurchaseManager.instance.removeEventListener (AndroidInAppPurchaseManager.ON_RETRIEVE_PRODUC_FINISHED, OnRetrieveProductsFinised);
 		
 		if(result.isSuccess) {
 			
@@ -304,7 +274,7 @@ public class marketClass : MonoBehaviour {
 		
 	}
 	
-	
+	*/
 	
 	private static void UpdateStoreData() {
 		//marketClass.instance.

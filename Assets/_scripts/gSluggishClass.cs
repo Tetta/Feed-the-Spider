@@ -5,22 +5,18 @@ public class gSluggishClass : MonoBehaviour {
 	private string sluggishState = "";
 	private GameObject berry;
 	private float timer;
+    private float angle;
+    private Transform colliderCheckTr;
 
-	// Use this for initialization
-	void Start () {
-		berry = GameObject.Find("berry");
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (sluggishState == "active") {
-			Vector3 mousePosition = Camera.main.ScreenToWorldPoint(gHintClass.checkHint(gameObject, true));
-			Vector3 relative = transform.InverseTransformPoint(mousePosition);
-			float angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
-			//transform.rotation = Quaternion.Euler(0, 0, 180 - angle);
-			transform.Rotate(0, 0, 180 - angle);
-		}
-		if (sluggishState == "collision") {
+
+    // Use this for initialization
+    void Start() {
+        berry = GameObject.Find("berry");
+        colliderCheckTr = transform.parent.GetChild(1);
+    }
+    // Update is called once per frame
+    void Update () {
+        if (sluggishState == "collision") {
 			//berry.transform.rotation = Quaternion.Euler(0, 0, 0);
 			//berry.transform.position = new Vector3(transform.position.x, transform.position.y - 0.32F * transform.localScale.y, 10);
 		}
@@ -28,8 +24,23 @@ public class gSluggishClass : MonoBehaviour {
 			if (Time.time - timer > 0.3F) collisionEnter2D(); 
 		}
 	}
+    void FixedUpdate () {
+        if (sluggishState == "active") {
+            
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(gHintClass.checkHint(gameObject, true));
+            Vector3 relative = transform.parent.InverseTransformPoint(mousePosition);
+            angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
 
-	void collisionEnter2D() {
+            GetComponent<Rigidbody2D>().MoveRotation(180 - angle);
+
+
+
+        }
+
+
+    }
+
+    void collisionEnter2D() {
 		//tutorial
 		gHandClass.addHand();
 		berry.GetComponent<Rigidbody2D>().isKinematic = true;
@@ -67,12 +78,13 @@ public class gSluggishClass : MonoBehaviour {
 			//tutorial
 			gHandClass.delHand();
 
-			GetComponent<HingeJoint2D>().enabled = false;
-			GetComponent<Rigidbody2D>().isKinematic = true;
-			transform.localScale = new Vector3(0.96F, 1.04F, 1);
+            GetComponent<Rigidbody2D>().drag = 20;
+            Debug.Log(GetComponent<Rigidbody2D>().drag);
+            transform.localScale = new Vector3(0.96F, 1.04F, 1);
 			sluggishState = "active";
 			transform.parent.GetComponent<Animation>().Stop();
 			gHintClass.checkHint(gameObject);
+
 		}
 		
 		if (sluggishState == "active" && !flag) {
@@ -96,9 +108,7 @@ public class gSluggishClass : MonoBehaviour {
 			transform.parent.GetComponent<Animation>()["sluggish eye"].speed = -1;
 			transform.parent.GetComponent<Animation>().Blend("sluggish eye");
 			transform.parent.GetComponent<Animation>().CrossFadeQueued("sluggish idle");
-			GetComponent<HingeJoint2D>().enabled = true;
-			GetComponent<Rigidbody2D>().isKinematic = false;
-			transform.localScale = new Vector3(1, 1, 1);
+            GetComponent<Rigidbody2D>().drag = 2;
 
 			timer = Time.time;
 			sluggishState = "fly";

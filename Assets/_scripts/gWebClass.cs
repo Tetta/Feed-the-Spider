@@ -230,8 +230,7 @@ public class gWebClass : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate () {
-	}
+
 	public IEnumerator Coroutine(){
 		if (GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) GooglePlayManager.instance.IncrementAchievement("achievement_use_web_50_times", 1);
 		yield return new WaitForSeconds(0.1F);

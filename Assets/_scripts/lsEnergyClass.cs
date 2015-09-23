@@ -45,19 +45,21 @@ public class lsEnergyClass : MonoBehaviour {
 		StartCoroutine("Coroutine");
 	}
 
-	public static int checkEnergy(bool flag) {
-		if (initClass.progress.Count == 0) initClass.getProgress();
-
-		//число секунд с 01.01.2015
-		int now = (int)(DateTime.UtcNow - new DateTime(2015, 1, 1)).TotalSeconds;
-		int deltaEnergy = Mathf.CeilToInt( (now - initClass.progress["energyTime"]) / costEnergy);
-		initClass.progress["energy"] += deltaEnergy;
-		int mod = (now - initClass.progress["energyTime"]) % costEnergy;
-		initClass.progress["energyTime"] = now - mod;
-		if (initClass.progress["energy"] > maxEnergy) initClass.progress["energy"] = maxEnergy;
+    public static int checkEnergy(bool flag) {
+        if (initClass.progress.Count == 0) initClass.getProgress();
+        int mod = 0;
+        if (initClass.progress["energy"] < maxEnergy) { 
+            //число секунд с 01.01.2015
+            int now = (int)(DateTime.UtcNow - new DateTime(2015, 1, 1)).TotalSeconds;
+            int deltaEnergy = Mathf.CeilToInt((now - initClass.progress["energyTime"]) / costEnergy);
+            initClass.progress["energy"] += deltaEnergy;
+            mod = (now - initClass.progress["energyTime"]) % costEnergy;
+            initClass.progress["energyTime"] = now - mod;
+            if (initClass.progress["energy"] > maxEnergy) initClass.progress["energy"] = maxEnergy;
+        }
 		if (flag) {
 			initClass.saveProgress();
-			if (maxEnergy == initClass.progress["energy"]) GameObject.Find("energy").SendMessage("stopCoroutineEnergyMenu");
+			if (maxEnergy <= initClass.progress["energy"]) GameObject.Find("energy").SendMessage("stopCoroutineEnergyMenu");
 			return mod;
 		} else {
 			if (initClass.progress["energy"] > 0) {
