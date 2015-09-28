@@ -78,8 +78,9 @@ public class lsLevelMenuClass: MonoBehaviour {
 		titleNumberLevel.text = initClass.progress["currentLevel"].ToString();
 		setContent2 ();
 	}
-	
-	public void completeMenuEnable (int bonusTime, int bonusLevel, bool gem, int starsCount) {
+
+    //public void completeMenuEnable(int bonusTime, int bonusLevel, bool gem, int starsCount) {
+    public void completeMenuEnable (float timeLevel, bool gem, int starsCount) {
 		setDefault ();
 		stars1.SetActive(false);
 		stars2.SetActive(false);
@@ -90,13 +91,13 @@ public class lsLevelMenuClass: MonoBehaviour {
 			levelMenu.transform.GetChild (0).GetChild (1).GetComponent<UIToggle> ().value = true;
 		}
 		Debug.Log ("completeMenuEnable");
-		StartCoroutine(coroutineCompleteMenuScore(gem, starsCount));
+		StartCoroutine(coroutineCompleteMenuScore(timeLevel, gem, starsCount));
 
 		
 		
 
 	}
-	IEnumerator coroutineCompleteMenuScore(bool gem, int starsCount) {
+	IEnumerator coroutineCompleteMenuScore(float timeLevel, bool gem, int starsCount) {
 		//init gems
 		int levelProgress = initClass.progress["level" + initClass.progress["currentLevel"]];
 		if (levelProgress == 1 || levelProgress == 3) gem1Active.SetActive(true);
@@ -107,8 +108,8 @@ public class lsLevelMenuClass: MonoBehaviour {
 		UILabel scoreGem1 = grid.GetChild (2).GetChild (0).GetComponent<UILabel>();
 		UILabel scoreGem2 = grid.GetChild (3).GetChild (0).GetComponent<UILabel>();
 		for (int i = 0; i <= 100; i += 5) {
-			scoreTime.text = (Mathf.Round(400 * i / 100)).ToString();
-			scoreLvl.text = (Mathf.Round(300 * i / 100)).ToString();
+			scoreTime.text = (Mathf.Round((3000 - 100 * timeLevel) * i / 100)).ToString();
+			scoreLvl.text = (Mathf.Round(1000 * starsCount * i / 100)).ToString();
 			scoreGem1.text = (Mathf.Round(200 * i / 100)).ToString();
 			scoreGem2.text = (Mathf.Round(100 * i / 100)).ToString();
 			yield return new WaitForSeconds (0.05F);

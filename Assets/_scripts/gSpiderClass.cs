@@ -21,8 +21,9 @@ public class gSpiderClass : MonoBehaviour {
 		guiStars[1] = GameObject.Find("gui star 2");
 		guiStars[2] = GameObject.Find("gui star 3");	
 		berry = GameObject.Find("berry");
+        if (initClass.progress.Count == 0) initClass.getProgress();
 
-		/*
+        /*
 		//включаем текущий скин и выключаем все остальные
 		for (int i = 0; i < 5; i++) {
 			if (transform.GetChild(i).name == staticClass.currentSkin) {
@@ -39,8 +40,8 @@ public class gSpiderClass : MonoBehaviour {
 				transform.GetChild(i).gameObject.SetActive(false);
 		}
 		*/
-		//staticClass.changeSkin (out currentSkinAnimator);
-		staticClass.changeSkin ();
+        //staticClass.changeSkin (out currentSkinAnimator);
+        staticClass.changeSkin ();
 		staticClass.changeHat ();
 		//currentSkinAnimator = transform.GetChild(0).GetComponent<Animator>();
 		rigid2D = GetComponent<Rigidbody2D> ();

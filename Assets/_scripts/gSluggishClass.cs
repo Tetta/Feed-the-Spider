@@ -32,9 +32,6 @@ public class gSluggishClass : MonoBehaviour {
             angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
 
             GetComponent<Rigidbody2D>().MoveRotation(180 - angle);
-
-
-
         }
 
 

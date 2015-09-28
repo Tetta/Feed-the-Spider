@@ -269,11 +269,8 @@ public class gBerryClass : MonoBehaviour {
 		// остановка выполнения функции на costEnergy секунд
 		yield return new WaitForSeconds(1.5F);
 		collisionObject.transform.GetChild(0).GetComponent<Animator>().Play("spider idle", 1);
-		completeMenu.SetActive(true);
-		//вызов complete menu, передача полученныx очков (int bonusTime, int bonusLevel, bool gem, int starsCount)
-		completeMenu.GetComponent<lsLevelMenuClass> ().completeMenuEnable (400, 200, true, 3);
 
-		berryState = "finish";
+        berryState = "finish";
 
 		int lvlNumber = Convert.ToInt32(Application.loadedLevelName.Substring(5));
 
@@ -290,14 +287,15 @@ public class gBerryClass : MonoBehaviour {
 
 
 		}
-
+        bool flagGemGetting = false;
 		//gems
 		if (initLevelMenuClass.levelDemands == 0) {
 			//for (int i = 0; i < starsCounter ; i++) {
 				//guiStarsComplete[i].color = new Color32(255, 255, 255, 255);
 			//}
 			if (starsCounter == 3 && initClass.progress[Application.loadedLevelName] != 1 && initClass.progress[Application.loadedLevelName] != 3) {
-				initClass.progress["gems"] ++;
+                flagGemGetting = true;
+                initClass.progress["gems"] ++;
 				if (initClass.progress[Application.loadedLevelName] == 0) initClass.progress[Application.loadedLevelName] = 1;
 				else initClass.progress[Application.loadedLevelName] = 3;
 			}
@@ -315,7 +313,8 @@ public class gBerryClass : MonoBehaviour {
 			else if (levels == 203 && staticClass.useYeti == false) flag = true;
 			else if (levels == 204 && staticClass.useGroot == false) flag = true;
 			if (flag) {
-				initClass.progress["gems"] ++;
+                flagGemGetting = true;
+                initClass.progress["gems"] ++;
 				if (initClass.progress[Application.loadedLevelName] == 0) initClass.progress[Application.loadedLevelName] = 2;
 				else initClass.progress[Application.loadedLevelName] = 3;
 			}
@@ -330,7 +329,12 @@ public class gBerryClass : MonoBehaviour {
 		
 		initClass.saveProgress();
 
-	}
+        completeMenu.SetActive(true);
+
+        //вызов complete menu, передача полученныx очков (float timeLevel, bool gem, int starsCount)
+        completeMenu.GetComponent<lsLevelMenuClass>().completeMenuEnable(Time.timeSinceLevelLoad, flagGemGetting, starsCounter);
+
+    }
 
 
 }
