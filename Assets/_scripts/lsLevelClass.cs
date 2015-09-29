@@ -41,15 +41,15 @@ public class lsLevelClass : MonoBehaviour {
 	void OnClick() {
 		int lastLevel = initClass.progress["lastLevel"];
 		if (initClass.progress["currentLevel"] == level) {
-			GameObject.Find("/root/spider").transform.GetChild(0).GetComponent<Animator>().Play("spider jump");
-			GameObject.Find("/root/spider").SendMessage("selectLevelMenuCorourine");
+			GameObject.Find("root/spider").transform.GetChild(0).GetComponent<Animator>().Play("spider jump");
+			GameObject.Find("root/spider").SendMessage("selectLevelMenuCorourine");
 
 		} else {
 			if ((prevLevel == 0 && lastLevel + 1 >= level) || (prevLevel != 0 && lastLevel >= prevLevel)) {
 				initClass.progress["currentLevel"] = level;
 				initClass.saveProgress();
 			}
-			GameObject.Find("/root/spider").SendMessage("clickLevel", transform.position);
+			GameObject.Find("root/spider").SendMessage("clickLevel", transform.position);
 		}
 
 	}

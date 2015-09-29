@@ -119,7 +119,7 @@ public class lsLevelMenuClass: MonoBehaviour {
             //включаем +100 coins
             scoreAll.GetChild(2).gameObject.SetActive(true);
             scoreAll.GetChild(2).GetChild(1).GetComponent<UILabel>().text = Mathf.RoundToInt((scoreFinal - (initClass.progress["score" + lvlNumber + "_1"] + initClass.progress["score" + lvlNumber + "_2"]))/100).ToString();
-            initClass.progress["coins"] = Mathf.RoundToInt((scoreFinal - (initClass.progress["score" + lvlNumber + "_1"] + initClass.progress["score" + lvlNumber + "_2"]))/100);
+            initClass.progress["coins"] += Mathf.RoundToInt((scoreFinal - (initClass.progress["score" + lvlNumber + "_1"] + initClass.progress["score" + lvlNumber + "_2"]))/100);
         }
         else scoreFinal = initClass.progress["score" + lvlNumber + "_1"] + initClass.progress["score" + lvlNumber + "_2"];
         for (int i = 0; i <= 100; i += 5) {

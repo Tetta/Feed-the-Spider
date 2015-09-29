@@ -31,9 +31,12 @@ public class lsSpiderClass : MonoBehaviour {
 	void Start () {
 		if (initClass.progress.Count == 0) initClass.getProgress();
 		transform.localPosition = GameObject.Find("level " + initClass.progress["currentLevel"]).transform.localPosition + new Vector3(0, 104, 0);
-		if (transform.position.x > 0) cameraUI.transform.position = new Vector3(transform.position.x, cameraUI.transform.position.y, cameraUI.transform.position.z);
-
-		staticClass.changeSkin ();
+        //if (transform.position.x > 0) cameraUI.transform.position = new Vector3(transform.position.x, cameraUI.transform.position.y, cameraUI.transform.position.z);
+        if (transform.position.x > 0) {
+            //transform.parent.position = new Vector3(-transform.position.x, 0, 0);
+            transform.parent.GetComponent<UIScrollView>().MoveAbsolute(new Vector3(-transform.position.x, 0, 0));
+        }
+        staticClass.changeSkin ();
 		staticClass.changeHat ();
 
 	}

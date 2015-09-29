@@ -53,6 +53,10 @@ public class iClickClass : MonoBehaviour {
         if (functionDrag != "") SendMessage(functionDrag);
     }
 
+    void testMap() {
+        Debug.Log(234);
+    }
+
     public IEnumerator coroutinePressButton() {
         GetComponent<Animator>().Play("button");
         yield return StartCoroutine(staticClass.waitForRealTime(0.2F));
