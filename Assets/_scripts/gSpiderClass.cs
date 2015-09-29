@@ -9,7 +9,6 @@ public class gSpiderClass : MonoBehaviour {
 	private int fixedUpdateCount;
 	private GameObject berry;
 	//public Animator currentSkinAnimator;
-	private Rigidbody2D rigid2D;
 	public static List<int> websSpider = new List<int>();
 	//private GameObject completeMenu;
 	//private GameObject berry;
@@ -44,8 +43,7 @@ public class gSpiderClass : MonoBehaviour {
         staticClass.changeSkin ();
 		staticClass.changeHat ();
 		//currentSkinAnimator = transform.GetChild(0).GetComponent<Animator>();
-		rigid2D = GetComponent<Rigidbody2D> ();
-
+		
 		//completeMenu = GameObject.Find("gui").transform.Find("complete menu").gameObject;
 
 	}

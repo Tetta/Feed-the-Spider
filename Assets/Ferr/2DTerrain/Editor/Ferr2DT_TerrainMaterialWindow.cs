@@ -319,7 +319,7 @@ public class Ferr2DT_TerrainMaterialWindow : EditorWindow {
         Ferr2DT_TerrainMaterialWindow window = EditorWindow.GetWindow<Ferr2DT_TerrainMaterialWindow>();
         window.material       = aMaterial;
         window.wantsMouseMove = true;
-        window.title          = "Ferr2DT Editor";
+        //window.title          = "Ferr2DT Editor";
         if (aMaterial != null && aMaterial.edgeMaterial != null) {
 	        window.minSize = new Vector2(400, 400);
         }

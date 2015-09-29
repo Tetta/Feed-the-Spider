@@ -6,13 +6,13 @@ public class gSluggishClass : MonoBehaviour {
 	private GameObject berry;
 	private float timer;
     private float angle;
-    private Transform colliderCheckTr;
+    
 
 
     // Use this for initialization
     void Start() {
         berry = GameObject.Find("berry");
-        colliderCheckTr = transform.parent.GetChild(1);
+       
     }
     // Update is called once per frame
     void Update () {

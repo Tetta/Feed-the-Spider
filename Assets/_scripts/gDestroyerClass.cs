@@ -21,7 +21,7 @@ public class gDestroyerClass : MonoBehaviour {
 		terrainsGO = GameObject.FindGameObjectsWithTag("terrain");
 		foreach (GameObject terrain in terrainsGO) {
 			Ferr2DT_PathTerrain pathTerrain = terrain.GetComponent<Ferr2DT_PathTerrain>();
-			pathTerrain.RecreatePath();
+			pathTerrain.Build();
 			pathTerrain.RecreateCollider();	
 
 
@@ -47,7 +47,7 @@ public class gDestroyerClass : MonoBehaviour {
 			staticClass.useDestroyer = true;
 			gRecHintClass.recHint(transform);
 			GetComponent<Rigidbody2D>().isKinematic = false;
-			BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
+			//BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
 			//collider.size = new Vector2(0.001F, 0.001F);
 			Vector3 mousePosition = Camera.main.ScreenToWorldPoint(gHintClass.checkHint(gameObject, true));
 
@@ -174,7 +174,7 @@ public class gDestroyerClass : MonoBehaviour {
 	}
 	IEnumerator coroutineRecreateTerrain(Ferr2DT_PathTerrain pathTerrain, GameObject dust1, GameObject dust2) {
 		yield return new WaitForSeconds(0.1F);
-		pathTerrain.GetComponent<Ferr2DT_PathTerrain>().RecreatePath();
+		pathTerrain.GetComponent<Ferr2DT_PathTerrain>().Build();
 		pathTerrain.GetComponent<Ferr2DT_PathTerrain>().RecreateCollider();	
 		yield return new WaitForSeconds(0.5F);
 		Destroy (dust1);
@@ -229,7 +229,7 @@ public class gDestroyerClass : MonoBehaviour {
 						tempTerrain.GetComponent<Ferr2D_Path>().pathVerts.AddRange(secondFigure);
 						pathVerts.AddRange(firstFigure);
 					}
-					tempTerrain.GetComponent<Ferr2DT_PathTerrain>().RecreatePath();
+					tempTerrain.GetComponent<Ferr2DT_PathTerrain>().Build();
 
 					if (posSort.Count > 3) {
 						int g = 0;

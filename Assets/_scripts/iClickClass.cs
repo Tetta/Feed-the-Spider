@@ -17,8 +17,8 @@ public class iClickClass : MonoBehaviour {
     public static GameObject currentButton = null;
     //public List<EventDelegate> onFinished = new List<EventDelegate>();
 
-    private float timeSinceTouch = 0;
-    private bool enableDrag = false;
+    //private float timeSinceTouch = 0;
+    //private bool enableDrag = false;
     //public string functionDestroy = "";
 
     // Use this for initialization

@@ -49,7 +49,7 @@ public class gBerryClass : MonoBehaviour {
 		//запись текущего уровня
 		initClass.progress["currentLevel"] = int.Parse(Application.loadedLevelName.Substring(5));
 		//for tests
-		initClass.progress["level2"] = 0;
+		//initClass.progress["level2"] = 0;
 		//
 		initClass.saveProgress ();
 	
@@ -163,17 +163,20 @@ public class gBerryClass : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //acceleration start
-        /* off for tests
-		if (Time.time - t > 0.02F) {
+        if (Time.time - t > 0.02F) {
 			t = Time.time;
-			dir.y = Input.acceleration.y;
-			dir.x = Input.acceleration.x;
-			back.GetComponent<Rigidbody2D>().AddForce((-dir - back.transform.localPosition / 100) * 5);
 
-			back.GetComponent<Rigidbody2D>().drag = (1 - (-new Vector2(dir.x, dir.y) - 
+            dir.y = Input.acceleration.y * 0.95F;
+            dir.x = Input.acceleration.x * 0.75F;
+#if UNITY_EDITOR
+            dir = new Vector3(0, -0.95F, 0);
+#endif
+            back.GetComponent<Rigidbody2D>().AddForce((-dir - back.transform.localPosition / 100) * 5);
+
+            back.GetComponent<Rigidbody2D>().drag = (1 - (-new Vector2(dir.x, dir.y) - 
 			                             new Vector2(back.transform.localPosition.x, back.transform.localPosition.y)  / 100).magnitude) * 10;
 		}
-		*/
+		
         //acceleration end
 
 
@@ -274,8 +277,9 @@ public class gBerryClass : MonoBehaviour {
 
 		int lvlNumber = Convert.ToInt32(Application.loadedLevelName.Substring(5));
 
-		//initClass.progress["stars"] = 3;
-		if (GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) {
+        //initClass.progress["stars"] = 3;
+        /* достижение (пока коммент)
+        if (GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) {
 			GooglePlayManager.instance.SubmitScore ("leaderboard_forest", initClass.progress["stars"]);
 			if (Application.loadedLevelName == "level1") GooglePlayManager.instance.UnlockAchievement("achievement_complete_first_level");
 
@@ -287,8 +291,9 @@ public class gBerryClass : MonoBehaviour {
 
 
 		}
+        */
         bool flagGemGetting = false;
-		//gems
+		//получение гема за основное прохождение
 		if (initLevelMenuClass.levelDemands == 0) {
 			//for (int i = 0; i < starsCounter ; i++) {
 				//guiStarsComplete[i].color = new Color32(255, 255, 255, 255);
@@ -300,9 +305,10 @@ public class gBerryClass : MonoBehaviour {
 				else initClass.progress[Application.loadedLevelName] = 3;
 			}
 	}
-		//initClass.progress["stars"] = initClass.progress["stars"] + starsCounter - initClass.progress["level" + lvlNumber];
+        //initClass.progress["stars"] = initClass.progress["stars"] + starsCounter - initClass.progress["level" + lvlNumber];
 
-		if (initLevelMenuClass.levelDemands == 1 && initClass.progress[Application.loadedLevelName] < 2 && staticClass.levels[lvlNumber, 0] == starsCounter) {
+        //получение гема за испытание
+        if (initLevelMenuClass.levelDemands == 1 && initClass.progress[Application.loadedLevelName] < 2 && staticClass.levels[lvlNumber, 0] == starsCounter) {
 			int levels = staticClass.levels[lvlNumber, 1];
 			bool flag = false;
 			if (levels == 0) flag = true;
@@ -320,10 +326,10 @@ public class gBerryClass : MonoBehaviour {
 			}
 		}
 
-		if (initClass.progress["level" + lvlNumber] < starsCounter) {
-			if (GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) GooglePlayManager.instance.IncrementAchievement("achievement_collect_all_stars", starsCounter - initClass.progress["level" + lvlNumber]);
-			initClass.progress["level" + lvlNumber] = starsCounter;
-		}
+		//if (initClass.progress["level" + lvlNumber] < starsCounter) {
+			//if (GooglePlayConnection.state == GPConnectionState.STATE_CONNECTED) GooglePlayManager.instance.IncrementAchievement("achievement_collect_all_stars", starsCounter - initClass.progress["level" + lvlNumber]);
+			//initClass.progress["level" + lvlNumber] = starsCounter;
+		//}
 		
 		if (lvlNumber >= initClass.progress["lastLevel"]) initClass.progress["lastLevel"] = lvlNumber;
 		
@@ -331,8 +337,8 @@ public class gBerryClass : MonoBehaviour {
 
         completeMenu.SetActive(true);
 
-        //вызов complete menu, передача полученныx очков (float timeLevel, bool gem, int starsCount)
-        completeMenu.GetComponent<lsLevelMenuClass>().completeMenuEnable(Time.timeSinceLevelLoad, flagGemGetting, starsCounter);
+        //вызов complete menu, передача полученныx очков (float timeLevel, bool gem, int starsCount, int lvlNumber)
+        completeMenu.GetComponent<lsLevelMenuClass>().completeMenuEnable(Time.timeSinceLevelLoad, flagGemGetting, starsCounter, lvlNumber);
 
     }
 

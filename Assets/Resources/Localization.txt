@@ -1,4 +1,4 @@
-KEY,English,Russian
+﻿KEY,English,Russian
 Level,Level,Уровень
 SPIDER,SPIDER,ПАУЧОК
 lsStars,"Collect stars: ", "Соберите звезд: "
@@ -28,6 +28,8 @@ completeMenuBonusTime, "Bonus time:", "Бонус за время:"
 completeMenuBonusLevel, "Bonus level:", "Бонус за уровень:"
 completeMenuBonusGem1, "Bonus first gem:", "Бонус за первый кристалл:"
 completeMenuBonusGem2, "Bonus second gem:", "Бонус за второй кристалл:"
+completeMenuLevelScore, "Level score:", "Очки за уровень:" 
+completeMenuChallengeScore, "Challenge score:", "Очки за испытание:"
 completeMenuScoreAll, "Final score:", "Общий счет:"
 Bonus, "Bonus!", "Бонус!"
 spiderSkin1, "Yellow", "Желтый"

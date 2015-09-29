@@ -44,16 +44,16 @@ public class initClass : MonoBehaviour {
 
 			List<LocalNotificationTemplate> PendingNotifications;
 			PendingNotifications = AndroidNotificationManager.instance.LoadPendingNotifications();
-			//Debug.Log (PendingNotifications);
-			bool flagNotifer = false;
-			if (PendingNotifications != null) { 
+            //Debug.Log (PendingNotifications);
+            //для нотифера внизу отключен, чтоб не было warning bool flagNotifer = false;
+            if (PendingNotifications != null) { 
 				foreach (var PendingNotification in PendingNotifications) {
 					if (PendingNotification.title == Localization.Get("notiferTitleDay")) {
 						if (PendingNotification.fireDate.Day == DateTime.Now.Day) {
 							AndroidNotificationManager.instance.CancelLocalNotification(PendingNotification.id);
 							AndroidNotificationManager.instance.ScheduleLocalNotification(Localization.Get("notiferTitleDay"), Localization.Get("notiferMessageDay"), 60 * 60 * 24);
 						}
-						flagNotifer = true;
+						//flagNotifer = true; //для нотифера внизу отключен, чтоб не было warning
 					}
 				}
 			}

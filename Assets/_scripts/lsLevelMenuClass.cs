@@ -80,7 +80,7 @@ public class lsLevelMenuClass: MonoBehaviour {
 	}
 
     //public void completeMenuEnable(int bonusTime, int bonusLevel, bool gem, int starsCount) {
-    public void completeMenuEnable (float timeLevel, bool gem, int starsCount) {
+    public void completeMenuEnable (float timeLevel, bool gem, int starsCount, int lvlNumber) {
 		setDefault ();
 		stars1.SetActive(false);
 		stars2.SetActive(false);
@@ -91,42 +91,55 @@ public class lsLevelMenuClass: MonoBehaviour {
 			levelMenu.transform.GetChild (0).GetChild (1).GetComponent<UIToggle> ().value = true;
 		}
 		Debug.Log ("completeMenuEnable");
-		StartCoroutine(coroutineCompleteMenuScore(timeLevel, gem, starsCount));
+		StartCoroutine(coroutineCompleteMenuScore(timeLevel, gem, starsCount, lvlNumber));
 
 		
 		
 
 	}
-	IEnumerator coroutineCompleteMenuScore(float timeLevel, bool gem, int starsCount) {
-		//init gems
-		int levelProgress = initClass.progress["level" + initClass.progress["currentLevel"]];
-		if (levelProgress == 1 || levelProgress == 3) gem1Active.SetActive(true);
-		if (levelProgress == 2 || levelProgress == 3) gem2Active.SetActive(true);
+	IEnumerator coroutineCompleteMenuScore(float timeLevel, bool gem, int starsCount, int lvlNumber) {
+        Debug.Log("initLevelMenuClass.levelDemands: " + initLevelMenuClass.levelDemands);
+        if (initLevelMenuClass.levelDemands == 1) transform.GetChild(1).gameObject.SetActive(false);
+        //init gems
+        int levelProgress = initClass.progress[Application.loadedLevelName];
+		if (levelProgress == 1 || levelProgress == 3 && !(gem && initLevelMenuClass.levelDemands == 0)) gem1Active.SetActive(true);
+		if (levelProgress == 2 || levelProgress == 3 && !(gem && initLevelMenuClass.levelDemands == 1)) gem2Active.SetActive(true);
 		Transform grid = levelMenu.transform.GetChild (0).GetChild (4).GetChild (0);
-		UILabel scoreTime = grid.GetChild (0).GetChild (0).GetComponent<UILabel>();
 		UILabel scoreLvl = grid.GetChild (1).GetChild (0).GetComponent<UILabel>();
-		UILabel scoreGem1 = grid.GetChild (2).GetChild (0).GetComponent<UILabel>();
-		UILabel scoreGem2 = grid.GetChild (3).GetChild (0).GetComponent<UILabel>();
-		for (int i = 0; i <= 100; i += 5) {
-			scoreTime.text = (Mathf.Round((3000 - 100 * timeLevel) * i / 100)).ToString();
-			scoreLvl.text = (Mathf.Round(1000 * starsCount * i / 100)).ToString();
-			scoreGem1.text = (Mathf.Round(200 * i / 100)).ToString();
-			scoreGem2.text = (Mathf.Round(100 * i / 100)).ToString();
+		UILabel scoreCh = grid.GetChild (3).GetChild (0).GetComponent<UILabel>();
+        int score1 = 0;
+        int score2 = 0;
+        int scoreFinal = 0;
+        if (initLevelMenuClass.levelDemands == 0) score1 = Mathf.RoundToInt(1000 * starsCount + 3000 - 100 * timeLevel);
+        else score1 = initClass.progress["score" + lvlNumber + "_1"];
+        if (levelProgress == 2 || levelProgress == 3) score2 = 2000;
+        Transform scoreAll = levelMenu.transform.GetChild(0).GetChild(4).GetChild(1);
+        if (score1 + score2 > initClass.progress["score" + lvlNumber + "_1"] + initClass.progress["score" + lvlNumber + "_2"]) {
+            scoreFinal = score1 + score2;
+            //включаем +100 coins
+            scoreAll.GetChild(2).gameObject.SetActive(true);
+            scoreAll.GetChild(2).GetChild(1).GetComponent<UILabel>().text = Mathf.RoundToInt((scoreFinal - (initClass.progress["score" + lvlNumber + "_1"] + initClass.progress["score" + lvlNumber + "_2"]))/100).ToString();
+            initClass.progress["coins"] = Mathf.RoundToInt((scoreFinal - (initClass.progress["score" + lvlNumber + "_1"] + initClass.progress["score" + lvlNumber + "_2"]))/100);
+        }
+        else scoreFinal = initClass.progress["score" + lvlNumber + "_1"] + initClass.progress["score" + lvlNumber + "_2"];
+        for (int i = 0; i <= 100; i += 5) {
+			scoreLvl.text = (Mathf.Round(score1 * i / 100)).ToString();
+            scoreCh.text = (Mathf.Round(score2 * i / 100)).ToString();
 			yield return new WaitForSeconds (0.05F);
-			if (starsCount >= 1 && i == 50) transform.GetChild (2).GetChild (0).gameObject.SetActive (true);
+			if (starsCount >= 1 && i == 50) transform.GetChild (1).GetChild(0).GetChild (0).gameObject.SetActive (true);
 		}
-		if (starsCount >= 2) transform.GetChild (3).GetChild (0).gameObject.SetActive (true);
+		if (starsCount >= 2) transform.GetChild (1).GetChild(1).GetChild (0).gameObject.SetActive (true);
 		yield return new WaitForSeconds (0.2F);
 		grid.gameObject.SetActive (false);
-		Transform scoreAll = levelMenu.transform.GetChild (0).GetChild (4).GetChild (1);
 		scoreAll.gameObject.SetActive (true);
 		UILabel scoreAllLbl = scoreAll.GetChild (0).GetComponent<UILabel>();
 		for (int i = 0; i <= 100; i += 5) {
-			scoreAllLbl.text = (Mathf.Round(400 * i / 100)).ToString();
+			scoreAllLbl.text = (Mathf.Round(scoreFinal * i / 100)).ToString();
 			yield return new WaitForSeconds (0.05F);
-			if (starsCount >= 3 && i == 30) transform.GetChild (4).GetChild (0).gameObject.SetActive (true);
+			if (starsCount >= 3 && i == 30) transform.GetChild (1).GetChild(2).GetChild (0).gameObject.SetActive (true);
 		}
-		if (initLevelMenuClass.levelDemands == 0 && gem) {
+        //если еще не получал кристалл
+        if (initLevelMenuClass.levelDemands == 0 && gem) {
 			gem1Active.SetActive (true);
 			gem1Active.GetComponent<Animation> ().Play ();
 		}
@@ -141,9 +154,16 @@ public class lsLevelMenuClass: MonoBehaviour {
 		stars1.SetActive(true);
 		stars2.SetActive(true);
 		setContent2 ();
-	}
-		
-	// Update is called once per frame
-	void Update () {
+        //сохранение очков в progress
+        //if (initClass.progress["score" + lvlNumber + "_1"] <  (3000 - 100 * timeLevel + 1000 * starsCount)) initClass.progress["score" + lvlNumber + "_1"] = Mathf.RoundToInt(3000 - 100 * timeLevel + 1000 * starsCount);
+        //if (initLevelMenuClass.levelDemands == 1 && gem && initClass.progress["score" + lvlNumber + "_2"] == 0) initClass.progress["score" + lvlNumber + "_2"] = 2000;
+        if (initClass.progress["score" + lvlNumber + "_1"] < score1) initClass.progress["score" + lvlNumber + "_1"] = score1;
+        if (initClass.progress["score" + lvlNumber + "_2"] < score2) initClass.progress["score" + lvlNumber + "_2"] = score2;
+        
+        initClass.saveProgress();
+    }
+
+    // Update is called once per frame
+    void Update () {
 	}
 }

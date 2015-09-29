@@ -53,23 +53,23 @@ public class marketClass : MonoBehaviour {
 
         //Filling product list
         //You can skip this if you alredy did this in Editor settings menu
-        AndroidInAppPurchaseManager.instance.addProduct(coins1);
-        AndroidInAppPurchaseManager.instance.addProduct(coins2);
-        AndroidInAppPurchaseManager.instance.addProduct(complect);
+        AndroidInAppPurchaseManager.Instance.AddProduct(coins1);
+        AndroidInAppPurchaseManager.Instance.AddProduct(coins2);
+        AndroidInAppPurchaseManager.Instance.AddProduct(complect);
+       
 
 
+         //listening for purchase and consume events
+         //off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_PURCHASED, OnProductPurchased);
+         //off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_CONSUMED,  OnProductConsumed);
 
-        //listening for purchase and consume events
-        //off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_PURCHASED, OnProductPurchased);
-        //off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_PRODUCT_CONSUMED,  OnProductConsumed);
+         //initilaizing store
+         //off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
 
-        //initilaizing store
-        //off AndroidInAppPurchaseManager.instance.addEventListener (AndroidInAppPurchaseManager.ON_BILLING_SETUP_FINISHED, OnBillingConnected);
+         //you may use loadStore function without parametr if you have filled base64EncodedPublicKey in plugin settings
+         //off AndroidInAppPurchaseManager.instance.loadStore();
 
-        //you may use loadStore function without parametr if you have filled base64EncodedPublicKey in plugin settings
-        //off AndroidInAppPurchaseManager.instance.loadStore();
-
-        ListnersAdded = true;
+         ListnersAdded = true;
         //gameObject.SetActive(false);
         transform.position = new Vector3(0, 0, -10000);
         boostersLabel.text = initClass.progress["boosters"].ToString();
@@ -117,8 +117,8 @@ public class marketClass : MonoBehaviour {
                 ncm.transform.localPosition = new Vector3(0, 0, -100F);
                 ncm.transform.localScale = new Vector3(1F, 1F, 0);
                 ncm.name = "not coins menu";
-                UIPlayAnimation anim = ncm.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UIPlayAnimation>();
-                GameObject backTr = GameObject.Find("root/Camera/UI Root/back transition");
+                //UIPlayAnimation anim = ncm.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<UIPlayAnimation>();
+                //GameObject backTr = GameObject.Find("root/Camera/UI Root/back transition");
                 //bug new system
                 //EventDelegate.Add(anim.onFinished, backTr.GetComponent<iClickClass>().backTransitionExit);
             }

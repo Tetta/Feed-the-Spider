@@ -27,17 +27,64 @@ public class staticClass {
 
 	public static void initLevels () {
 		//всегда есть stars [0] + что-то еще [1]
-		levels[1, 0] = 3;
-		levels[1, 1] = 201;
-		levels[2, 0] = 2;
-		levels[2, 1] = 100;
-		levels[26, 0] = 2;
-		levels[26, 1] = 100;
-		levels[51, 0] = 3;
-		levels[51, 1] = 300;
-		levels[76, 0] = 1;
-		levels[76, 1] = 200;
-		levelBlocks[5] = 3;
+		levels[1, 0] = 1;
+		levels[1, 1] = 10;
+		levels[2, 0] = 1;
+		levels[2, 1] = 10;
+        levels[3, 0] = 1;
+        levels[3, 1] = 10;
+        levels[4, 0] = 1;
+        levels[4, 1] = 10;
+        levels[5, 0] = 1;
+        levels[5, 1] = 10;
+        levels[6, 0] = 1;
+        levels[6, 1] = 10;
+        levels[7, 0] = 1;
+        levels[7, 1] = 10;
+        levels[8, 0] = 1;
+        levels[8, 1] = 10;
+        levels[9, 0] = 1;
+        levels[9, 1] = 10;
+        levels[10, 0] = 1;
+        levels[10, 1] = 10;
+        levels[11, 0] = 1;
+        levels[11, 1] = 10;
+        levels[12, 0] = 1;
+        levels[12, 1] = 10;
+        levels[13, 0] = 1;
+        levels[13, 1] = 10;
+        levels[14, 0] = 1;
+        levels[14, 1] = 10;
+        levels[15, 0] = 1;
+        levels[15, 1] = 10;
+        levels[16, 0] = 1;
+        levels[16, 1] = 10;
+        levels[17, 0] = 1;
+        levels[17, 1] = 10;
+        levels[18, 0] = 1;
+        levels[18, 1] = 10;
+        levels[19, 0] = 1;
+        levels[19, 1] = 10;
+        levels[20, 0] = 1;
+        levels[20, 1] = 10;
+        levels[21, 0] = 1;
+        levels[21, 1] = 10;
+        levels[22, 0] = 1;
+        levels[22, 1] = 10;
+        levels[23, 0] = 1;
+        levels[23, 1] = 10;
+        levels[24, 0] = 1;
+        levels[24, 1] = 10;
+        levels[25, 0] = 1;
+        levels[25, 1] = 10;
+        //----------------------------
+        levels[26, 0] = 2;
+        levels[26, 1] = 100;
+        levels[51, 0] = 3;
+        levels[51, 1] = 300;
+        levels[76, 0] = 1;
+        levels[76, 1] = 200;
+        levelBlocks[5] = 3;
 
 	}
 
@@ -73,7 +120,7 @@ public class staticClass {
 			"level11=0;level12=0;level13=0;level14=0;level15=0;level16=0;level17=0;level18=0;level19=0;level20=0;" +
 			"level21=0;level22=0;level23=0;level24=0;level25=0;level26=0;level50=0;level51=0;level75=0;level76=0;" +
 			"level101=0;level102=0;level103=0;" +
-			"score1_1=0;score1_2=0;score2_1=0;score2_2=0;" +
+            "score1_1=0;score1_2=0;score2_1=0;score2_2=0;score26_1=0;score26_2=0;" +
 			"gift1=0;gift2=0;";
 
 	public static Animator currentSkinAnimator;

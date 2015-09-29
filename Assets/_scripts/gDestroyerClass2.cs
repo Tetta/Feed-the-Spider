@@ -187,7 +187,7 @@ public class gDestroyerClass2 : MonoBehaviour {
 					//pathVerts = firstFigure;
 				}
 				Debug.Log("created terr");
-				tempTerrain.GetComponent<Ferr2DT_PathTerrain>().RecreatePath();
+				tempTerrain.GetComponent<Ferr2DT_PathTerrain>().Build();
 
 				//tempTerrain.GetComponent<Ferr2DT_PathTerrain>().u
 				/*
