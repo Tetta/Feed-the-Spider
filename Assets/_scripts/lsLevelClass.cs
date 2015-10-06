@@ -8,8 +8,7 @@ public class lsLevelClass : MonoBehaviour {
 	public GameObject islandInactive;
 	public GameObject gem1Inactive;
 	public GameObject gem2Inactive;
-	public GameObject gemBottom1Inactive;
-	public GameObject gemBottom2Inactive;
+
 	public int prevLevel = 0;
 
 	//private float maxDistance = 3.5F;
@@ -26,11 +25,11 @@ public class lsLevelClass : MonoBehaviour {
 		if (!((prevLevel == 0 && lastLevel + 1 >= level) || (prevLevel != 0 && lastLevel >= prevLevel)) && staticClass.levelBlocks[level] <= initClass.progress["gems"]) islandInactive.SetActive(true);
 		if (levelProgress == 0 || levelProgress == 2) {
 			gem1Inactive.SetActive(true);
-			gemBottom1Inactive.SetActive(true);
+
 		}
 		if (levelProgress == 0 || levelProgress == 1) {
 			gem2Inactive.SetActive(true);
-			gemBottom2Inactive.SetActive(true);
+
 		}
 	}
 	

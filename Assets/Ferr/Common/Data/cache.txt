@@ -14,6 +14,7 @@ Assets/_images/terrains/forest terrain old.prefab
 Assets/_images/terrains/terrain path.prefab
 Assets/Ferr/2DTerrain/TerrainMaterials/SandTerrainMaterial.prefab
 Assets/_images/terrains/helper terrain.prefab
+Assets/_images/terrains/map forest terrain.prefab
 
 [Ferr2DT_PathTerrain]
 Assets/_prefabs/terrain forest.prefab

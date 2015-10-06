@@ -107,7 +107,7 @@ public class staticClass {
 	public static string currentHat = "hat4";
 	public static string currentBerry = "berry1";
 
-	public static string strProgressDefault = "googlePlay=0;lastLevel=76;currentLevel=2;coins=1000;gems=0;energyTime=0;energy=100;" +
+	public static string strProgressDefault = "googlePlay=0;lastLevel=9;currentLevel=1;coins=1000;gems=0;energyTime=0;energy=100;" +
 
         "boosters=3;hints=3;webs=3;collectors=3;teleports=3;complect=0;music=0;sound=1;dailyBonus=0;" +
 
@@ -116,7 +116,7 @@ public class staticClass {
 			"berry1=2;berry2=1;berry3=1;berry4=1;berry5=1;" +
 			"hat1=2;hat2=1;hat3=1;hat4=1;hat5=1;" +
 			"skin1=2;skin2=1;skin3=1;skin4=1;skin5=1;" +
-			"level1=0;level2=0;level3=0;level4=0;level5=0;level6=0;level7=0;level8=0;level9=0;level10=0;" +
+			"level1=3;level2=3;level3=1;level4=1;level5=2;level6=0;level7=1;level8=1;level9=0;level10=0;" +
 			"level11=0;level12=0;level13=0;level14=0;level15=0;level16=0;level17=0;level18=0;level19=0;level20=0;" +
 			"level21=0;level22=0;level23=0;level24=0;level25=0;level26=0;level50=0;level51=0;level75=0;level76=0;" +
 			"level101=0;level102=0;level103=0;" +

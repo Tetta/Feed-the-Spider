@@ -721,20 +721,22 @@ public class Ferr2DT_PathTerrain : MonoBehaviour, Ferr2D_IPath {
             UnityEngine.Random.seed = (int)(pos[0].x * 700000 + pos[0].y * 30000);
         }
 
-        //Rect  body  = terrainMaterial.ToUV(aDesc.body[UnityEngine.Random.Range(0, aDesc.body.Length)]);
-		//my changing start
-		Rect  body  = terrainMaterial.ToUV(aDesc.body[0]);
-		
-		if (aDesc.body.Length == 4) {
-			if ((pos [aCuts - 1] - pos [0]).magnitude < 0.05F) body  = terrainMaterial.ToUV(aDesc.body[3]);
-			else if ((pos [aCuts - 1] - pos [0]).magnitude >= 0.05F && (pos [aCuts - 1] - pos [0]).magnitude < 0.12F) body  = terrainMaterial.ToUV(aDesc.body[2]);
-			else if ((pos [aCuts - 1] - pos [0]).magnitude >= 0.12F && (pos [aCuts - 1] - pos [0]).magnitude < 0.30F) body  = terrainMaterial.ToUV(aDesc.body[1]);
-			else body  = terrainMaterial.ToUV(aDesc.body[0]);
-		}
-		
-		//my changing end
+        //my changing start
+        //Rect body  = terrainMaterial.ToUV(aDesc.body[UnityEngine.Random.Range(0, aDesc.body.Length)]);
+        Rect body = new Rect();
+        if (terrainMaterial.name == "map forest terrain") body = terrainMaterial.ToUV(aDesc.body[UnityEngine.Random.Range(0, aDesc.body.Length)]);
+        else { 
+            body  = terrainMaterial.ToUV(aDesc.body[0]);
+            if (aDesc.body.Length == 4) {
+			    if ((pos [aCuts - 1] - pos [0]).magnitude < 0.05F) body  = terrainMaterial.ToUV(aDesc.body[3]);
+			    else if ((pos [aCuts - 1] - pos [0]).magnitude >= 0.05F && (pos [aCuts - 1] - pos [0]).magnitude < 0.12F) body  = terrainMaterial.ToUV(aDesc.body[2]);
+			    else if ((pos [aCuts - 1] - pos [0]).magnitude >= 0.12F && (pos [aCuts - 1] - pos [0]).magnitude < 0.30F) body  = terrainMaterial.ToUV(aDesc.body[1]);
+			    else body  = terrainMaterial.ToUV(aDesc.body[0]);
+		    }
+        }
+        //my changing end
 
-		float d     = (body.height / 2) * unitsPerUV.y;
+        float d     = (body.height / 2) * unitsPerUV.y;
 		float yOff  = fill == Ferr2DT_FillMode.InvertedClosed ? -aDesc.yOffset : aDesc.yOffset;
         if (randomByWorldCoordinates) {
             UnityEngine.Random.seed = tSeed;
